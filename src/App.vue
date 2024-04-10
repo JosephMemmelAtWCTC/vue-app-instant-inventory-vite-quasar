@@ -23,6 +23,7 @@ import InventoryCollection from "./models/InventoryCollection.js"
 import Category from "./models/Category.js"
 import StoreItem from "./models/StoreItem.js"
 import Product from "./models/Product.js"
+import InventoryItem from "src/models/InventoryItem";
 
 // import { InventoryCollection, StoreItem, Category, Product } from "@/models/app-modals.js"
 // import { InventoryCollection, StoreItem, Category, Product } from "@/js/models/app-models.js"
@@ -99,6 +100,26 @@ export default defineComponent({
   computed: {
     computedCurrentPageTitle() {
       return this.appNavigation.currentPage.charAt(0).toUpperCase() + this.appNavigation.currentPage.slice(1);
+    },
+    filteredLibrary() {
+      let filteredResults = [];
+
+      const filterByConstructors = [];
+      const filterByThreshold = [];
+
+      if(this.filterSettings.toggles[0].state){
+        filterByConstructors.push(Category.type);
+      }
+      if(this.filterSettings.toggles[1].state){
+        filterByConstructors.push(StoreItem.type);
+      }
+
+      filteredResults = this.library.filterByType(filterByConstructors);
+
+      // if(this.filterSettings.toggles[2].state){
+      //   filterByThreshold.push(InventoryItem.STOCKED_LEVEL_STATUSES.);
+      // }
+      return filteredResults;
     }
   },
 
@@ -140,7 +161,8 @@ export default defineComponent({
           <navigate-icon-item tooltip-info="Account" @click="openNavPage('account')" li-extra-classes="p-2 mb-2" icon-class="bi-person">
           </navigate-icon-item>
         </div>
-        <footer>
+<!--TODO: I know, I need to do this properly instead of just using a margin-->
+        <footer class="pt-5">
           <button type="button" class="btn btn-primary rounded-0 p-0">
             <a class="icon-link link-secondary">
               <span class="p-2 ps-1 pe-0"><i class="bi bi-phone"></i></span>
@@ -236,7 +258,7 @@ export default defineComponent({
       <page-inventory-cards-search
         v-if="appNavigation.currentPage==='inventory'"
         :filter-settings="filterSettings"
-        :current-combined-items-list="library"
+        :current-combined-items-list="filteredLibrary"
         search-label="Filter Search"
         @remove-item="removeItem"
         @save-it="saveItem"

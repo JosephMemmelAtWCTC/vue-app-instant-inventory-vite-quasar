@@ -52,3 +52,10 @@ export default defineComponent({
         </ul>
     </div>
 </template>
+
+<style scoped>
+  .fab > button {
+    width: 84px;
+    height: 84px;
+  }
+</style>

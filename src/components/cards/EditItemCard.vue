@@ -11,8 +11,8 @@
     components: {EditCard},
     data() {
       return {
-        // editInventoryItem: new StoreItem(new Product("","","",""), 0, 0, 0),
-        editInventoryItem: new StoreItem(new Product("","","https://picsum.photos/200/300",""), 1, undefined),
+        editInventoryItem: {},
+          // new StoreItem(new Product("","","https://picsum.photos/200/300",""), 1, undefined),
       }
     },
     props: {
@@ -45,7 +45,7 @@
                :item="this.item"
                @save-it="saveItem"
                @remove-it="removeItem"
-               @opened-modal="updateEditCategoryToValues">
+               @opened-modal="updateEditItemToValues">
         <template #form="slotProps">
             <q-input filled v-model="editInventoryItem.product.title"
                      label="Name"

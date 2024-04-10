@@ -1,4 +1,5 @@
 import InventoryItem from "src/models/InventoryItem.js"
+import Category from "src/models/Category";
 
 export default function InventoryCollection(arr = []) {
 
@@ -37,6 +38,14 @@ export default function InventoryCollection(arr = []) {
             this[existingIndex] = itemNew;
         }
         return this;
+    }
+
+    arr.filterByType = function(types){
+      const filteredArray = this.filter(i => types.includes(i.constructor.name));
+      // this.forEach(i => console.log(types.includes(i.constructor.name)));
+      this.forEach(i => console.log(i.constructor.name));
+      console.log("types = ", types);
+      return filteredArray;
     }
 
     return arr;
