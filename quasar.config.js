@@ -21,8 +21,8 @@ module.exports = configure(function (/* ctx */) {
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
     boot: [
-      
-      
+
+
     ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css
@@ -32,13 +32,14 @@ module.exports = configure(function (/* ctx */) {
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
     extras: [
-      // 'ionicons-v4',
-      // 'mdi-v7',
-      // 'fontawesome-v6',
-      // 'eva-icons',
-      // 'themify',
-      // 'line-awesome',
-      // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
+      'material-icons',
+      'mdi-v7',
+      'ionicons-v4', // last webfont was available in v4.6.3
+      'eva-icons',
+      'fontawesome-v6',
+      'themify',
+      'line-awesome',
+      'bootstrap-icons',
 
       'roboto-font', // optional, you are not bound to it
       'material-icons', // optional, you are not bound to it
@@ -70,7 +71,7 @@ module.exports = configure(function (/* ctx */) {
       // extendViteConf (viteConf) {},
       // viteVuePluginOptions: {},
 
-      
+
       // vitePlugins: [
       //   [ 'package-name', { ..pluginOptions.. }, { server: true, client: true } ]
       // ]
@@ -84,7 +85,16 @@ module.exports = configure(function (/* ctx */) {
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#framework
     framework: {
-      config: {},
+      plugins: ['Notify'],
+      config: {
+        notify: {
+          position: 'bottom',
+          timeout: 3000,
+          textColor: 'secondary',
+          bgColor: 'primary',
+        },
+        iconSet: 'fontawesome-v6'
+      },
 
       // iconSet: 'material-icons', // Quasar icon set
       // lang: 'en-US', // Quasar language pack
@@ -97,7 +107,6 @@ module.exports = configure(function (/* ctx */) {
       // directives: [],
 
       // Quasar plugins
-      plugins: []
     },
 
     // animations: 'all', // --- includes all animations

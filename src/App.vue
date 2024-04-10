@@ -10,6 +10,7 @@ import {defineComponent} from "vue";
 // @ = src
 
 import QuasarAppLayout from "./components/structure/QuasarAppLayout.vue"
+import NavigateIconItem from "./components/NavigateIconItem.vue"
 
 import InventoryCollection from "./models/InventoryCollection.js"
 import Category from "./models/Category.js"
@@ -20,7 +21,7 @@ import Product from "./models/Product.js"
 // import { InventoryCollection, StoreItem, Category, Product } from "@/js/models/app-models.js"
 
 export default defineComponent({
-  components: {QuasarAppLayout},
+  components: {QuasarAppLayout, NavigateIconItem},
   data() {
     return {
       library: new InventoryCollection()
@@ -56,7 +57,36 @@ export default defineComponent({
 
 
 <template>
-  <quasar-app-layout :current-page-title="computedCurrentPageTitle">
+  <quasar-app-layout
+    :editable-kiosk-name="appPageConfigSettings.customName"
+    @update-kiosk-name="appPageConfigSettings.customName = $event"
+    :current-page-title="computedCurrentPageTitle"
+  >
+    <!-- SIDEBAR -->
+    <template #left class="d-none d-md-block h-100">
+      <div class="d-flex flex-column justify-content-between h-100">
+        <div>
+          <navigate-icon-item tooltip-info="Home" @click="openNavPage('home')" li-extra-classes="p-2 mb-2" icon-class="bi-house">
+          </navigate-icon-item>
+          <navigate-icon-item tooltip-info="Inventory" @click="openNavPage('inventory')" li-extra-classes="p-2 mb-2" icon-class="material-symbols-outlined" icon-content="package_2"><!--fa-solid fa-boxes-stacked-->
+          </navigate-icon-item>
+          <navigate-icon-item tooltip-info="Recents" @click="openNavPage('recents')" li-extra-classes="p-2 mb-2" icon-class="bi-arrow-left-right" :badge-text="'recentItemsList.length'+''">
+          </navigate-icon-item>
+          <navigate-icon-item tooltip-info="Account" @click="openNavPage('account')" li-extra-classes="p-2 mb-2" icon-class="bi-person">
+          </navigate-icon-item>
+        </div>
+        <footer>
+          <button type="button" class="btn btn-primary rounded-0 p-0">
+            <a class="icon-link link-secondary">
+              <span class="p-2 ps-1 pe-0"><i class="bi bi-phone"></i></span>
+              <strong><a href="#" class="link-secondary link-underline-opacity-0 pe-1">Download our app</a></strong>
+            </a>
+          </button>
+        </footer>
+      </div>
+    </template>
+
 
   </quasar-app-layout>
+
 </template>

@@ -11,7 +11,9 @@
     "build": "quasar build"
   },
   "dependencies": {
+    "@popperjs/core": "^2.11.8",
     "@quasar/extras": "^1.16.4",
+    "bootstrap": "^5.3.3",
     "quasar": "^2.8.0",
     "vue": "^3.4.18",
     "vue-router": "^4.0.12"
@@ -19,7 +21,9 @@
   "devDependencies": {
     "@quasar/app-vite": "^1.8.0",
     "autoprefixer": "^10.4.2",
-    "postcss": "^8.4.14"
+    "postcss": "^8.4.14",
+    "sass": "^1.74.1",
+    "vite": "^2.9.18"
   },
   "engines": {
     "node": "^20 || ^18 || ^16",
