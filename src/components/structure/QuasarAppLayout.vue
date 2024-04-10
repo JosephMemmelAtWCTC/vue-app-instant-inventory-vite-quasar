@@ -1,5 +1,5 @@
 <script>
-  import QuasarLayoutBuilt from "@/components/structure/QuasarLayoutBuilt.vue";
+  import QuasarLayoutBuilt from "src/components/structure/QuasarLayoutBuilt.vue";
 
   export default {
     name: "LibraryItemsList",

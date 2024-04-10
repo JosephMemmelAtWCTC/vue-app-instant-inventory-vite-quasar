@@ -19,11 +19,12 @@
     created() {
     },
     setup(){
-      const leftDrawerOpen = Vue.ref(false);
+      // const leftDrawerOpen = Vue.ref(false);
+      let leftDrawerOpen = false;
       return {
         leftDrawerOpen,
         toggleLeftDrawer () {
-          leftDrawerOpen.value = !leftDrawerOpen.value
+          leftDrawerOpen = !leftDrawerOpen
         },
       }
     },

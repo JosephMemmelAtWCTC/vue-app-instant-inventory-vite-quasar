@@ -1,4 +1,4 @@
-import InventoryItem from "@/models/InventoryItem.js";
+import InventoryItem from "src/models/InventoryItem.js"
 
 export default function InventoryCollection(arr = []) {
 

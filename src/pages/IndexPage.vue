@@ -1,15 +1,39 @@
-<template>
-  <q-page class="flex flex-center">
-    <img
-      alt="Quasar logo"
-      src="~assets/quasar-logo-vertical.svg"
-      style="width: 200px; height: 200px"
-    >
-  </q-page>
-</template>
+<script>
+import {defineComponent} from "vue";
 
-<script setup>
-defineOptions({
-  name: 'IndexPage'
+import PageTitleTable from "components/pages/PageTitleTable.vue"
+
+export default defineComponent({
+  components: {PageTitleTable},
+  props: {
+    appNavigation: {
+      type: Object,
+      required: true,
+    }
+  },
+  mounted() {
+    console.log('appNavigation:', this.appNavigation);
+  }
 });
 </script>
+
+
+<template>
+  {{ appNavigation }}
+<!--  <q-page class="flex flex-center"-->
+<!--          v-if="appNavigation.currentPage==='home'">-->
+<!--    <page-title-table-->
+<!--      :headers="['Categories', 'Items', 'Total Stock', 'Needs Refill']"-->
+<!--      :jumbotron-title="'this.appTitle'"-->
+<!--    >-->
+
+<!--      &lt;!&ndash;                :table-items="[categoriesList.length, itemsList.length, '#', itemsList.filter(item => item.hasLowStock).length]"&ndash;&gt;-->
+<!--      <template #jumbotronsubtext>-->
+<!--        <p class="w-100">ConnectionInfo</p>-->
+<!--        <p class="">{{'appVersion'}}</p>-->
+<!--      </template>-->
+<!--    </page-title-table>-->
+
+
+<!--  </q-page>-->
+</template>
