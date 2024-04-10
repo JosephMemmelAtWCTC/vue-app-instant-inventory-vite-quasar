@@ -35,6 +35,11 @@
         this.$emit('remove-it', item);
       },
     },
+    computed: {
+      cardType(){
+        return this.cardComponent.toString().replace('Card','')
+      }
+    }
   });
 </script>
 
@@ -45,8 +50,8 @@
               @save-it="saveItem"
               can-remove
               @remove-it="removeItem"
-              :title="'Edit '+'Category'"
-              :submit-button-text="'Update '+'Category'"
+              :title="'Edit '+cardType"
+              :submit-button-text="'Update '+cardType"
               ref="editModal"
   >
     <template v-slot="slotProps">

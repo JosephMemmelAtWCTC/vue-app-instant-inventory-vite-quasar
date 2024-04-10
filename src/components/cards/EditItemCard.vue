@@ -81,14 +81,15 @@
             <q-input filled v-model="editInventoryItem.reorderLevel"
                      type="number"
                      label="Reorder Level"
-                     clear-icon="bi-x"
                      placeholder="Leave blank to ignore reorder"
-                     class="full-width clearable"
+                     class="full-width"
                      :rules="[val => val >= 0 || 'Count cannot be less than 0']"
                      lazy-rules
             ></q-input>
-<!--          clearable-->
-<!--TODO: Ask about clearable messing up-->
+<!--          clearable, w/class-->
+<!--          clear-icon="bi-x"-->
+
+          <!--TODO: Ask about clearable messing up-->
           <div class="input-group mb-3 w-100">
 
                 <div class="col-2 d-block z-2">
