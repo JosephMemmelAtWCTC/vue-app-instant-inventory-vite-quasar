@@ -12,6 +12,8 @@ import {defineComponent} from "vue";
 import QuasarAppLayout from "components/structure/QuasarAppLayout.vue"
 import NavigateIconItem from "components/NavigateIconItem.vue"
 import EditModal from "components/EditModal.vue";
+import OptionsFAB from "components/OptionsFAB.vue";
+
 
 import PageInventoryCardsSearch from "components/pages/PageInventoryCardsSearch.vue";
 import PageTitleTable from "components/pages/PageTitleTable.vue";
@@ -26,7 +28,7 @@ import Product from "./models/Product.js"
 // import { InventoryCollection, StoreItem, Category, Product } from "@/js/models/app-models.js"
 
 export default defineComponent({
-  components: {PageInventoryCardsSearch, EditModal, PageTitleTable, QuasarAppLayout, NavigateIconItem},
+  components: {OptionsFAB, PageInventoryCardsSearch, EditModal, PageTitleTable, QuasarAppLayout, NavigateIconItem},
   data() {
     return {
       library: new InventoryCollection()
@@ -70,7 +72,7 @@ export default defineComponent({
       },
 
       newItem: new StoreItem(new Product("","","https://picsum.photos/200/300",""), 1, undefined),
-      newCategory: new Category("","","/staticImages/folder.svg"),
+      newCategory: new Category("","","src/assets/icons/folder.svg"),
     }
   },
   methods: {

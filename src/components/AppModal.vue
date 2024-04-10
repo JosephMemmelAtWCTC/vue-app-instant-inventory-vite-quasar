@@ -1,6 +1,6 @@
 <script>
 import {defineComponent} from "vue";
-import AppModal from "components/AppModal.vue";
+import * as bootstrap from 'bootstrap';
 
 export default defineComponent({
   name: "AppModal",

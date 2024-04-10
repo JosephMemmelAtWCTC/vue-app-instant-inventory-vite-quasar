@@ -2,6 +2,8 @@
   import {defineComponent} from "vue";
 
   import StoreItem from "src/models/StoreItem";
+  import Product from "src/models/Product";
+
   import EditCard from "components/cards/EditCard.vue";
 
   export default defineComponent({
@@ -9,7 +11,8 @@
     components: {EditCard},
     data() {
       return {
-        editInventoryItem: null,
+        // editInventoryItem: new StoreItem(new Product("","","",""), 0, 0, 0),
+        editInventoryItem: new StoreItem(new Product("","","https://picsum.photos/200/300",""), 1, undefined),
       }
     },
     props: {
@@ -27,7 +30,7 @@
         this.$emit('remove-it', this.item);
       },
       updateEditItemToValues(){
-        this.editInventoryItem = Object.assign(new StoreItem(), this.item);
+        // this.editInventoryItem = Object.assign(new StoreItem(), this.item);
       },
     },
     created: function () {
@@ -43,7 +46,7 @@
                @save-it="saveItem"
                @remove-it="removeItem"
                @opened-modal="updateEditCategoryToValues">
-        <template #form v-slot="editInventoryItem">
+        <template #form="slotProps">
             <q-input filled v-model="editInventoryItem.product.title"
                      label="Name"
                      class="full-width"

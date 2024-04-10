@@ -2,7 +2,7 @@ export default class StoreItem {
     static type = "StoreItem";
     static cardDetailsComponent = "editItemCard";
 
-    product = null;
+    product = {};
 
     constructor(product, inStockLevel, reorderLevel, lastUpdated= Date.now()) {
         this.product      = product;

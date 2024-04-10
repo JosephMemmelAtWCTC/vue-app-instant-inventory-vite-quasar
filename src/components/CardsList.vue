@@ -1,11 +1,11 @@
 <script>
 import {defineComponent} from "vue";
 import EditCategoryCard from "components/cards/EditCategoryCard.vue";
-import TogglesArray from "components/TogglesArray.vue";
+import EditItemCard from "components/cards/EditItemCard.vue";
 
 export default defineComponent({
   name: "CardsList",
-  components: {EditCategoryCard},
+  components: {EditCategoryCard, EditItemCard},
   props: {
     items: {
       type: Array,

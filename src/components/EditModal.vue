@@ -80,20 +80,20 @@ export default defineComponent({
 </script>
 
 <template>
-<!--    <app-modal ref="theModal"-->
-<!--               :title="title"-->
-<!--    >-->
-<!--        <q-form-->
-<!--            ref="myForm"-->
-<!--        >-->
-<!--            <slot :edit-item="item">-->
-<!--            </slot>-->
-<!--        </q-form>-->
-<!--        <template #footer>-->
-<!--            <div class="w-100">-->
-<!--                <button v-if="canRemove" type="button" @click="removeIt" class="float-start btn btn-danger" data-bs-dismiss="modal"><i class="bi bi-trash3"></i></button>-->
-<!--                <button type="button" @click="saveIt" class="float-end btn btn-secondary" >{{submitButtonText}}</button>-->
-<!--            </div>-->
-<!--        </template>-->
-<!--    </app-modal>-->
+    <app-modal ref="theModal"
+               :title="title"
+    >
+        <q-form
+            ref="myForm"
+        >
+            <slot :edit-item="item">
+            </slot>
+        </q-form>
+        <template #footer>
+            <div class="w-100">
+                <button v-if="canRemove" type="button" @click="removeIt" class="float-start btn btn-danger" data-bs-dismiss="modal"><i class="bi bi-trash3"></i></button>
+                <button type="button" @click="saveIt" class="float-end btn btn-secondary" >{{submitButtonText}}</button>
+            </div>
+        </template>
+    </app-modal>
 </template>

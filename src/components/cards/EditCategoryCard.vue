@@ -8,7 +8,7 @@ export default defineComponent({
   components: {EditCard},
   data() {
     return {
-      editCategory: null,
+      editCategory: {},
     }
   },
   props: {
@@ -42,7 +42,7 @@ export default defineComponent({
              @save-it="saveCategory"
              @remove-it="removeItem"
              @opened-modal="updateEditCategoryToValues">
-    <template #form v-slot="editCategory">
+    <template #form="editCategory" >
       <q-input filled v-model="editCategory.title"
                autofocus
                label="Name"
