@@ -98,6 +98,12 @@ export default defineComponent({
   },
 
   computed: {
+    StoreItem() {
+      return StoreItem
+    },
+    Category() {
+      return Category
+    },
     computedCurrentPageTitle() {
       return this.appNavigation.currentPage.charAt(0).toUpperCase() + this.appNavigation.currentPage.slice(1);
     },
@@ -247,8 +253,14 @@ export default defineComponent({
         v-if="appNavigation.currentPage==='home'"
         :headers="['Categories', 'Items', 'Total Stock', 'Needs Refill']"
         :jumbotron-title="appInfo.appTitle"
-        :table-items="[]">
-        <!--                :table-items="[categoriesList.length, itemsList.length, '#', itemsList.filter(item => item.hasLowStock).length]"-->
+        :table-items="[
+          this.library.filterByType([Category.type]).length,
+          this.library.filterByType([StoreItem.type]).length,
+          '#',
+          ''
+        ]"
+      >
+<!--        itemsList.filter(item => item.hasLowStock).length-->
         <template #jumbotronsubtext>
           <p class="w-100">ConnectionInfo</p>
           <p class="">{{appInfo.appVersion}}</p>
