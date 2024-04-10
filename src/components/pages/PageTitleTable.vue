@@ -10,19 +10,17 @@ import {defineComponent} from "vue";
     };
   },
   props: {
-    props: {
-      headers: {
-        type: Array,
-        required: true,
-      },
-      tableItems: {
-        type: Array,
-        required: true,
-      },
-      jumbotronTitle: {
-        type: String,
-        required: true,
-      },
+    headers: {
+      type: Array,
+      required: true,
+    },
+    tableItems: {
+      type: Array,
+      required: true,
+    },
+    jumbotronTitle: {
+      type: String,
+      required: true,
     },
   },
   created() {
