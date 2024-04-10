@@ -35,7 +35,7 @@
 
 <template>
   <quasar-layout-built
-      main-content-classes="bg-secondary"
+      main-content-classes="bg-secondary vh100"
       :page-title="currentPageTitle"
   >
 

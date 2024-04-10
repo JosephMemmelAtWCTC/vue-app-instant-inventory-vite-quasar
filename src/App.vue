@@ -377,3 +377,8 @@ export default defineComponent({
   </quasar-app-layout>
 
 </template>
+
+<style scoped>
+
+</style>
+
