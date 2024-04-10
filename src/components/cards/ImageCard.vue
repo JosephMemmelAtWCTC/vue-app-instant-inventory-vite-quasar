@@ -71,3 +71,11 @@ export default defineComponent({
     </div>
   </div>
 </template>
+
+<style scoped>
+  img.displayImage {
+    height: 190px;
+    width: auto;
+    object-fit: contain;
+  }
+</style>

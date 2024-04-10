@@ -30,7 +30,7 @@
         this.$emit('remove-it', this.item);
       },
       updateEditItemToValues(){
-        // this.editInventoryItem = Object.assign(new StoreItem(), this.item);
+        this.editInventoryItem = Object.assign(new StoreItem(), this.item);
       },
     },
     created: function () {
@@ -78,17 +78,18 @@
 <!--                        :rules="[val => val >= 0 || 'Count cannot be less than 0']"-->
 <!--                        lazy-rules-->
 <!--                ></q-input>-->
-            <q-input filled v-model.number="editInventoryItem.reorderLevel"
+            <q-input filled v-model="editInventoryItem.reorderLevel"
                      type="number"
                      label="Reorder Level"
-                     clearable
                      clear-icon="bi-x"
                      placeholder="Leave blank to ignore reorder"
                      class="full-width clearable"
                      :rules="[val => val >= 0 || 'Count cannot be less than 0']"
                      lazy-rules
             ></q-input>
-            <div class="input-group mb-3 w-100">
+<!--          clearable-->
+<!--TODO: Ask about clearable messing up-->
+          <div class="input-group mb-3 w-100">
 
                 <div class="col-2 d-block z-2">
                     <button type="button" @click="editInventoryItem.inStockLevel -= (editInventoryItem.inStockLevel > 0? 1:0)" class="h-100 d-block rounded-0 rounded-start-3 form-control focus-ring-primary">

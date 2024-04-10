@@ -1,3 +1,58 @@
-// app global css in SCSS form
+$primary: #20A39E;
+$secondary: #cce8e6;
+
+//@import "../node_modules/bootstrap/scss/functions";
+//@import "../node_modules/bootstrap/scss/variables";
 
 @import 'bootstrap/scss/bootstrap';
+
+
+$breadcrumb-divider: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='8' height='8'><path d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='#{$breadcrumb-divider-color}'/></svg>");
+
+
+// ANIMATIONS START
+.slide-fade-enter-active {
+  transition: all 0.8s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+// SlideInLeft from https://www.w3docs.com/snippets/css/how-to-create-animation-on-page-load.html
+@keyframes slideInLeft {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+@keyframes rotateIn {
+  0% {
+    transform: rotate(-90deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+.animate-pop-in{
+  animation: 0.25s ease-out 0s 1 rotateIn;
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(20px);
+  //opacity: 0;
+}
+// ANIMATIONS END
+
+
+
+
+
+
+
+
+
+

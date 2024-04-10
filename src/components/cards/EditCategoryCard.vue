@@ -2,6 +2,7 @@
 import {defineComponent} from "vue";
 import EditCard from "components/cards/EditCard.vue";
 import Category from "src/models/Category";
+import StoreItem from "src/models/StoreItem";
 
 export default defineComponent({
   name: "EditCategoryCard",
@@ -42,7 +43,7 @@ export default defineComponent({
              @save-it="saveCategory"
              @remove-it="removeItem"
              @opened-modal="updateEditCategoryToValues">
-    <template #form="editCategory" >
+      <template #form="slotProps">
       <q-input filled v-model="editCategory.title"
                autofocus
                label="Name"
