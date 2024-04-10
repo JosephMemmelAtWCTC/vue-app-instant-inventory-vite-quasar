@@ -9,8 +9,11 @@
 import {defineComponent} from "vue";
 // @ = src
 
-import QuasarAppLayout from "./components/structure/QuasarAppLayout.vue"
-import NavigateIconItem from "./components/NavigateIconItem.vue"
+import QuasarAppLayout from "components/structure/QuasarAppLayout.vue"
+import NavigateIconItem from "components/NavigateIconItem.vue"
+import EditModal from "components/EditModal.vue";
+
+import PageInventoryCardsSearch from "components/pages/PageInventoryCardsSearch.vue";
 import PageTitleTable from "components/pages/PageTitleTable.vue";
 
 
@@ -23,11 +26,11 @@ import Product from "./models/Product.js"
 // import { InventoryCollection, StoreItem, Category, Product } from "@/js/models/app-models.js"
 
 export default defineComponent({
-  components: {PageTitleTable, QuasarAppLayout, NavigateIconItem},
+  components: {PageInventoryCardsSearch, EditModal, PageTitleTable, QuasarAppLayout, NavigateIconItem},
   data() {
     return {
       library: new InventoryCollection()
-        .add(new Category('Category 1','Category 1\'s description', '/icons/folder.svg'))
+        .add(new Category('Category 1','Category 1\'s description', 'src/assets/icons/folder.svg'))
         .add(new StoreItem(
           new Product(
             'Fjallraven - Foldsack No. 1 Backpack',
@@ -36,10 +39,9 @@ export default defineComponent({
             '923087'
           ), 2, 4, Date.now() - 1000 * 60 * 60 * 9)
         ),
-
       appInfo: {
         appTitle: "Instant Inventory",
-        appVersion: "Vue App v3.0 (Demo)",
+        appVersion: "Vue App v4.0 (Demo)",
       },
       appPageConfigSettings: {
         profileName: "Test Testerson",
@@ -47,13 +49,72 @@ export default defineComponent({
       },
       appNavigation: {
         currentPage: "home",
-      }
+        currentPageLabel: "",
+      },
+      filterSettings: {
+        toggles: [
+          {
+            label: "Include Categories",
+            state: true
+          },
+          {
+            label: "Include Items",
+            state: true
+          },
+          {
+            label: "Only Under Threshold",
+            state: false
+          },
+        ],
+        searchString: "",
+      },
+
+      newItem: new StoreItem(new Product("","","https://picsum.photos/200/300",""), 1, undefined),
+      newCategory: new Category("","","/staticImages/folder.svg"),
     }
   },
+  methods: {
+    openNavPage(pageLabel) {
+      this.currentPageLabel = pageLabel.charAt(0).toUpperCase() + pageLabel.slice(1);
+
+      this.appNavigation.currentPage = pageLabel;
+    },
+    saveItem(item){
+      console.log("It came here", item);
+      // // this.library
+      console.log("Old", item[0]);
+      console.log("New", item[1]);
+      this.library.updateOrAddValue(item[0], item[1])
+    },
+    removeItem(removeItem) {
+      console.log("It came here removeItem", removeItem);
+
+      this.library.remove(removeItem);
+    },
+
+  },
+
   computed: {
     computedCurrentPageTitle() {
       return this.appNavigation.currentPage.charAt(0).toUpperCase() + this.appNavigation.currentPage.slice(1);
     }
+  },
+
+  created: function () {
+
+  },
+  mounted() {
+    this.currentPageTitle = this.appNavigation.currentPageLabel.charAt(0).toUpperCase() + this.appNavigation.currentPageLabel.slice(1);
+  },
+  // watch:   calls the function if the value changes
+  // https://travishorn.com/add-localstorage-to-your-vue-app-in-2-lines-of-code-56eb2c9f371b
+  watch: {
+    library: {
+      handler() {
+        console.log('Library changed: ');
+      },
+      deep: true,
+    },
   },
 })
 </script>
@@ -162,7 +223,7 @@ export default defineComponent({
         v-if="appNavigation.currentPage==='home'"
         :headers="['Categories', 'Items', 'Total Stock', 'Needs Refill']"
         :jumbotron-title="appInfo.appTitle"
-      >
+        :table-items="[]">
         <!--                :table-items="[categoriesList.length, itemsList.length, '#', itemsList.filter(item => item.hasLowStock).length]"-->
         <template #jumbotronsubtext>
           <p class="w-100">ConnectionInfo</p>
@@ -170,145 +231,145 @@ export default defineComponent({
         </template>
       </page-title-table>
 
-  <!--    <page-inventory-cards-search-->
-  <!--      v-if="appNavigation.currentPage==='inventory'"-->
-  <!--      :filter-settings="filterSettings"-->
-  <!--      :current-combined-items-list="library"-->
-  <!--      search-label="Filter Search"-->
-  <!--      @remove-item="removeItem"-->
-  <!--      @save-it="saveItem"-->
-  <!--    >-->
-  <!--      &lt;!&ndash;                    @remove-category="removeCategory"&ndash;&gt;-->
+      <page-inventory-cards-search
+        v-if="appNavigation.currentPage==='inventory'"
+        :filter-settings="filterSettings"
+        :current-combined-items-list="library"
+        search-label="Filter Search"
+        @remove-item="removeItem"
+        @save-it="saveItem"
+      >
+        <!--                    @remove-category="removeCategory"-->
 
-  <!--      <template #extra>-->
-  <!--        <div class="position-fixed bottom-0 end-0 p-3">-->
-  <!--          <options-f-a-b z-index="1000"-->
-  <!--                         symbol-classes="bi bi-plus">-->
-  <!--            <template #open v-slot="slotProps">-->
-  <!--              <li>-->
-  <!--                &lt;!&ndash;                                        :item-constructor-type="this.newCategory.constructor"&ndash;&gt;-->
-  <!--                <edit-modal :item="this.newCategory"-->
-  <!--                            @save-it="saveItem"-->
-  <!--                            title="New Category"-->
-  <!--                            submit-button-text="Create Category"-->
-  <!--                            ref="newCategoryModal"-->
-  <!--                >-->
-  <!--                  <template v-slot="slotProps">-->
-  <!--                    &lt;!&ndash;                                        TODO: Make use slotprops instead&ndash;&gt;-->
-  <!--                    <q-input filled v-model="slotProps.editItem.title"-->
-  <!--                             autofocus-->
-  <!--                             label="Name"-->
-  <!--                             class="full-width"-->
-  <!--                             :rules="[val => !!val || '* Required']"-->
-  <!--                             lazy-rules-->
-  <!--                    ></q-input>-->
-  <!--                    <q-input filled v-model="slotProps.editItem.description"-->
-  <!--                             type="textarea"-->
-  <!--                             rows="4"-->
-  <!--                             label="Description"-->
-  <!--                             class="full-width"-->
-  <!--                             :rules="[val => !!val || '* Required']"-->
-  <!--                             lazy-rules-->
-  <!--                    ></q-input>-->
-  <!--                  </template>-->
-  <!--                </edit-modal>-->
-  <!--                <li>-->
-  <!--                  <button type="button"-->
-  <!--                          @click="-->
-  <!--                                                this.$refs.newCategoryModal.openModal();-->
-  <!--                                            "-->
-  <!--                          class="btn btn-primary w-100 m-1">-->
-  <!--                    <a class="icon-link link-secondary text-decoration-none">-->
-  <!--                      <span class="p-2"><i class="bi bi-archive"></i></span>-->
-  <!--                      Category-->
-  <!--                    </a>-->
-  <!--                  </button>-->
-  <!--                </li>-->
-  <!--                &lt;!&ndash;                                    TODO: Try Convert to edit-item-card parts again, reuse&ndash;&gt;-->
-  <!--                <li>-->
-  <!--                  <edit-modal :item="this.newItem"-->
-  <!--                              @save-it="saveItem"-->
-  <!--                              title="New Item"-->
-  <!--                              submit-button-text="Create Item"-->
-  <!--                              ref="newItemModal"-->
-  <!--                  >-->
-  <!--                    <template v-slot="slotProps">-->
-  <!--                      <q-input filled v-model="slotProps.editItem.product.title"-->
-  <!--                               label="Name"-->
-  <!--                               class="full-width"-->
-  <!--                               autofocus-->
-  <!--                               :rules="[val => !!val || '* Required']"-->
-  <!--                               lazy-rules-->
-  <!--                      ></q-input>-->
-  <!--                      <q-input filled v-model="slotProps.editItem.product.productId"-->
-  <!--                               label="Product ID"-->
-  <!--                               class="full-width"-->
-  <!--                               :rules="[val => !!val || '* Required']"-->
-  <!--                               lazy-rules-->
-  <!--                      ></q-input>-->
-  <!--                      <q-input filled v-model="slotProps.editItem.product.description"-->
-  <!--                               type="textarea"-->
-  <!--                               rows="4"-->
-  <!--                               label="Description"-->
-  <!--                               class="full-width"-->
-  <!--                               :rules="[val => !!val || '* Required']"-->
-  <!--                               lazy-rules-->
-  <!--                      ></q-input>-->
-  <!--                      <q-input filled v-model.number="slotProps.editItem.reorderLevel"-->
-  <!--                               type="number"-->
-  <!--                               label="Reorder Level"-->
-  <!--                               clearable-->
-  <!--                               clear-icon="bi-x"-->
-  <!--                               placeholder="Leave blank to ignore reorder"-->
-  <!--                               class="full-width clearable"-->
-  <!--                               :rules="[val => val >= 0 || 'Count cannot be less than 0']"-->
-  <!--                               lazy-rules-->
-  <!--                      ></q-input>-->
-  <!--                      <div class="input-group mb-3 w-100">-->
+        <template #extra>
+          <div class="position-fixed bottom-0 end-0 p-3">
+            <options-f-a-b z-index="1000"
+                           symbol-classes="bi bi-plus">
+              <template #open v-slot="slotProps">
+                <li>
+                  <!--                                        :item-constructor-type="this.newCategory.constructor"-->
+                  <edit-modal :item="this.newCategory"
+                              @save-it="saveItem"
+                              title="New Category"
+                              submit-button-text="Create Category"
+                              ref="newCategoryModal"
+                  >
+                    <template v-slot="slotProps">
+                      <!--                                        TODO: Make use slotprops instead-->
+                      <q-input filled v-model="slotProps.editItem.title"
+                               autofocus
+                               label="Name"
+                               class="full-width"
+                               :rules="[val => !!val || '* Required']"
+                               lazy-rules
+                      ></q-input>
+                      <q-input filled v-model="slotProps.editItem.description"
+                               type="textarea"
+                               rows="4"
+                               label="Description"
+                               class="full-width"
+                               :rules="[val => !!val || '* Required']"
+                               lazy-rules
+                      ></q-input>
+                    </template>
+                  </edit-modal>
+                  <li>
+                    <button type="button"
+                            @click="
+                                                  this.$refs.newCategoryModal.openModal();
+                                              "
+                            class="btn btn-primary w-100 m-1">
+                      <a class="icon-link link-secondary text-decoration-none">
+                        <span class="p-2"><i class="bi bi-archive"></i></span>
+                        Category
+                      </a>
+                    </button>
+                  </li>
+                  <!--                                    TODO: Try Convert to edit-item-card parts again, reuse-->
+                  <li>
+                    <edit-modal :item="this.newItem"
+                                @save-it="saveItem"
+                                title="New Item"
+                                submit-button-text="Create Item"
+                                ref="newItemModal"
+                    >
+                      <template v-slot="slotProps">
+                        <q-input filled v-model="slotProps.editItem.product.title"
+                                 label="Name"
+                                 class="full-width"
+                                 autofocus
+                                 :rules="[val => !!val || '* Required']"
+                                 lazy-rules
+                        ></q-input>
+                        <q-input filled v-model="slotProps.editItem.product.productId"
+                                 label="Product ID"
+                                 class="full-width"
+                                 :rules="[val => !!val || '* Required']"
+                                 lazy-rules
+                        ></q-input>
+                        <q-input filled v-model="slotProps.editItem.product.description"
+                                 type="textarea"
+                                 rows="4"
+                                 label="Description"
+                                 class="full-width"
+                                 :rules="[val => !!val || '* Required']"
+                                 lazy-rules
+                        ></q-input>
+                        <q-input filled v-model.number="slotProps.editItem.reorderLevel"
+                                 type="number"
+                                 label="Reorder Level"
+                                 clearable
+                                 clear-icon="bi-x"
+                                 placeholder="Leave blank to ignore reorder"
+                                 class="full-width clearable"
+                                 :rules="[val => val >= 0 || 'Count cannot be less than 0']"
+                                 lazy-rules
+                        ></q-input>
+                        <div class="input-group mb-3 w-100">
 
-  <!--                        <div class="col-2 d-block z-2">-->
-  <!--                          <button type="button" @click="slotProps.editItem.inStockLevel -= (slotProps.editItem.inStockLevel > 0? 1:0)" class="h-100 d-block rounded-0 rounded-start-3 form-control focus-ring-primary">-->
-  <!--                            <i class="bi bi-dash"></i>-->
-  <!--                          </button>-->
-  <!--                        </div>-->
-  <!--                        <div class="col-8 form-control m-0 p-0">-->
+                          <div class="col-2 d-block z-2">
+                            <button type="button" @click="slotProps.editItem.inStockLevel -= (slotProps.editItem.inStockLevel > 0? 1:0)" class="h-100 d-block rounded-0 rounded-start-3 form-control focus-ring-primary">
+                              <i class="bi bi-dash"></i>
+                            </button>
+                          </div>
+                          <div class="col-8 form-control m-0 p-0">
 
-  <!--                          <q-input filled v-model.number="slotProps.editItem.inStockLevel"-->
-  <!--                                   type="number"-->
-  <!--                                   label="# in stock"-->
-  <!--                                   class="full-width w-100"-->
-  <!--                                   :rules="[val => !!val || 'You need to have a quantity', val => val > 0 || 'Count cannot be less than 0']"-->
-  <!--                                   lazy-rules-->
-  <!--                          ></q-input>-->
-  <!--                        </div>-->
-  <!--                        <div class="col-2 d-block z-2">-->
-  <!--                          <button type="button" @click="slotProps.editItem.inStockLevel++" class="h-100 rounded-0 rounded-end-3 form-control focus-ring-primary">-->
-  <!--                            <i class="bi bi-plus"></i>-->
-  <!--                          </button>-->
-  <!--                        </div>-->
-  <!--                      </div>-->
-  <!--                    </template>-->
-  <!--                  </edit-modal>-->
-  <!--                  <li>-->
-  <!--                    <button type="button"-->
-  <!--                            @click="-->
-  <!--                                                this.$refs.newItemModal.openModal();-->
-  <!--                                            "-->
-  <!--                            class="btn btn-primary w-100 m-1">-->
-  <!--                      <a class="icon-link link-secondary text-decoration-none">-->
-  <!--                        <span class="p-2"><i class="bi bi-box"></i></span>-->
-  <!--                        Item-->
-  <!--                      </a>-->
-  <!--                    </button>-->
-  <!--                  </li>-->
-  <!--                  &lt;!&ndash;TODO: REMOVE BELOW&ndash;&gt;-->
-  <!--                </li>-->
-  <!--              </li>-->
-  <!--            </template>-->
-  <!--          </options-f-a-b>-->
-  <!--        </div>-->
-  <!--      </template>-->
-  <!--    </page-inventory-cards-search>-->
+                            <q-input filled v-model.number="slotProps.editItem.inStockLevel"
+                                     type="number"
+                                     label="# in stock"
+                                     class="full-width w-100"
+                                     :rules="[val => !!val || 'You need to have a quantity', val => val > 0 || 'Count cannot be less than 0']"
+                                     lazy-rules
+                            ></q-input>
+                          </div>
+                          <div class="col-2 d-block z-2">
+                            <button type="button" @click="slotProps.editItem.inStockLevel++" class="h-100 rounded-0 rounded-end-3 form-control focus-ring-primary">
+                              <i class="bi bi-plus"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </template>
+                    </edit-modal>
+                    <li>
+                      <button type="button"
+                              @click="
+                                                  this.$refs.newItemModal.openModal();
+                                              "
+                              class="btn btn-primary w-100 m-1">
+                        <a class="icon-link link-secondary text-decoration-none">
+                          <span class="p-2"><i class="bi bi-box"></i></span>
+                          Item
+                        </a>
+                      </button>
+                    </li>
+                    <!--TODO: REMOVE BELOW-->
+                  </li>
+                </li>
+              </template>
+            </options-f-a-b>
+          </div>
+        </template>
+      </page-inventory-cards-search>
 
     </template>
   </quasar-app-layout>
