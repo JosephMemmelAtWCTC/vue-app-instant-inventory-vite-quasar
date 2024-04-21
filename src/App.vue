@@ -30,112 +30,112 @@ import InventoryItem from "src/models/InventoryItem";
 // import { InventoryCollection, StoreItem, Category, Product } from "@/js/models/app-models.js"
 
 export default defineComponent({
-  components: {OptionsFAB, PageInventoryCardsSearch, EditModal, PageTitleTable, QuasarAppLayout, NavigateIconItem},
-  data() {
-    return {
-      appInfo: {
-        appTitle: "Instant Inventory",
-        appVersion: "Vue App v4.0 (Demo)",
-      },
-      appPageConfigSettings: {
-        profileName: "Test Testerson",
-        customName: "Custom Name",
-      },
-      appNavigation: {
-        currentPage: "home",
-        currentPageLabel: "",
-      },
-      filterSettings: {
-        toggles: [
-          {
-            label: "Include Categories",
-            state: true
-          },
-          {
-            label: "Include Items",
-            state: true
-          },
-          {
-            label: "Only Under Threshold",
-            state: false
-          },
-        ],
-        searchString: "",
-      },
-
-      newItem: new StoreItem(new Product("","","https://picsum.photos/200/300",""), 1, undefined),
-      newCategory: new Category("","","src/assets/icons/folder.svg"),
-    }
-  },
-  methods: {
-    openNavPage(pageLabel) {
-      this.currentPageLabel = pageLabel.charAt(0).toUpperCase() + pageLabel.slice(1);
-
-      this.appNavigation.currentPage = pageLabel;
-    },
-    saveItem(item){
-      console.log("It came here", item);
-      // // this.library
-      console.log("Old", item[0]);
-      console.log("New", item[1]);
-      this.library.updateOrAddValue(item[0], item[1])
-    },
-    removeItem(removeItem) {
-      console.log("It came here removeItem", removeItem);
-
-      this.library.remove(removeItem);
-    },
-
-  },
-
-  computed: {
-    StoreItem() {
-      return StoreItem
-    },
-    Category() {
-      return Category
-    },
-    computedCurrentPageTitle() {
-      return this.appNavigation.currentPage.charAt(0).toUpperCase() + this.appNavigation.currentPage.slice(1);
-    },
-    filteredLibrary() {
-      let filteredResults = [];
-
-      const filterByConstructors = [];
-      const filterByThreshold = [];
-
-      if(this.filterSettings.toggles[0].state){
-        filterByConstructors.push(Category.type);
-      }
-      if(this.filterSettings.toggles[1].state){
-        filterByConstructors.push(StoreItem.type);
-      }
-
-      filteredResults = this.library.filterByType(filterByConstructors);
-
-      // if(this.filterSettings.toggles[2].state){
-      //   filterByThreshold.push(InventoryItem.STOCKED_LEVEL_STATUSES.);
-      // }
-      return filteredResults;
-    }
-  },
-
-  created: function () {
-
-  },
-  mounted() {
-    this.currentPageTitle = this.appNavigation.currentPageLabel.charAt(0).toUpperCase() + this.appNavigation.currentPageLabel.slice(1);
-  },
-  // watch:   calls the function if the value changes
-  // https://travishorn.com/add-localstorage-to-your-vue-app-in-2-lines-of-code-56eb2c9f371b
-  watch: {
-    library: {
-      handler() {
-        console.log('Library changed: ');
-      },
-      deep: true,
-    },
-  },
+  // components: {OptionsFAB, PageInventoryCardsSearch, EditModal, PageTitleTable, QuasarAppLayout, NavigateIconItem},
+  // data() {
+  //   return {
+  //     // appInfo: {
+  //     //   appTitle: "Instant Inventory",
+  //     //   appVersion: "Vue App v4.0 (Demo)",
+  //     // },
+  //     // appPageConfigSettings: {
+  //     //   profileName: "Test Testerson",
+  //     //   customName: "Custom Name",
+  //     // },
+  //     // appNavigation: {
+  //     //   currentPage: "home",
+  //     //   currentPageLabel: "",
+  //     // },
+  //     // filterSettings: {
+  //     //   toggles: [
+  //     //     {
+  //     //       label: "Include Categories",
+  //     //       state: true
+  //     //     },
+  //     //     {
+  //     //       label: "Include Items",
+  //     //       state: true
+  //     //     },
+  //     //     {
+  //     //       label: "Only Under Threshold",
+  //     //       state: false
+  //     //     },
+  //     //   ],
+  //     //   searchString: "",
+  //     // },
+  //     //
+  //     // newItem: new StoreItem(new Product("","","https://picsum.photos/200/300",""), 1, undefined),
+  //     // newCategory: new Category("","","src/assets/icons/folder.svg"),
+  //   }
+  // },
+  // methods: {
+  //   // openNavPage(pageLabel) {
+  //   //   this.currentPageLabel = pageLabel.charAt(0).toUpperCase() + pageLabel.slice(1);
+  //   //
+  //   //   this.appNavigation.currentPage = pageLabel;
+  //   // },
+  //   // saveItem(item){
+  //   //   console.log("It came here", item);
+  //   //   // // this.library
+  //   //   console.log("Old", item[0]);
+  //   //   console.log("New", item[1]);
+  //   //   this.library.updateOrAddValue(item[0], item[1])
+  //   // },
+  //   // removeItem(removeItem) {
+  //   //   console.log("It came here removeItem", removeItem);
+  //   //
+  //   //   this.library.remove(removeItem);
+  //   // },
+  //
+  // },
+  //
+  // computed: {
+  //   // StoreItem() {
+  //   //   return StoreItem
+  //   // },
+  //   // Category() {
+  //   //   return Category
+  //   // },
+  //   // computedCurrentPageTitle() {
+  //   //   return this.appNavigation.currentPage.charAt(0).toUpperCase() + this.appNavigation.currentPage.slice(1);
+  //   // },
+  //   // filteredLibrary() {
+  //   //   let filteredResults = [];
+  //   //
+  //   //   const filterByConstructors = [];
+  //   //   const filterByThreshold = [];
+  //   //
+  //   //   if(this.filterSettings.toggles[0].state){
+  //   //     filterByConstructors.push(Category.type);
+  //   //   }
+  //   //   if(this.filterSettings.toggles[1].state){
+  //   //     filterByConstructors.push(StoreItem.type);
+  //   //   }
+  //   //
+  //   //   filteredResults = this.library.filterByType(filterByConstructors);
+  //   //
+  //   //   // if(this.filterSettings.toggles[2].state){
+  //   //   //   filterByThreshold.push(InventoryItem.STOCKED_LEVEL_STATUSES.);
+  //   //   // }
+  //   //   return filteredResults;
+  //   // }
+  // },
+  //
+  // created: function () {
+  //
+  // },
+  // mounted() {
+  //   // this.currentPageTitle = this.appNavigation.currentPageLabel.charAt(0).toUpperCase() + this.appNavigation.currentPageLabel.slice(1);
+  // },
+  // // watch:   calls the function if the value changes
+  // // https://travishorn.com/add-localstorage-to-your-vue-app-in-2-lines-of-code-56eb2c9f371b
+  // watch: {
+  //   // library: {
+  //   //   handler() {
+  //   //     console.log('Library changed: ');
+  //   //   },
+  //   //   deep: true,
+  //   // },
+  // },
 })
 </script>
 
@@ -145,30 +145,7 @@ export default defineComponent({
 <!--    @update-kiosk-name="appPageConfigSettings.customName = $event"-->
 <!--    :current-page-title="computedCurrentPageTitle"-->
 <!--  >-->
-<!--    &lt;!&ndash; SIDEBAR &ndash;&gt;-->
-<!--    <template #left class="d-none d-md-block h-100">-->
-<!--      <div class="d-flex flex-column justify-content-between h-100">-->
-<!--        <div>-->
-<!--          <navigate-icon-item tooltip-info="Home" @click="openNavPage('home')" li-extra-classes="p-2 mb-2" icon-class="bi-house">-->
-<!--          </navigate-icon-item>-->
-<!--          <navigate-icon-item tooltip-info="Inventory" @click="openNavPage('inventory')" li-extra-classes="p-2 mb-2" icon-class="material-symbols-outlined" icon-content="package_2">&lt;!&ndash;fa-solid fa-boxes-stacked&ndash;&gt;-->
-<!--          </navigate-icon-item>-->
-<!--          <navigate-icon-item tooltip-info="Recents" @click="openNavPage('recents')" li-extra-classes="p-2 mb-2" icon-class="bi-arrow-left-right" :badge-text="library.length">-->
-<!--          </navigate-icon-item>-->
-<!--          <navigate-icon-item tooltip-info="Account" @click="openNavPage('account')" li-extra-classes="p-2 mb-2" icon-class="bi-person">-->
-<!--          </navigate-icon-item>-->
-<!--        </div>-->
-<!--&lt;!&ndash;TODO: I know, I need to do this properly instead of just using a margin&ndash;&gt;-->
-<!--        <footer class="pt-5">-->
-<!--          <button type="button" class="btn btn-primary rounded-0 p-0">-->
-<!--            <a class="icon-link link-secondary">-->
-<!--              <span class="p-2 ps-1 pe-0"><i class="bi bi-phone"></i></span>-->
-<!--              <strong><a href="#" class="link-secondary link-underline-opacity-0 pe-1">Download our app</a></strong>-->
-<!--            </a>-->
-<!--          </button>-->
-<!--        </footer>-->
-<!--      </div>-->
-<!--    </template>-->
+
 
 <!--    <template #footer >-->
 <!--      <div class="row q-gutter-none m-0 p-0">-->

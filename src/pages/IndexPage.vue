@@ -2,10 +2,19 @@
 import {defineComponent} from "vue";
 
 import PageTitleTable from "components/pages/PageTitleTable.vue"
-import InventoryCollection from "src/models/InventoryCollection";
-import App from "src/App.vue";
+import Category from "src/models/Category";
+import StoreItem from "src/models/StoreItem";
 
 export default defineComponent({
+  // TODO: Ask about computed appearing
+  computed: {
+    StoreItem() {
+      return StoreItem
+    },
+    Category() {
+      return Category
+    }
+  },
   components: {PageTitleTable},
   props: {
     appNavigation: {
@@ -15,7 +24,11 @@ export default defineComponent({
     library: {
       type: Object,
       required: false,
-    }
+    },
+    appInfo: {
+      type: Object,
+      required: false,
+    },
   },
   mounted() {
     // console.log('appNavigation:', this.appNavigation2);
@@ -28,20 +41,22 @@ export default defineComponent({
 <template>
   <q-page class="flex flex-center">
     <page-title-table
+      v-if="appNavigation.currentPage==='home'"
       :headers="['Categories', 'Items', 'Total Stock', 'Needs Refill']"
-      :jumbotron-title="'this.appTitle'"
-      :table-items="[this.library.length]">
-<!--      :table-items="[this.appNavigation.currentPage]">-->
-<!--      :table-items="[this.appNavigation]">-->
-
-
-<!--                      :table-items="[categoriesList.length, itemsList.length, '#', itemsList.filter(item => item.hasLowStock).length]"-->
+      :jumbotron-title="appInfo.appTitle"
+      :table-items="[
+        this.library.filterByType([Category.type]).length,
+        this.library.filterByType([StoreItem.type]).length,
+        '#',
+        ''
+      ]"
+    >
+<!--        itemsList.filter(item => item.hasLowStock).length-->
       <template #jumbotronsubtext>
         <p class="w-100">ConnectionInfo</p>
-        <p class="">{{'appVersion'}}</p>
+        <p class="">{{appInfo.appVersion}}</p>
       </template>
     </page-title-table>
-
 
   </q-page>
 </template>

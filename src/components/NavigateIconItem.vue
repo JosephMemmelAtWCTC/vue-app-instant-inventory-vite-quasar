@@ -25,6 +25,11 @@ export default defineComponent({
       type: String,
       required: false,
     },
+    routerLinkTo: {
+      type: String,
+      required: true,
+      default: "/",
+    },
     liExtraClasses: {
       type: String,
       required: false,
@@ -34,6 +39,7 @@ export default defineComponent({
 </script>
 
 <template>
+  <Router-Link :to="routerLinkTo">
 <!--https://michaelnthiessen.com/hover-in-vue/ for hover-->
     <div class="nav-item"
          :class="liExtraClasses" @mouseover="hover=true" @mouseleave="hover=false">
@@ -51,9 +57,15 @@ export default defineComponent({
 <!--                  <strong>{{tooltipInfo}}</strong>-->
 <!--&lt;!&ndash;                  (<q-icon name="keyboard_arrow_right"/>)&ndash;&gt;-->
 <!--                </q-tooltip>-->
-            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-info text-black z-2">
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-info text-black">
                 {{ badgeText }}
             </span>
         </button>
     </div>
+  </Router-Link>
 </template>
+<style scoped>
+  span.badge{
+    z-index: 1031;
+  }
+</style>

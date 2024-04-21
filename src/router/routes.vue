@@ -1,7 +1,10 @@
+<script>
 import InventoryCollection from "src/models/InventoryCollection";
 import Category from "src/models/Category";
 import StoreItem from "src/models/StoreItem";
 import Product from "src/models/Product";
+
+
 
 const library = new InventoryCollection()
   .add(new Category('Category 1','Category 1\'s description', 'src/assets/icons/folder.svg'))
@@ -17,18 +20,53 @@ const appNavigation = {
   currentPage: "home",
   currentPageLabel: "",
 };
+const appInfo = {
+  appTitle: "Instant Inventory",
+    appVersion: "Vue App v4.0 (Demo)",
+}
+const appPageConfigSettings = {
+  profileName: "Test Testerson",
+    customName: "Custom Name",
+}
+const filterSettings = {
+  toggles: [
+    {
+      label: "Include Categories",
+      state: true
+    },
+    {
+      label: "Include Items",
+      state: true
+    },
+    {
+      label: "Only Under Threshold",
+      state: false
+    },
+  ],
+    searchString: "",
+}
+const newItem = new StoreItem(new Product("","","https://picsum.photos/200/300",""), 1, undefined)
+const newCategory = new Category("","","src/assets/icons/folder.svg")
+
+
 
 const routes = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
-    props: { appNavigation, library }, // Pass appNavigation to MainLayout
+    props: { appNavigation, appInfo },
     children: [
       {
         path: '',
         component: () => import('pages/IndexPage.vue'),
-        props: { appNavigation, library } // Pass appNavigation to IndexPage
-      }
+        props: { appNavigation, appInfo, library }
+      },
+      {
+        path: '/app',
+        // component: () => import('pages/DownloadApp.vue'),
+        component: () => import('pages/ErrorNotFound.vue'),
+        props: { }
+      },
     ]
   },
   // Always leave this as last one,
@@ -40,3 +78,4 @@ const routes = [
 ];
 
 export default routes;
+</script>
