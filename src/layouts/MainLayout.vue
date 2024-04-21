@@ -48,10 +48,23 @@
 <script setup>
 import { ref } from 'vue'
 import EssentialLink from 'components/EssentialLink.vue'
+import {defineComponent} from "vue";
+
 
 defineOptions({
-  name: 'MainLayout'
+  name: 'MainLayout',
 })
+// defineProps({
+//   library: {
+//     type: Object,
+//     required: false,
+//   },
+//   appNavigation: {
+//     type: Object,
+//     required: true,
+//   },
+// })
+
 
 const linksList = [
   {
