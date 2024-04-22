@@ -10,7 +10,6 @@
 import {defineComponent} from "vue";
 // @ = src
 
-import QuasarAppLayout from "components/structure/QuasarAppLayout.vue"
 import NavigateIconItem from "components/NavigateIconItem.vue"
 import EditModal from "components/EditModal.vue";
 import OptionsFAB from "components/OptionsFAB.vue";
