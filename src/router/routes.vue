@@ -45,10 +45,6 @@ const filterSettings = {
   ],
     searchString: "",
 }
-const newItem = new StoreItem(new Product("","","https://picsum.photos/200/300",""), 1, undefined)
-const newCategory = new Category("","","src/assets/icons/folder.svg")
-
-
 
 const routes = [
   {
@@ -60,6 +56,11 @@ const routes = [
         path: '',
         component: () => import('pages/IndexPage.vue'),
         props: { appNavigation, appInfo, library }
+      },
+      {
+        path: '/inventory',
+        component: () => import('pages/InventoryPage.vue'),
+        props: { appNavigation, filterSettings, library }
       },
       {
         path: '/app',
