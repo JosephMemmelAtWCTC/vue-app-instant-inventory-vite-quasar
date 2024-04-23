@@ -64,8 +64,8 @@ const routes = [
       },
       {
         path: '/app',
-        // component: () => import('pages/DownloadApp.vue'),
-        component: () => import('pages/ErrorNotFound.vue'),
+        component: () => import('pages/MarketingDownloadApp.vue'),
+        // component: () => import('pages/ErrorNotFound.vue'),
         props: { }
       },
     ]
