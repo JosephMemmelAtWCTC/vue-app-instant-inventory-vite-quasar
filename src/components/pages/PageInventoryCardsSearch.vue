@@ -36,7 +36,6 @@
 </script>
 
 <template>
-  TEST!!!!
     <main-content-page>
         <header class="bg-body-tertiary rounded-3">
             <div class="row align-items-center p-2">

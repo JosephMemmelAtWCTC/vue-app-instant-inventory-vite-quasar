@@ -48,13 +48,13 @@ $breadcrumb-divider: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/
 // ANIMATIONS END
 
 
-
-
-.vh100 {
-  height: 100vh;
+//TODO: ASK WHY IT NEEDS TO BE HERE AND DOES NOT WORK IN SCOPED
+.q-avatar__content{
+  border: solid 5px $primary;
 }
-
-
+//div.q-ma-none-forced{
+//  margin: 0 0 !important;
+//}
 
 
 

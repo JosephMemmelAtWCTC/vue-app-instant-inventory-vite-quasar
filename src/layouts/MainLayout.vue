@@ -1,22 +1,106 @@
+<script setup>
+import { ref } from 'vue'
+import EssentialLink from 'components/EssentialLink.vue'
+import {defineComponent} from "vue";
+import NavigateIconItem from "components/NavigateIconItem.vue";
+
+defineOptions({
+  name: 'MainLayout',
+})
+defineProps({
+  appInfo: {
+    type: Object,
+    required: true,
+  },
+  appNavigation: {
+    type: Object,
+    required: true,
+  },
+  userInfo: {
+    type: Object,
+    required: true,
+  }
+})
+
+
+// const linksList = [
+//   {
+//     title: 'Docs',
+//     caption: 'quasar.dev',
+//     icon: 'school',
+//     link: 'https://quasar.dev'
+//   },
+// ]
+
+const leftDrawerOpen = ref(false)
+
+function toggleLeftDrawer () {
+  leftDrawerOpen.value = !leftDrawerOpen.value
+}
+</script>
+
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+    <q-header elevated class="q-ma-none-forced">
       <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
+        <div class="row justify-between q-ma-none-forced">
+          <div class="col-8 bg-red">
+            <q-btn
+              flat
+              dense
+              round
+              icon="menu"
+              aria-label="Menu"
+              @click="toggleLeftDrawer"
+            />
 
-        <q-toolbar-title>
-          {{ appNavigation.currentPageLabel }}
-          {{ appInfo.appTitle }}
-        </q-toolbar-title>
+            <q-toolbar-title>
+              {{ appNavigation.currentPageLabel }}
+              {{ appInfo.appTitle }}
+            </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+            <div>Quasar v{{ $q.version }}</div>
+
+          </div>
+          <div class="col-auto bg-amber">
+            <Router-Link to="account">
+              <div class="full-height q-py-sm">
+                <div class="row">
+                  <div class="col-auto">
+                    <div class="column full-height justify-center">
+                      <div class="col">
+                        {{userInfo.profileName}}
+                      </div>
+                      <div class="col">
+<!--                        <q-chip color="primary" text-color="white" icon="event">-->
+<!--                          Add-->
+<!--                        </q-chip>-->
+                        <span>
+                        <q-chip color="colorAdmin" text-color="white">
+                          <span>
+                          <q-icon name="event" class="chip-icon" />
+                          test
+                          </span>
+                        </q-chip>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-auto">
+                    <q-avatar size="76px" class="q-ml-md">
+                      <q-img
+                        :src="userInfo.profileAvatar"
+                        spinner-size="64px"
+                        spinner-color="secondary"
+                        class="profile-avatar"
+                      />
+                    </q-avatar>
+                  </div>
+                </div>
+              </div>
+            </Router-Link>
+          </div>
+        </div>
       </q-toolbar>
     </q-header>
 
@@ -44,8 +128,8 @@
         </navigate-icon-item>
         <navigate-icon-item tooltip-info="Recents" @click="openNavPage('recents')" li-extra-classes="p-2 mb-2" icon-class="bi-arrow-left-right" :badge-text="'library.length'">
         </navigate-icon-item>
-        <navigate-icon-item tooltip-info="Account" @click="openNavPage('account')" li-extra-classes="p-2 mb-2" icon-class="bi-person">
-        </navigate-icon-item>
+<!--        <navigate-icon-item router-link-to="account" tooltip-info="Account" li-extra-classes="p-2 mb-2" icon-class="bi-person">-->
+<!--        </navigate-icon-item>-->
       </q-list>
         <footer>
           <navigate-icon-item router-link-to="app" iconContent="Experience Our App" li-extra-classes="p-2 mb-2" icon-class="bi-phone">
@@ -59,48 +143,15 @@
   </q-layout>
 </template>
 
-<script setup>
-import { ref } from 'vue'
-import EssentialLink from 'components/EssentialLink.vue'
-import {defineComponent} from "vue";
-import NavigateIconItem from "components/NavigateIconItem.vue";
-
-
-defineOptions({
-  name: 'MainLayout',
-})
-defineProps({
-  appInfo: {
-    type: Object,
-    required: true,
-  },
-  appNavigation: {
-    type: Object,
-    required: true,
-  },
-})
-
-
-// const linksList = [
-//   {
-//     title: 'Docs',
-//     caption: 'quasar.dev',
-//     icon: 'school',
-//     link: 'https://quasar.dev'
-//   },
-// ]
-
-const leftDrawerOpen = ref(false)
-
-function toggleLeftDrawer () {
-  leftDrawerOpen.value = !leftDrawerOpen.value
-}
-</script>
 
 <style scoped>
   footer{
     position: absolute;
     bottom: 0;
     width: 100%;
+  }
+  .profile-avatar{
+    height: 100%;
+    //width: auto;
   }
 </style>

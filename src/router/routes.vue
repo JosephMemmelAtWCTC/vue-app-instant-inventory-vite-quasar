@@ -3,6 +3,7 @@ import InventoryCollection from "src/models/InventoryCollection";
 import Category from "src/models/Category";
 import StoreItem from "src/models/StoreItem";
 import Product from "src/models/Product";
+import MainContentPage from "components/pages/MainContentPage.vue";
 
 
 
@@ -24,9 +25,12 @@ const appInfo = {
   appTitle: "Instant Inventory",
     appVersion: "Vue App v4.0 (Demo)",
 }
-const appPageConfigSettings = {
+const userInfo = {
   profileName: "Test Testerson",
-    customName: "Custom Name",
+  profileAvatar: "https://avatars.githubusercontent.com/u/67847710",
+}
+const appLocationConfig = {
+  customLocationName: "Custom Name",
 }
 const filterSettings = {
   toggles: [
@@ -50,7 +54,7 @@ const routes = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
-    props: { appNavigation, appInfo },
+    props: { appNavigation, appInfo, userInfo },
     children: [
       {
         path: '',
@@ -61,6 +65,11 @@ const routes = [
         path: '/inventory',
         component: () => import('pages/InventoryPage.vue'),
         props: { appNavigation, filterSettings, library }
+      },
+      {
+        path: '/account',
+        component: () => import('pages/ProfilePage.vue'),
+        props: { appNavigation, userInfo }
       },
       {
         path: '/app',
