@@ -19,7 +19,11 @@ defineProps({
   userInfo: {
     type: Object,
     required: true,
-  }
+  },
+  locationKioskName: {
+    type: String,
+    required: true,
+  },
 })
 
 
@@ -40,11 +44,20 @@ function toggleLeftDrawer () {
 </script>
 
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout view="hHh Lpr lFf">
     <q-header elevated class="q-ma-none-forced">
       <q-toolbar>
-        <div class="row justify-between q-ma-none-forced">
-          <div class="col-8 bg-red">
+        <div class="row justify-between q-ma-none-forced q-gutter-none">
+          <div class="col-auto q-pa-none-forced">
+            <div class="bg-accent full-height q-pa-sm position-relative"
+              :style="'width:'+appInfo.sideBarWidth+'px'"
+            >
+              <p class="text-center absolute-center">
+                {{ this.locationKioskName }}
+              </p>
+            </div>
+          </div>
+          <div class="col-6">
             <q-btn
               flat
               dense
@@ -104,12 +117,18 @@ function toggleLeftDrawer () {
       </q-toolbar>
     </q-header>
 
+<!-- Sidebar-->
     <q-drawer
       v-model="leftDrawerOpen"
       show-if-above
       bordered
-      :width="180"
+      :width="appInfo.sideBarWidth"
     >
+<!--      <q-popup-edit v-model="editableKioskNameLocal" auto-save v-slot="scope">-->
+<!--        <q-input v-model="scope.value" dense autofocus @keyup.enter="scope.set" autocomplete-->
+<!--                 :rules="[val => val.length > 1 || 'Title requires at least 1 character', [val => val.length < 20 || 'Title cannot at least 1 character']]"/>-->
+<!--      </q-popup-edit>-->
+
       <q-list>
 <!--        <q-item-label-->
 <!--          header-->
@@ -122,11 +141,11 @@ function toggleLeftDrawer () {
 <!--          :key="link.title"-->
 <!--          v-bind="link"-->
 <!--        />-->
-        <navigate-icon-item tooltip-info="Home" @click="openNavPage('home')" li-extra-classes="p-2 mb-2" icon-class="bi-house">
+        <navigate-icon-item router-link-to="/" tooltip-info="Home" li-extra-classes="p-2 mb-2" icon-class="bi-house">
         </navigate-icon-item>
         <navigate-icon-item router-link-to="inventory" tooltip-info="Inventory" li-extra-classes="p-2 mb-2" icon-class="bi-box-seam"><!--fa-solid fa-boxes-stacked-->
         </navigate-icon-item>
-        <navigate-icon-item tooltip-info="Recents" @click="openNavPage('recents')" li-extra-classes="p-2 mb-2" icon-class="bi-arrow-left-right" :badge-text="'library.length'">
+        <navigate-icon-item tooltip-info="Recents" li-extra-classes="p-2 mb-2" icon-class="bi-arrow-left-right" :badge-text="'library.length'">
         </navigate-icon-item>
 <!--        <navigate-icon-item router-link-to="account" tooltip-info="Account" li-extra-classes="p-2 mb-2" icon-class="bi-person">-->
 <!--        </navigate-icon-item>-->
@@ -153,5 +172,8 @@ function toggleLeftDrawer () {
   .profile-avatar{
     height: 100%;
     //width: auto;
+  }
+  .q-pa-none-forced{
+    padding: 0 0 !important;
   }
 </style>

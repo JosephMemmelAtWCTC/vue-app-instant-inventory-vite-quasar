@@ -3,8 +3,6 @@ import InventoryCollection from "src/models/InventoryCollection";
 import Category from "src/models/Category";
 import StoreItem from "src/models/StoreItem";
 import Product from "src/models/Product";
-import MainContentPage from "components/pages/MainContentPage.vue";
-
 
 
 const library = new InventoryCollection()
@@ -23,7 +21,8 @@ const appNavigation = {
 };
 const appInfo = {
   appTitle: "Instant Inventory",
-    appVersion: "Vue App v4.0 (Demo)",
+  appVersion: "Vue App v4.0 (Demo)",
+  sideBarWidth: 180,
 }
 const userInfo = {
   profileName: "Test Testerson",
@@ -54,7 +53,9 @@ const routes = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
-    props: { appNavigation, appInfo, userInfo },
+    props: { appNavigation, appInfo, userInfo,
+      locationKioskName: appLocationConfig.customLocationName,
+    },
     children: [
       {
         path: '',
@@ -69,7 +70,9 @@ const routes = [
       {
         path: '/account',
         component: () => import('pages/ProfilePage.vue'),
-        props: { appNavigation, userInfo }
+        props: { appNavigation, userInfo,
+          locationKioskName: appLocationConfig.customLocationName,
+        }
       },
       {
         path: '/app',
