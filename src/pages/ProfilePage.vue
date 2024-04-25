@@ -8,6 +8,7 @@ export default defineComponent({
   components: {MainContentPage},
   data() {
     return {
+      isPwd: true,
     };
   },
   props: {
@@ -19,6 +20,10 @@ export default defineComponent({
       type: Object,
       required: true,
     },
+    locationKioskName: {
+      type: String,
+      required: true,
+    }
   },
   methods: {
   },
@@ -64,6 +69,19 @@ export default defineComponent({
                  class="full-width"
                  lazy-rules
         ></q-input>
+        <q-input filled v-model="this.userInfo.password"
+                 label="Password"
+                 :type="this.isPwd ? 'password' : 'text'"
+                 hint="Password with toggle">
+<!--          <template v-slot:append>-->
+<!--            <q-icon-->
+<!--              :name="this.isPwd ? 'visibility_off' : 'visibility'"-->
+<!--              class="cursor-pointer"-->
+<!--              @click="this.isPwd = !this.isPwd"-->
+<!--            />-->
+<!--          </template>-->
+        </q-input>
+
 <!--        :rules="[val => !!val || '* Required']"-->
 
         <!--        <div class="m-0 h-100 position-relative">-->
@@ -111,6 +129,6 @@ export default defineComponent({
     height: 100%;
   }
   .fields > label:not(:first-child){
-    padding-top: 5px;
+    padding-top: 10px; /*TODO: Make use scss variables to q-sm size */
   }
 </style>

@@ -27,6 +27,7 @@ const appInfo = {
 const userInfo = {
   profileName: "Test Testerson",
   profileAvatar: "https://avatars.githubusercontent.com/u/67847710",
+  password: "ABCD",
 }
 const appLocationConfig = {
   customLocationName: "Custom Name",
@@ -46,7 +47,7 @@ const filterSettings = {
       state: false
     },
   ],
-    searchString: "",
+  searchString: "",
 }
 
 const routes = [
@@ -77,6 +78,12 @@ const routes = [
       {
         path: '/app',
         component: () => import('pages/MarketingDownloadApp.vue'),
+        // component: () => import('pages/ErrorNotFound.vue'),
+        props: { }
+      },
+      {
+        path: '/admin',
+        component: () => import('pages/test.vue'),
         // component: () => import('pages/ErrorNotFound.vue'),
         props: { }
       },
