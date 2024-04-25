@@ -149,6 +149,8 @@ function toggleLeftDrawer () {
         </navigate-icon-item>
 <!--        <navigate-icon-item router-link-to="account" tooltip-info="Account" li-extra-classes="p-2 mb-2" icon-class="bi-person">-->
 <!--        </navigate-icon-item>-->
+        <navigate-icon-item router-link-to="admin" tooltip-info="Admin" li-extra-classes="p-2 mb-2" icon-class="bi-terminal">
+        </navigate-icon-item>
       </q-list>
         <footer>
           <navigate-icon-item router-link-to="app" iconContent="Experience Our App" li-extra-classes="p-2 mb-2" icon-class="bi-phone">

@@ -83,7 +83,7 @@ const routes = [
       },
       {
         path: '/admin',
-        component: () => import('pages/test.vue'),
+        component: () => import('pages/AdminPage.vue'),
         // component: () => import('pages/ErrorNotFound.vue'),
         props: { }
       },

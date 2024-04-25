@@ -3,12 +3,13 @@
 
     <div class="q-pa-lg bg-amber">
       <q-form
-        @submit="onSubmit"
+        @submit.prevent="createNewAccount"
         class="q-gutter-md"
       >
         <div class="row q-gutter-md items-start">
           <div class="col-auto">
-            <q-input filled v-model="this.newIdentity.email" type="email" suffix="@company.com" input-class="text-right">
+<!--            type="email" removed as suffix-->
+            <q-input filled v-model="this.noSuffixEmail" :suffix="this.accountCreationStandards.accountEmailSuffix" input-class="text-right" hint="Email" autocomplete="off">
               <template v-slot:before>
                 <q-icon name="mail" />
               </template>
@@ -16,12 +17,12 @@
           </div>
 
           <div class="col-auto">
-            <q-input v-model="this.newIdentity.password" filled :type="isPwd ? 'password' : 'text'" hint="Password with toggle">
+            <q-input v-model="this.newIdentity.password" filled :type="tempWorkingData.isPwd ? 'password' : 'text'" hint="Password">
               <template v-slot:append>
                 <q-icon
-                  :name="isPwd ? 'visibility_off' : 'visibility'"
+                  :name="tempWorkingData.isPwd ? 'visibility_off' : 'visibility'"
                   class="cursor-pointer"
-                  @click="isPwd = !isPwd"
+                  @click="tempWorkingData.isPwd = !tempWorkingData.isPwd"
                 />
               </template>
             </q-input>
@@ -38,7 +39,8 @@
           </div>
 
           <div class="col-auto">
-            <q-btn label="Submit" type="submit" color="primary"/>
+<!--            TODO: Keep as push?-->
+            <q-btn type="submit" push color="primary" icon="bi-plus"/><!--label="Create New Profile"-->
 <!--            <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />-->
           </div>
         </div>
@@ -66,10 +68,14 @@ import {defineComponent, ref} from "vue";
 export default defineComponent({
   data(){
     return {
-      isPwd: false,
+      tempWorkingData: {
+        isPwd: ref(true),
+      },
+      noSuffixEmail: null,
+
       newIdentity: {
         email: null,
-        password: null,
+        password: ref(''),
         role: null,
       },
       group: ref('UPDATER'),
@@ -89,15 +95,18 @@ export default defineComponent({
       ]
     };
   },
-  methods: {
-
+  props: {
+    accountCreationStandards:{
+      type: Object,
+      default: {
+        accountEmailSuffix: "@company.com",
+      }
+    },
   },
-  // created: function () {
-  mounted: function () {
-    // obviously, this would come from some form or whatever
-
-    // create user
-    document.getElementById('add').onclick = function(e){
+  methods: {
+    createNewAccount(e){
+      console.log("createNewAccount");
+      console.log("createNewAccount", this.newIdentity.email, this.newIdentity.password);
       firebase.auth()
         .createUserWithEmailAndPassword(this.newIdentity.email, this.newIdentity.password)
         .catch(function(error) {
@@ -107,7 +116,10 @@ export default defineComponent({
 
           document.getElementById('message').innerHTML =  'Error: ' + errorMessage;
         });
-    };
+    }
+  },
+  // created: function () {
+  mounted: function () {
 
     // display logged in/out messages
     firebase.auth().onAuthStateChanged(user => {
@@ -133,7 +145,14 @@ export default defineComponent({
         // document.getElementById('message').innerHTML = 'Signed out.';
       }
     });
-  }
+  },
+  watch: {//TODO: Ask if should be put in computed?
+    noSuffixEmail: {
+      handler() {
+        this.newIdentity.email = this.noSuffixEmail + this.accountCreationStandards.accountEmailSuffix;
+      },
+    },
+  },
 
 
   //
@@ -208,5 +227,8 @@ export default defineComponent({
   }
   .q-field__native.q-placeholder.text-right{
     padding: 0.2em;
+  }
+  .q-field__append.q-field__marginal.row.no-wrap.items-center{
+    width: 20px;
   }
 </style>
