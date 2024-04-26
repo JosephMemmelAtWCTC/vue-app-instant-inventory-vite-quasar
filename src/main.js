@@ -6,6 +6,9 @@ import * as bootstrap from 'bootstrap';
 import 'quasar/dist/quasar.esm.prod.js';
 import '@/scss/app.scss'
 
+// import { useQuasar } from 'quasar'
+// const $q = useQuasar()
+
 import "https://www.gstatic.com/firebasejs/8.10.1/firebase.js"
 import firebase from "firebase/app";
 import './firebase.js'

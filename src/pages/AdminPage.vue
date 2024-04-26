@@ -5,6 +5,9 @@
 import "https://www.gstatic.com/firebasejs/8.10.1/firebase.js"
 import '/src/firebase.js'
 import {defineComponent, ref} from "vue";
+import {useQuasar} from "quasar";
+
+const SubmitButtonStatus = { ALLOWED: 'primary', MISSING_DATA: 'warning', INVALID_DATA: 'error'};
 
 export default defineComponent({
   data(){
@@ -50,22 +53,41 @@ export default defineComponent({
       console.log("createNewAccount", this.newIdentity.email, this.newIdentity.password);
       firebase.auth()
         .createUserWithEmailAndPassword(this.newIdentity.email, this.newIdentity.password)
-        .catch(function(error) {
+        .then(() => {
+          this.$q.notify(`Account "${this.newIdentity.email}" created successfully`)
+          this.noSuffixEmail = ref('');
+          this.newIdentity.password = ref('');
+        })
+        .catch((error) => {
           // Handle Errors here.
           let errorCode = error.code;
           let errorMessage = error.message;
 
-          document.getElementById('message').innerHTML =  'Error: ' + errorMessage;
+          // document.getElementById('message').innerHTML =  'Error: ' + errorMessage;
           console.error(errorMessage);
-          alert(errorMessage);
+          this.$q.notify({
+            message: `${errorMessage}`,
+            color: 'warning',
+            progress: true,
+            actions: [
+              {
+                icon: 'bi-x-lg',
+                color: 'primary',
+                round: true,
+                handler: () => {
+                }
+              }
+            ]
+          });
+          return Promise.reject(errorMessage);
         })
         .then(() => {
-          this.noSuffixEmail = ref('');
-          this.newIdentity.password = ref('');
+          console.log("RAN");
         });
     }
   },
   created: function () {
+// or with a config object:
     // firebase.auth()
     //   .listUsers(100)
     //   .then((listUsersResult) => {
@@ -124,6 +146,20 @@ export default defineComponent({
         // document.getElementById('message').innerHTML = 'Signed out.';
       }
     });
+  },
+  computed: {
+    submitButtonStatus() {
+      if(this.noSuffixEmail === null || this.newIdentity.password === null){
+        return SubmitButtonStatus.MISSING_DATA
+      }
+      if(this.noSuffixEmail.length === 0 || this.newIdentity.password.length === 0){
+        return SubmitButtonStatus.MISSING_DATA
+      }
+      if(this.newIdentity.password.length < 6){
+        return SubmitButtonStatus.INVALID_DATA
+      }
+      return SubmitButtonStatus.ALLOWED;
+    }
   },
   watch: {//TODO: Ask if should be put in computed?
     noSuffixEmail: {
@@ -234,7 +270,10 @@ export default defineComponent({
 
           <div class="col-auto">
             <!--            TODO: Keep as push?-->
-            <q-btn type="submit" push color="primary" icon="bi-plus"/><!--label="Create New Profile"-->
+            <q-btn type="submit" push icon="bi-plus"
+                   :color="submitButtonStatus"
+                   :disable="submitButtonStatus !== 'primary'"
+            /><!--label="Create New Profile"-->
             <!--            <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />-->
           </div>
         </div>
