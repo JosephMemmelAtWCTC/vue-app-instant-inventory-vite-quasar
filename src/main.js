@@ -11,7 +11,7 @@ import '@/scss/app.scss'
 
 import "https://www.gstatic.com/firebasejs/8.10.1/firebase.js"
 import firebase from "firebase/app";
-import './firebase.js'
+import './models/Firebase.js'
 
 
 import {createApp} from 'vue'

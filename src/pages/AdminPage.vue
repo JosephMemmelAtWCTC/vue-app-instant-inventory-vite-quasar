@@ -1,13 +1,16 @@
 <!-- Firebase -->
 <!-- Vue Application -->
 <script>
+import {defineComponent, ref} from "vue";
 //TODO: Ask why it's not working globally
 import "https://www.gstatic.com/firebasejs/8.10.1/firebase.js"
-import '/src/firebase.js'
-import {defineComponent, ref} from "vue";
-import {useQuasar} from "quasar";
+import Account from 'src/models/Account.js'
+import 'src/models/Firebase.js'
+// import {useQuasar} from "quasar";
 
 const SubmitButtonStatus = { ALLOWED: 'primary', MISSING_DATA: 'warning', INVALID_DATA: 'error'};
+
+let accounts = firebase.firestore().collection('accounts');
 
 export default defineComponent({
   data(){
@@ -49,14 +52,46 @@ export default defineComponent({
     },
   },
   methods: {
+    testLoading(){
+      firebase.firestore().collection('accounts').get()
+        .then(querySnapshot => {
+          console.log("!!!!", querySnapshot);
+          const data = [];
+          querySnapshot.forEach(doc => {
+            data.push(doc.data());
+          });
+          // resolve(data);
+          console.log("!!!!2", data);
+          data.forEach((account, i) => {
+            this.rows = this.rows.concat(
+              {
+                accountEmail: account.name,
+                id: account.name,
+                uid: account.authenticationUID,
+                lastLogin: "###",
+                role: "[ROLE]",
+                avatar: account.image,
+              }
+            );
+          });
+        })
+        .catch(error => {
+          reject(error);
+        });
+    },
+
+
     createNewAccount(e){
       console.log("createNewAccount", this.newIdentity.email, this.newIdentity.password);
+
       firebase.auth()
         .createUserWithEmailAndPassword(this.newIdentity.email, this.newIdentity.password)
-        .then(() => {
+        .then((createdAccount) => {
+          console.log("createdAccount", createdAccount);
           this.$q.notify(`Account "${this.newIdentity.email}" created successfully`)
           this.noSuffixEmail = ref('');
           this.newIdentity.password = ref('');
+          return createdAccount;
         })
         .catch((error) => {
           // Handle Errors here.
@@ -81,12 +116,81 @@ export default defineComponent({
           });
           return Promise.reject(errorMessage);
         })
-        .then(() => {
+        .then((msg) => {
+          console.log("msg", msg)
           console.log("RAN");
+
+          let newAccount = new Account();
+          newAccount.authenticationUID = msg.user.uid;
+          newAccount.image = "https://picsum.photos/200"
+
+          accounts
+            .add(newAccount)
+            .then(docRef => {
+              console.log('Document Written', docRef);
+              // alert('Added!');
+            })
+            .catch(error => {
+              console.error('Error adding document', error);
+              alert('Error!');
+            });
+
+          // .child(docId)
+          //   .put(theRecipe.image)
+          //   .then(snapshot => {
+          //     // Clear the form
+          //     this.newRecipe.image = null;
+          //
+          //     // Get the image URL
+          //     return snapshot.ref.getDownloadURL(); //Returns a promise
+          //   })
+          //   .then(url => {
+          //     return db.collection('recipes').doc(docId).update({image: url});
+          //   })
+          //   .then(docRef => {
+          //     console.log('Recipe updated');
+          //   })
+          //   .catch(error => {
+          //     console.error('Error adding image: ', error);
+          //   });
         });
     }
   },
+  mounted: function () {
+    // accounts = storage.child('accounts');
+
+    // display logged in/out messages
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        // User is signed in.
+        let displayName = user.displayName;
+        let email = user.email;
+        let emailVerified = user.emailVerified;
+        let photoURL = user.photoURL;
+        let isAnonymous = user.isAnonymous;
+        let uid = user.uid;
+        let providerData = user.providerData;
+
+        console.log('Signed in as: ', user);
+
+        // document.getElementById('message').innerHTML = 'Signed in as: ' + displayName + ' (' + email + ')';
+
+      } else {
+        this.authUser = null;
+        // User is signed out.
+        console.log('Not signed in.');
+
+        // document.getElementById('message').innerHTML = 'Signed out.';
+      }
+    });
+
+  },
   created: function () {
+    // accounts = storage.child('accounts');
+    // const storage2 = firebase.storage().ref();
+
+    // const storage = firebase.storage().ref();
+
 // or with a config object:
     // firebase.auth()
     //   .listUsers(100)
@@ -116,36 +220,9 @@ export default defineComponent({
     //       iron: '1%'
     //     }
     //   );
-    this.rows.forEach((row, index) => {
-      row.index = index
-    })
-  },
-  mounted: function () {
-
-    // display logged in/out messages
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        // User is signed in.
-        let displayName = user.displayName;
-        let email = user.email;
-        let emailVerified = user.emailVerified;
-        let photoURL = user.photoURL;
-        let isAnonymous = user.isAnonymous;
-        let uid = user.uid;
-        let providerData = user.providerData;
-
-        console.log('Signed in as: ', user);
-
-        // document.getElementById('message').innerHTML = 'Signed in as: ' + displayName + ' (' + email + ')';
-
-      } else {
-        this.authUser = null;
-        // User is signed out.
-        console.log('Not signed in.');
-
-        // document.getElementById('message').innerHTML = 'Signed out.';
-      }
-    });
+    // this.rows.forEach((row, index) => {
+    //   row.index = index
+    // })
   },
   computed: {
     submitButtonStatus() {
@@ -232,6 +309,7 @@ export default defineComponent({
   <div class="q-pa-md">
 
     <div class="q-pa-lg bg-amber">
+      <button @click="testLoading">Load storage</button>
       <q-form
         @submit.prevent="createNewAccount"
         class="q-gutter-md"
@@ -289,7 +367,7 @@ export default defineComponent({
       :rows-per-page-options="[0]"
       :virtual-scroll-sticky-size-start="48"
       row-key="index"
-      title="Treats"
+      title="Accounts"
       :rows="rows"
       :columns="[
           {
@@ -298,21 +376,21 @@ export default defineComponent({
             field: 'index'
           },
           {
-            name: 'name',
+            name: 'accountEmail',
             required: true,
-            label: 'Dessert (100g serving)',
+            label: 'Account',
             align: 'left',
             field: row => row.name,
             format: val => `${val}`,
             sortable: true
           },
-          { name: 'calories', align: 'center', label: 'Calories', field: 'calories', sortable: true },
-          { name: 'fat', label: 'Fat (g)', field: 'fat', sortable: true },
-          { name: 'carbs', label: 'Carbs (g)', field: 'carbs' },
-          { name: 'protein', label: 'Protein (g)', field: 'protein' },
-          { name: 'sodium', label: 'Sodium (mg)', field: 'sodium' },
-          { name: 'calcium', label: 'Calcium (%)', field: 'calcium', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
-          { name: 'iron', label: 'Iron (%)', field: 'iron', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) }
+          { name: 'id', label: 'ID', field: 'id', align: 'left', sortable: true },
+          { name: 'uid', label: 'UID', field: 'uid', align: 'left', sortable: true },
+          { name: 'last login', label: 'Last Login', field: 'lastLogin', align: 'left' },
+          { name: 'role', label: 'Role', field: 'role', align: 'left' },
+          { name: 'avatar', label: 'Avatar', field: 'avatar', align: 'left' },
+          // { name: 'calcium', label: 'Calcium (%)', field: 'calcium', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
+          // { name: 'iron', label: 'Iron (%)', field: 'iron', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) }
         ]">
     </q-table>
 
