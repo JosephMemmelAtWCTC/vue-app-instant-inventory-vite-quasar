@@ -500,9 +500,7 @@ export default defineComponent({
           </span>
           <q-popup-edit v-model="props.row.role" title="Update Role" v-slot="scope">
             <q-select
-              @popup-hide="()=>{
-                updateRole(props.row.id, props.row.role.value)
-              }"
+              @popup-hide="updateRole(props.row.id, props.row.role.value)"
               label="New Role"
               transition-show="scale"
               transition-hide="scale"
