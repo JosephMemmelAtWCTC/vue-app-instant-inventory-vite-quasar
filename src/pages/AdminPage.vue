@@ -2,10 +2,13 @@
 <!-- Vue Application -->
 <script>
 import {defineComponent, ref} from "vue";
+import { collection, query, where } from "firebase/firestore";
 //TODO: Ask why it's not working globally
 import "https://www.gstatic.com/firebasejs/8.10.1/firebase.js"
+
 import Account from 'src/models/Account.js'
 import 'src/models/Firebase.js'
+import { db } from 'src/models/Firebase.js'
 // import {useQuasar} from "quasar";
 
 const SubmitButtonStatus = { ALLOWED: 'primary', MISSING_DATA: 'warning', INVALID_DATA: 'error'};
@@ -58,7 +61,9 @@ export default defineComponent({
           console.log("!!!!", querySnapshot);
           const data = [];
           querySnapshot.forEach(doc => {
-            data.push(doc.data());
+            const dataPush = doc.data();
+            dataPush.docId = doc.id;
+            data.push(dataPush);
           });
           // resolve(data);
           console.log("!!!!2", data);
@@ -67,14 +72,21 @@ export default defineComponent({
               {
                 index: i,
                 accountEmail: account.email,
-                id: account.id,
+                id: account.docId,
                 uid: account.authenticationUID,
                 lastLogin: "###",
                 role: account.role,
                 avatar: account.image,
+                remove: {
+                  icon: "delete",
+                  label: "Remove",
+                }
               }
             );
           });
+          // this.rows.forEach((row, index) => {
+          //   row.remove = "";
+          // })
         })
         .catch(error => {
           reject(error);
@@ -160,6 +172,20 @@ export default defineComponent({
           //     console.error('Error adding image: ', error);
           //   });
         });
+    },
+
+    removeAccount(uid){
+      // firebase.auth().getUser(uid)//TODO: Ask
+      // firebase.auth().getUserByEmail(uid)
+      //   .then((userRecord) => {
+      //     return firebase.auth().deleteUser(userRecord.uid);
+      //   })
+      //   .delete()
+      //   .then(function() {
+      //     this.$q.notify(`Account "${""}" removed successfully`)
+      //   }).catch(function(error) {
+      //     alert(error);
+      // });
     }
   },
   mounted: function () {
@@ -178,6 +204,30 @@ export default defineComponent({
         let providerData = user.providerData;
 
         console.log('Signed in as: ', user);
+
+        // TODO: Ask how to query
+        // firebase.firestore().collection('accounts').ref()
+        // const db = firebase.firestore();
+        // const accountsRef = collection(db, "accounts");
+        // console.log("db", db);
+        // const accountsCollection = collection(db, "accounts");
+        // const q = query(accountsCollection, where("authenticationUID", "==", user.uid))
+        // firebase.firestore().collection('accounts').get()
+
+        // const q = query(
+        //   firebase.firestore().collection('accounts'),
+        //   where("authenticationUID", "==", user.uid)
+        // );
+
+        // const q = query(firebase.firestore().collection('accounts'), where("authenticationUID", "==", user.uid))
+          // .get()
+          // .then(querySnapshot => {
+          //   console.log("query", querySnapshot);
+          // });
+
+        // if(){
+        //   testLoading();
+        // }
 
         // document.getElementById('message').innerHTML = 'Signed in as: ' + displayName + ' (' + email + ')';
 
@@ -372,6 +422,8 @@ export default defineComponent({
       flat bordered
       :rows-per-page-options="[0]"
       :virtual-scroll-sticky-size-start="48"
+      no-data-label="Try clicking load storage"
+      no-results-label="The filter didn't uncover any results"
       row-key="index"
       title="Accounts"
       :rows="rows"
@@ -390,14 +442,23 @@ export default defineComponent({
             format: val => `${val}`,
             sortable: true
           },
-          { name: 'id', label: 'ID', field: 'id', align: 'left', sortable: true },
+          { name: 'id', label: 'Firestore ID', field: 'id', align: 'left', sortable: true },
           { name: 'uid', label: 'UID', field: 'uid', align: 'left', sortable: true },
           { name: 'last login', label: 'Last Login', field: 'lastLogin', align: 'left' },
-          { name: 'role', label: 'Role', field: 'role', align: 'left' },
+          { name: 'role', label: 'Role', field: 'role', align: 'left', sortable: true },
           { name: 'avatar', label: 'Avatar', field: 'avatar', align: 'left' },
+          { name: 'remove', label: 'Remove', field: 'remove', align: 'center' },
           // { name: 'calcium', label: 'Calcium (%)', field: 'calcium', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
           // { name: 'iron', label: 'Iron (%)', field: 'iron', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) }
         ]">
+      <template v-slot:body-cell-remove="props">
+        <q-btn
+          @click="removeAccount(props.row.uid)"
+          title="Delete Account"
+          icon="bi-trash-fill"
+          color="danger"
+        />
+      </template>
     </q-table>
 
   </div>
