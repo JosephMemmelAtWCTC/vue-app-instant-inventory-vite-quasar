@@ -186,7 +186,38 @@ export default defineComponent({
       //   }).catch(function(error) {
       //     alert(error);
       // });
-    }
+    },
+
+    updateRole(docID, newRole){
+      console.log("updateRole(docID, newRole)", docID, newRole);
+      db.collection('accounts').doc(docID)
+        .update({role: newRole})
+        .then(docRef => {
+
+        })
+        .catch(error => {
+          // TODO: Let the user know
+        });
+
+      // .child(docId)
+      //   .put(theRecipe.image)
+      //   .then(snapshot => {
+      //     // Clear the form
+      //     this.newRecipe.image = null;
+      //
+      //     // Get the image URL
+      //     return snapshot.ref.getDownloadURL(); //Returns a promise
+      //   })
+      //   .then(url => {
+      //     return db.collection('recipes').doc(docId).update({image: url});
+      //   })
+      //   .then(docRef => {
+      //     console.log('Recipe updated');
+      //   })
+      //   .catch(error => {
+      //     console.error('Error adding image: ', error);
+      //   });
+    },
   },
   mounted: function () {
     // accounts = storage.child('accounts');
@@ -469,6 +500,9 @@ export default defineComponent({
           </span>
           <q-popup-edit v-model="props.row.role" title="Update Role" v-slot="scope">
             <q-select
+              @popup-hide="()=>{
+                updateRole(props.row.id, props.row.role.value)
+              }"
               label="New Role"
               transition-show="scale"
               transition-hide="scale"
