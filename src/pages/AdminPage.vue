@@ -459,6 +459,27 @@ export default defineComponent({
           color="danger"
         />
       </template>
+      <template v-slot:body-cell-role="props">
+        <q-td key="role" :props="props">
+          <span v-if="props.row.role.value">
+            {{ props.row.role.value }}
+          </span>
+          <span v-else>
+            {{ props.row.role }}
+          </span>
+          <q-popup-edit v-model="props.row.role" title="Update Role" v-slot="scope">
+            <q-select
+              label="New Role"
+              transition-show="scale"
+              transition-hide="scale"
+              filled
+              v-model="props.row.role"
+              :options="options"
+              style="width: 250px"
+            />
+          </q-popup-edit>
+        </q-td>
+      </template>
     </q-table>
 
   </div>
