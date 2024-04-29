@@ -8,7 +8,7 @@ import "https://www.gstatic.com/firebasejs/8.10.1/firebase.js"
 
 import Account from 'src/models/Account.js'
 import 'src/models/Firebase.js'
-import { db } from 'src/models/Firebase.js'
+import { db, auth, storage } from 'src/models/Firebase.js'
 // import {useQuasar} from "quasar";
 
 const SubmitButtonStatus = { ALLOWED: 'primary', MISSING_DATA: 'warning', INVALID_DATA: 'error'};
@@ -32,6 +32,7 @@ export default defineComponent({
       group: ref('UPDATER'),
       options: [
         {
+          // label: Account.AccountTypes.ADMIN,
           label: "Admin",
           value: "ADMIN",
         },
@@ -56,7 +57,7 @@ export default defineComponent({
   },
   methods: {
     testLoading(){
-      firebase.firestore().collection('accounts').get()
+      accounts.get()
         .then(querySnapshot => {
           console.log("!!!!", querySnapshot);
           const data = [];
@@ -67,6 +68,7 @@ export default defineComponent({
           });
           // resolve(data);
           console.log("!!!!2", data);
+          this.rows = [];
           data.forEach((account, i) => {
             this.rows = this.rows.concat(
               {
@@ -97,7 +99,7 @@ export default defineComponent({
     createNewAccount(e){
       console.log("createNewAccount", this.newIdentity.email, this.newIdentity.password);
 
-      firebase.auth()
+      auth
         .createUserWithEmailAndPassword(this.newIdentity.email, this.newIdentity.password)
         .then((createdAccount) => {
           console.log("createdAccount", createdAccount);
@@ -171,11 +173,27 @@ export default defineComponent({
           //   .catch(error => {
           //     console.error('Error adding image: ', error);
           //   });
+        }).then(() => {
+          this.testLoading();
         });
     },
 
-    removeAccount(uid){
-      // firebase.auth().getUser(uid)//TODO: Ask
+    removeAccount(docID){
+      console.log("Removing account", docID);
+      db.collection('accounts').doc(docID)
+        .update({role: "DISABLED"})
+        .then(docRef => {
+          console.log("docRef", docRef);
+          this.$q.notify(`Account "${docRef}" disabled successfully`)
+        })
+        .catch(error => {
+          // TODO: Let the user know
+        }).then(() => {
+          this.testLoading();
+        });
+    },
+
+    // firebase.auth().getUser(uid)
       // firebase.auth().getUserByEmail(uid)
       //   .then((userRecord) => {
       //     return firebase.auth().deleteUser(userRecord.uid);
@@ -186,7 +204,6 @@ export default defineComponent({
       //   }).catch(function(error) {
       //     alert(error);
       // });
-    },
 
     updateRole(docID, newRole){
       console.log("updateRole(docID, newRole)", docID, newRole);
@@ -217,7 +234,7 @@ export default defineComponent({
       //   .catch(error => {
       //     console.error('Error adding image: ', error);
       //   });
-    },
+    }
   },
   mounted: function () {
     // accounts = storage.child('accounts');
@@ -484,7 +501,8 @@ export default defineComponent({
         ]">
       <template v-slot:body-cell-remove="props">
         <q-btn
-          @click="removeAccount(props.row.uid)"
+          v-if="props.row.role !== 'DISABLED'"
+          @click="removeAccount(props.row.id)"
           title="Delete Account"
           icon="bi-trash-fill"
           color="danger"
@@ -492,24 +510,33 @@ export default defineComponent({
       </template>
       <template v-slot:body-cell-role="props">
         <q-td key="role" :props="props">
-          <span v-if="props.row.role.value">
-            {{ props.row.role.value }}
-          </span>
-          <span v-else>
-            {{ props.row.role }}
-          </span>
-          <q-popup-edit v-model="props.row.role" title="Update Role" v-slot="scope">
-            <q-select
-              @popup-hide="updateRole(props.row.id, props.row.role.value)"
-              label="New Role"
-              transition-show="scale"
-              transition-hide="scale"
-              filled
-              v-model="props.row.role"
-              :options="options"
-              style="width: 250px"
-            />
-          </q-popup-edit>
+          <div class="row justify-between">
+            <div class="col-auto">
+              <div :class="props.row.role === 'DISABLED'? 'text-warning': '' ">
+                <span v-if="props.row.role.value">
+                  {{ props.row.role.value }}
+                </span>
+                <span v-else>
+                  {{ props.row.role }}
+                </span>
+              </div>
+              <q-popup-edit v-model="props.row.role" title="Update Role" v-slot="scope"><!--color="teal"-->
+                <q-select
+                  @popup-hide="updateRole(props.row.id, props.row.role.value)"
+                  label="New Role"
+                  transition-show="scale"
+                  transition-hide="scale"
+                  filled
+                  v-model="props.row.role"
+                  :options="options"
+                  style="width: 250px"
+                />
+              </q-popup-edit>
+            </div>
+            <div class="col-auto">
+              <q-icon name="bi-pencil-square" size="1.5em" />
+            </div>
+          </div>
         </q-td>
       </template>
     </q-table>

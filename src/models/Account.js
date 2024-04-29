@@ -1,5 +1,5 @@
-function Account(id, data){
-  const AccountTypes = {ADMIN: 'admin', EDITOR: 'editor', UPDATER: 'updater'};
+export default function Account(id, data){
+  const AccountTypes = {ADMIN: 'admin', EDITOR: 'editor', UPDATER: 'updater', DISABLED: 'disabled'};
 
   // these arguments are optional
   id = id ?? '';
@@ -14,4 +14,4 @@ function Account(id, data){
   }
 }
 
-export default Account;
+// export default {Account};

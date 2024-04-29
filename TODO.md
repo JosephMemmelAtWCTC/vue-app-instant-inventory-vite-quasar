@@ -3,3 +3,7 @@ Ideas
 
 
 Navigation Guards - certain pages reject navigation, try later as using authentication it's a bit more complicated
+
+
+Use transactions for manipulating the data in the inventory
+addToScore(userId, score){
