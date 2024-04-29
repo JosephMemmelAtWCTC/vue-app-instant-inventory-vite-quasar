@@ -65,11 +65,12 @@ export default defineComponent({
           data.forEach((account, i) => {
             this.rows = this.rows.concat(
               {
-                accountEmail: account.name,
-                id: account.name,
+                index: i,
+                accountEmail: account.email,
+                id: account.id,
                 uid: account.authenticationUID,
                 lastLogin: "###",
-                role: "[ROLE]",
+                role: account.role,
                 avatar: account.image,
               }
             );
@@ -91,7 +92,10 @@ export default defineComponent({
           this.$q.notify(`Account "${this.newIdentity.email}" created successfully`)
           this.noSuffixEmail = ref('');
           this.newIdentity.password = ref('');
-          return createdAccount;
+          console.log("this.group", this.group);
+          return {createdAccount: createdAccount, createWithStored: {
+              type: this.group,
+            }};
         })
         .catch((error) => {
           // Handle Errors here.
@@ -116,13 +120,15 @@ export default defineComponent({
           });
           return Promise.reject(errorMessage);
         })
-        .then((msg) => {
-          console.log("msg", msg)
-          console.log("RAN");
-
+        .then((newAccountCreationStorage) => {
+          const createdAuthAccount = newAccountCreationStorage.createdAccount;
+          const supplementalCreateWithStorage = newAccountCreationStorage.createWithStored;
           let newAccount = new Account();
-          newAccount.authenticationUID = msg.user.uid;
-          newAccount.image = "https://picsum.photos/200"
+
+          newAccount.authenticationUID = createdAuthAccount.user.uid;
+          newAccount.email = createdAuthAccount.user.email;
+          newAccount.image = "https://picsum.photos/200";
+          newAccount.role = supplementalCreateWithStorage.type;
 
           accounts
             .add(newAccount)
@@ -380,7 +386,7 @@ export default defineComponent({
             required: true,
             label: 'Account',
             align: 'left',
-            field: row => row.name,
+            field: row => row.accountEmail,
             format: val => `${val}`,
             sortable: true
           },

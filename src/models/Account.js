@@ -7,7 +7,7 @@ function Account(id, data){
 
   return {
       id: id,
-      name: data.name ?? '',
+      email: data.email ?? '',
       image: data.image ?? null,
       role: data.role ?? null,
       authenticationUID: data.authenticationUID ?? null, //TODO: Make use AccountTypes
