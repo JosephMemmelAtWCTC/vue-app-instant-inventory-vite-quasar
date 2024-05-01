@@ -19,11 +19,12 @@ const appNavigation = {
   currentPage: "home",
   currentPageLabel: "",
 };
-const appInfo = {
+const appInfo = {//TODO: Remove!
   appTitle: "Instant Inventory",
   appVersion: "Vue App v4.0 (Demo)",
   sideBarWidth: 180,
-}
+};
+
 const userInfo = {
   profileName: "Test Testerson",
   profileAvatar: "https://avatars.githubusercontent.com/u/67847710",
@@ -54,42 +55,43 @@ const routes = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
-    props: { appNavigation, appInfo, userInfo,
-      locationKioskName: appLocationConfig.customLocationName,
-    },
+    // props: { appNavigation, appInfo, userInfo, authUser,
+    //   locationKioskName: appLocationConfig.customLocationName,
+    // },
+    props: true,
     children: [
       {
         path: '',
-        component: () => import('pages/IndexPage.vue'),
+        component: () => import('src/FullUserDetails/IndexPage.vue'),
         props: { appNavigation, appInfo, library }
       },
       {
         path: '/inventory',
-        component: () => import('pages/InventoryPage.vue'),
+        component: () => import('src/FullUserDetails/InventoryPage.vue'),
         props: { appNavigation, filterSettings, library }
       },
       {
         path: '/account',
-        component: () => import('pages/ProfilePage.vue'),
+        component: () => import('src/FullUserDetails/ProfilePage.vue'),
         props: { appNavigation, userInfo,
           locationKioskName: appLocationConfig.customLocationName,
         }
       },
       {
         path: '/app',
-        component: () => import('pages/MarketingDownloadApp.vue'),
-        // component: () => import('pages/ErrorNotFound.vue'),
+        component: () => import('src/FullUserDetails/MarketingDownloadApp.vue'),
+        // component: () => import('FullUserDetails/ErrorNotFound.vue'),
         props: { }
       },
       {
         path: '/admin',
-        component: () => import('pages/AdminPage.vue'),
-        // component: () => import('pages/ErrorNotFound.vue'),
+        component: () => import('src/FullUserDetails/AdminPage.vue'),
+        // component: () => import('FullUserDetails/ErrorNotFound.vue'),
         props: { }
       },
       {
         path: '/login',
-        component: () => import('pages/LoginPage.vue'),
+        component: () => import('src/FullUserDetails/LoginPage.vue'),
         props: { }
       },
     ]
@@ -98,7 +100,7 @@ const routes = [
   // but you can also remove it
   {
     path: '/:catchAll(.*)*',
-    component: () => import('pages/ErrorNotFound.vue')
+    component: () => import('src/FullUserDetails/ErrorNotFound.vue')
   }
 ];
 

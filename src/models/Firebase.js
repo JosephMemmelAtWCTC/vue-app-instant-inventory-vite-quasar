@@ -17,5 +17,7 @@ const db = firebase.firestore();
 const auth = firebase.auth();
 const storage = firebase.storage().ref();
 
+let accounts = db.collection('accounts');
+
 // firebase
-export {db, auth, storage}
+export {db, auth, storage, accounts}

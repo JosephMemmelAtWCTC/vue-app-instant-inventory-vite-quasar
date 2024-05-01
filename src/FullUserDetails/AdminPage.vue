@@ -7,12 +7,10 @@ import "https://www.gstatic.com/firebasejs/8.10.1/firebase.js"
 
 import Account from 'src/models/Account.js'
 import 'src/models/Firebase.js'
-import { db, auth, storage } from 'src/models/Firebase.js'
+import { db, auth, storage, accounts } from 'src/models/Firebase.js'
 // import {useQuasar} from "quasar";
 
 const SubmitButtonStatus = { ALLOWED: 'primary', MISSING_DATA: 'warning', INVALID_DATA: 'error'};
-
-let accounts = firebase.firestore().collection('accounts');
 
 export default defineComponent({
   data(){
@@ -149,7 +147,7 @@ export default defineComponent({
           newAccount.role = supplementalCreateWithStorage.type;
 
           accounts
-            .add(newAccount)
+            .doc(createdAuthAccount.user.uid).set(newAccount)
             .then(docRef => {
               console.log('Document Written', docRef);
               // alert('Added!');
@@ -182,9 +180,9 @@ export default defineComponent({
         });
     },
 
-    removeAccount(docID){
-      console.log("Removing account", docID);
-      db.collection('accounts').doc(docID)
+    removeAccount(uid){
+      console.log("Removing account", uid);
+      accounts.doc(uid)
         .update({role: "DISABLED"})
         .then(docRef => {
           console.log("docRef", docRef);
@@ -209,12 +207,16 @@ export default defineComponent({
       //     alert(error);
       // });
 
-    updateRole(docID, newRole){
-      console.log("updateRole(docID, newRole)", docID, newRole);
-      db.collection('accounts').doc(docID)
+    updateRole(uid, newRole){
+      console.log("updateRole(docID, newRole)", uid, newRole);
+      accounts.doc(uid)
         .update({role: newRole})
         .then(docRef => {
-          this.$q.notify(`Updated account "${docRef.email}" to role "${docRef.role}" `)
+          if(docRef){
+            this.$q.notify(`Updated account "${docRef.email}" to role "${docRef.role}" `)
+          }else{
+            this.$q.notify(`Updated account role`)
+          }
         })
         .catch(error => {
           this.$q.notify(`Warning, unable to update role. ${error.id}: "${error.message}" `)
@@ -526,7 +528,7 @@ export default defineComponent({
               </div>
               <q-popup-edit v-model="props.row.role" title="Update Role" v-slot="scope"><!--color="teal"-->
                 <q-select
-                  @popup-hide="updateRole(props.row.id, props.row.role.value)"
+                  @popup-hide="updateRole(props.row.uid, props.row.role.value)"
                   label="New Role"
                   transition-show="scale"
                   transition-hide="scale"

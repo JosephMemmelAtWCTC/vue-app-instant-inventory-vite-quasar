@@ -1,5 +1,6 @@
 <template>
   <router-view
+    :auth-user="authUser"
   />
 </template>
 <!--    :library="library"-->
@@ -8,7 +9,15 @@
 
 <script>
 import {defineComponent} from "vue";
-// @ = src
+
+import "https://www.gstatic.com/firebasejs/8.10.1/firebase.js";//TODO: Ask about repeating imports
+
+import User from "/src/models/User.js"
+import FullUserDetails from "/src/models/User.js";
+
+import { auth, db, storage } from "src/models/Firebase.js";
+
+
 
 import NavigateIconItem from "components/NavigateIconItem.vue"
 import EditModal from "components/EditModal.vue";
@@ -30,6 +39,32 @@ import InventoryItem from "src/models/InventoryItem";
 
 export default defineComponent({
   // components: {OptionsFAB, PageInventoryCardsSearch, EditModal, PageTitleTable, QuasarAppLayout, NavigateIconItem},
+
+  data() {
+    return {
+      authUser: new FullUserDetails(),
+    }
+  },
+  created() {
+    // TODO: check for logged in user
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        // User is signed in.
+        this.authUser = new FullUserDetails(new User(user));
+        console.log('Signed in as: ', user);
+        // TODO: Check if first time logged in and make data
+        // document.getElementById('message').innerHTML = 'Signed in as: ' + displayName + ' (' + email + ')';
+
+      } else {
+        // User is signed out.
+        console.log('Not signed in.');
+
+        // document.getElementById('message').innerHTML = 'Signed out.';
+      }
+    });
+  },
+
+
   // data() {
   //   return {
   //     // appInfo: {

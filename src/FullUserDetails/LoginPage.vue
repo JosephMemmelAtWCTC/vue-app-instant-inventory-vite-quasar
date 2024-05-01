@@ -1,9 +1,7 @@
 <script>
 import {defineComponent, ref} from "vue";
 import MainContentPage from "components/pages/MainContentPage.vue";
-import "https://www.gstatic.com/firebasejs/8.10.1/firebase.js"
 import { db, auth, storage } from 'src/models/Firebase.js'
-import router from "src/router/routes.vue";
 
 export default defineComponent({
   name: "LoginPage",
@@ -49,7 +47,7 @@ export default defineComponent({
   computed: {
   },
   mounted: function(){
-    firebase.auth().onAuthStateChanged(user => {
+    auth.onAuthStateChanged(user => {
       console.log("Pathing");
       if (user) {
         this.$router.push({ path: '/' });

@@ -1,46 +1,44 @@
-<script setup>
-import { ref } from 'vue'
+<script>
+import { defineComponent, ref } from 'vue'
 import EssentialLink from 'components/EssentialLink.vue'
-import {defineComponent} from "vue";
 import NavigateIconItem from "components/NavigateIconItem.vue";
+import { db, auth, storage } from 'src/models/Firebase.js'
 
-defineOptions({
+import FullUserDetails from "src/models/User";
+
+export default defineComponent({
   name: 'MainLayout',
-})
-defineProps({
-  appInfo: {
-    type: Object,
-    required: true,
+  components: {},
+  data(){
+    return {
+      appNavigation: {
+      },
+      userInfo: {
+      },
+      locationKioskName: "locationKioskName",
+      leftDrawerOpen: false,
+    };
   },
-  appNavigation: {
-    type: Object,
-    required: true,
+  props: {
+    authUser: {//TODO: Fully remove userInfo
+      type: FullUserDetails,
+      required: true,
+    },
+    appInfo: {
+      type: Object,
+      default: {
+        appTitle: "Instant Inventory",
+        appVersion: "Vue App v4.0 (Demo)",
+        sideBarWidth: 180,
+      }
+    },
   },
-  userInfo: {
-    type: Object,
-    required: true,
-  },
-  locationKioskName: {
-    type: String,
-    required: true,
-  },
-})
-
-
-// const linksList = [
-//   {
-//     title: 'Docs',
-//     caption: 'quasar.dev',
-//     icon: 'school',
-//     link: 'https://quasar.dev'
-//   },
-// ]
-
-const leftDrawerOpen = ref(false)
-
-function toggleLeftDrawer () {
-  leftDrawerOpen.value = !leftDrawerOpen.value
-}
+  methods: {
+    toggleLeftDrawer(){
+      this.leftDrawerOpen = !this.leftDrawerOpen;
+    }
+  }
+});
 </script>
 
 <template>
@@ -68,11 +66,9 @@ function toggleLeftDrawer () {
             />
 
             <q-toolbar-title>
-              {{ appNavigation.currentPageLabel }}
+<!--              {{ appNavigation.currentPageLabel }}-->
               {{ appInfo.appTitle }}
             </q-toolbar-title>
-
-            <div>Quasar v{{ $q.version }}</div>
 
           </div>
           <div class="col-auto bg-amber">
@@ -82,7 +78,7 @@ function toggleLeftDrawer () {
                   <div class="col-auto">
                     <div class="column full-height justify-center">
                       <div class="col">
-                        {{userInfo.profileName}}
+                        {{authUser.email}}
                       </div>
                       <div class="col">
 <!--                        <q-chip color="primary" text-color="white" icon="event">-->
@@ -92,7 +88,7 @@ function toggleLeftDrawer () {
                         <q-chip color="colorAdmin" text-color="white">
                           <span>
                           <q-icon name="event" class="chip-icon" />
-                          test
+                          {{ authUser.role }}
                           </span>
                         </q-chip>
                         </span>
@@ -102,7 +98,7 @@ function toggleLeftDrawer () {
                   <div class="col-auto">
                     <q-avatar size="76px" class="q-ml-md">
                       <q-img
-                        :src="userInfo.profileAvatar"
+                        :src="authUser.image"
                         spinner-size="64px"
                         spinner-color="secondary"
                         class="profile-avatar"

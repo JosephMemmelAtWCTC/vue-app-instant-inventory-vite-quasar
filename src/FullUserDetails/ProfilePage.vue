@@ -1,7 +1,8 @@
 <script>
 import {defineComponent} from "vue";
 import MainContentPage from "components/pages/MainContentPage.vue";
-
+import "https://www.gstatic.com/firebasejs/8.10.1/firebase.js";
+import { auth } from "src/models/Firebase.js";
 
 export default defineComponent({
   name: "ProfilePage",
@@ -26,6 +27,12 @@ export default defineComponent({
     }
   },
   methods: {
+    signOut(){
+      auth.signOut()
+        .then(() => {
+            this.$router.push({ path: '/login' });
+        });
+    },
   },
   computed: {
     profileAvatarSrc(){
@@ -36,6 +43,8 @@ export default defineComponent({
       }
     },
   },
+  mounted: function(){
+  }
 });
 </script>
 
@@ -110,7 +119,7 @@ export default defineComponent({
 <!--        </div>-->
       </div>
       <div class="col-6">
-        TEST
+        <button @click="this.signOut">Sign Out</button>
       </div>
 
     </div>
