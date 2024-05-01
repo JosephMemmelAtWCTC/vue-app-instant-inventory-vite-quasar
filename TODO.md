@@ -9,3 +9,9 @@ Use transactions for manipulating the data in the inventory
 addToScore(userId, score){
 
 Transitions - use when moving or things are added to notifications, also check out animate.css
+
+
+Make ProfilePage update all values right away when new account
+
+
+Vuefire to make updates to firebase as soon as changes are made in the modal

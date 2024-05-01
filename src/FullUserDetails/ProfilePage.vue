@@ -18,8 +18,8 @@ export default defineComponent({
     authUser: {
       // type: FullUserDetails,
       type: Object,
-      // required: true,
-      default: new FullUserDetails(),
+      required: true,
+      // default: new FullUserDetails(),
     },
   },
   methods: {
@@ -32,7 +32,7 @@ export default defineComponent({
   },
   computed: {
     profileAvatarSrc(){
-      if(this.authUser.image){
+      if(!this.authUser && this.authUser.image){
         return this.authUser.image;
       }else{
         return "/src/assets/icons/person-circle.svg"
@@ -70,7 +70,7 @@ export default defineComponent({
                  lazy-rules
         ></q-input>
         <q-input filled v-model="this.locationKioskName"
-                 label="Account Name"
+                 label="Kiosk Name"
                  class="full-width"
                  lazy-rules
         ></q-input>
@@ -86,8 +86,10 @@ export default defineComponent({
 <!--            />-->
 <!--          </template>-->
         </q-input>
+    </div>
 
-<!--        :rules="[val => !!val || '* Required']"-->
+
+    <!--        :rules="[val => !!val || '* Required']"-->
 
         <!--        <div class="m-0 h-100 position-relative">-->
 
@@ -113,7 +115,6 @@ export default defineComponent({
 <!--            <button type="button" class="btn btn-danger">Sign Out</button>-->
 <!--          </div>-->
 <!--        </div>-->
-      </div>
       <div class="col-6">
         <button @click="this.signOut">Sign Out</button>
       </div>

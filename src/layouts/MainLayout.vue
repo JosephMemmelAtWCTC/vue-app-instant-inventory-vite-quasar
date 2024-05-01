@@ -73,7 +73,7 @@ export default defineComponent({
 
           </div>
           <div class="col-auto bg-amber">
-            <Router-Link to="account" v-if="authUser.uid !== ''">
+            <Router-Link to="account" v-if="authUser.uid !== ''" :key="this.authUser">
               <div class="full-height q-py-sm">
                 <div class="row">
                   <div class="col-auto">
