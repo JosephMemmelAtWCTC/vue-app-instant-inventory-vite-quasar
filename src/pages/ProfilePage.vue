@@ -4,7 +4,7 @@ import MainContentPage from "components/pages/MainContentPage.vue";
 
 
 export default defineComponent({
-  name: "InventoryPage",
+  name: "ProfilePage",
   components: {MainContentPage},
   data() {
     return {

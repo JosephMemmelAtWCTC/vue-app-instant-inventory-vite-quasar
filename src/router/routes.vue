@@ -87,6 +87,11 @@ const routes = [
         // component: () => import('pages/ErrorNotFound.vue'),
         props: { }
       },
+      {
+        path: '/login',
+        component: () => import('pages/LoginPage.vue'),
+        props: { }
+      },
     ]
   },
   // Always leave this as last one,

@@ -7,3 +7,5 @@ Navigation Guards - certain pages reject navigation, try later as using authenti
 
 Use transactions for manipulating the data in the inventory
 addToScore(userId, score){
+
+Transitions - use when moving or things are added to notifications, also check out animate.css

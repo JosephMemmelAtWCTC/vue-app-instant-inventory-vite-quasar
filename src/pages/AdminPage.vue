@@ -3,7 +3,6 @@
 <script>
 import {defineComponent, ref} from "vue";
 import { collection, query, where } from "firebase/firestore";
-//TODO: Ask why it's not working globally
 import "https://www.gstatic.com/firebasejs/8.10.1/firebase.js"
 
 import Account from 'src/models/Account.js'
@@ -58,6 +57,11 @@ export default defineComponent({
   methods: {
     testLoading(){
       accounts.get()
+        .catch(error => {
+          console.log("ERROR1");
+          this.$q.notify(`Warning, unable to retrieve data. ${error.id}: "${error.message}" `)
+          reject(error);
+        })
         .then(querySnapshot => {
           console.log("!!!!", querySnapshot);
           const data = [];
@@ -91,14 +95,14 @@ export default defineComponent({
           // })
         })
         .catch(error => {
+          console.log("ERROR2");
+          this.$q.notify(`Error. ${error.id}: "${error.message}" `)
           reject(error);
         });
     },
 
 
     createNewAccount(e){
-      console.log("createNewAccount", this.newIdentity.email, this.newIdentity.password);
-
       auth
         .createUserWithEmailAndPassword(this.newIdentity.email, this.newIdentity.password)
         .then((createdAccount) => {
@@ -210,10 +214,10 @@ export default defineComponent({
       db.collection('accounts').doc(docID)
         .update({role: newRole})
         .then(docRef => {
-
+          this.$q.notify(`Updated account "${docRef.email}" to role "${docRef.role}" `)
         })
         .catch(error => {
-          // TODO: Let the user know
+          this.$q.notify(`Warning, unable to update role. ${error.id}: "${error.message}" `)
         });
 
       // .child(docId)
