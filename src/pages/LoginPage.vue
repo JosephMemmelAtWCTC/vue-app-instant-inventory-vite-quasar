@@ -3,7 +3,7 @@ import {defineComponent, ref} from "vue";
 import MainContentPage from "components/pages/MainContentPage.vue";
 import "https://www.gstatic.com/firebasejs/8.10.1/firebase.js"
 import { db, auth, storage } from 'src/models/Firebase.js'
-import {isDisabled} from "bootstrap/js/src/util";
+import router from "src/router/routes.vue";
 
 export default defineComponent({
   name: "LoginPage",
@@ -30,12 +30,31 @@ export default defineComponent({
       console.log(">>>>",this.loginAccount.username, this.loginAccount.password);
       auth
         .signInWithEmailAndPassword(this.loginAccount.username, this.loginAccount.password)
-        .catch(function(error) {
-          this.$q.notify(`Error signing in. ${error.id}: "${error.message}" `)
+        .catch((error) => {
+          // "{"error":{"code":400,"message":"INVALID_LOGIN_CREDENTIALS","errors":[{"message":"INVALID_LOGIN_CREDENTIALS","domain":"global","reason":"invalid"}]}}
+          try{
+            const warningJson = JSON.parse(error.message);
+
+            if(warningJson.error.message==="INVALID_LOGIN_CREDENTIALS"){
+              this.$q.notify(`Invalid Login Credentials. TODO: Make shake`)
+            }else{
+              this.$q.notify(`Error signing in "${error.message}".`)
+            }
+          }catch(catchError){
+            this.$q.notify(`Error signing in "${error.message}".`)
+          }
         });
     },
   },
   computed: {
+  },
+  mounted: function(){
+    firebase.auth().onAuthStateChanged(user => {
+      console.log("Pathing");
+      if (user) {
+        this.$router.push({ path: '/' });
+      }
+    });
   },
 });
 </script>
