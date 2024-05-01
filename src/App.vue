@@ -59,6 +59,9 @@ export default defineComponent({
         // User is signed out.
         console.log('Not signed in.');
 
+        this.authUser = new FullUserDetails();
+        this.$router.push({ path: '/login' });
+
         // document.getElementById('message').innerHTML = 'Signed out.';
       }
     });

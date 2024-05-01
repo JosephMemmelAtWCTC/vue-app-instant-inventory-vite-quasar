@@ -73,9 +73,10 @@ const routes = [
       {
         path: '/account',
         component: () => import('src/FullUserDetails/ProfilePage.vue'),
-        props: { appNavigation, userInfo,
-          locationKioskName: appLocationConfig.customLocationName,
-        }
+        // props: { appNavigation, userInfo,
+        //   locationKioskName: appLocationConfig.customLocationName,
+        // }
+        props: true,
       },
       {
         path: '/app',

@@ -3,6 +3,7 @@ import {defineComponent} from "vue";
 import MainContentPage from "components/pages/MainContentPage.vue";
 import "https://www.gstatic.com/firebasejs/8.10.1/firebase.js";
 import { auth } from "src/models/Firebase.js";
+import FullUserDetails from "src/models/User";
 
 export default defineComponent({
   name: "ProfilePage",
@@ -10,21 +11,16 @@ export default defineComponent({
   data() {
     return {
       isPwd: true,
+      locationKioskName: "Changed, TODO",
     };
   },
   props: {
-    appNavigation: {
+    authUser: {
+      // type: FullUserDetails,
       type: Object,
-      required: false,
+      // required: true,
+      default: new FullUserDetails(),
     },
-    userInfo: {
-      type: Object,
-      required: true,
-    },
-    locationKioskName: {
-      type: String,
-      required: true,
-    }
   },
   methods: {
     signOut(){
@@ -36,10 +32,10 @@ export default defineComponent({
   },
   computed: {
     profileAvatarSrc(){
-      if(this.userInfo.profileAvatar){
-        return this.userInfo.profileAvatar;
+      if(this.authUser.image){
+        return this.authUser.image;
       }else{
-        return "src/assets/icons/person-circle.svg"
+        return "/src/assets/icons/person-circle.svg"
       }
     },
   },
@@ -68,7 +64,7 @@ export default defineComponent({
         </q-avatar>
       </div>
       <div class="col-6 bg-primary q-pa-md fields">
-        <q-input filled v-model="this.userInfo.profileName"
+        <q-input filled v-model="this.authUser.email"
                  label="Account Name"
                  class="full-width"
                  lazy-rules
@@ -78,7 +74,7 @@ export default defineComponent({
                  class="full-width"
                  lazy-rules
         ></q-input>
-        <q-input filled v-model="this.userInfo.password"
+        <q-input filled
                  label="Password"
                  :type="this.isPwd ? 'password' : 'text'"
                  hint="Password with toggle">

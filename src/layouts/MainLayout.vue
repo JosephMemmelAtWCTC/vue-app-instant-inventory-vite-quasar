@@ -8,7 +8,7 @@ import FullUserDetails from "src/models/User";
 
 export default defineComponent({
   name: 'MainLayout',
-  components: {},
+  components: {NavigateIconItem},
   data(){
     return {
       appNavigation: {
@@ -21,7 +21,8 @@ export default defineComponent({
   },
   props: {
     authUser: {//TODO: Fully remove userInfo
-      type: FullUserDetails,
+      // type: FullUserDetails,
+      type: Object,
       required: true,
     },
     appInfo: {
@@ -72,7 +73,7 @@ export default defineComponent({
 
           </div>
           <div class="col-auto bg-amber">
-            <Router-Link to="account">
+            <Router-Link to="account" v-if="authUser.uid !== ''">
               <div class="full-height q-py-sm">
                 <div class="row">
                   <div class="col-auto">
