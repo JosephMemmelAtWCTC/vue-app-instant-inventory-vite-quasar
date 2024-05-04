@@ -10,7 +10,6 @@ export default function Account(id, data){
       email: data.email ?? '',
       image: data.image ?? null,
       role: data.role ?? null,
-      authenticationUID: data.authenticationUID ?? null, //TODO: Make use AccountTypes
   }
 }
 

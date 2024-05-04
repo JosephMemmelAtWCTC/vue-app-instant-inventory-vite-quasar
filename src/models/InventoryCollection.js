@@ -1,10 +1,27 @@
 import InventoryItem from "src/models/InventoryItem.js"
 import Category from "src/models/Category";
+import { inventory, auth, storage } from 'src/models/Firebase.js'
+
 
 export default function InventoryCollection(arr = []) {
 
     arr.add = function (item) {
-        this.push(new InventoryItem(item));
+      const newItem = new InventoryItem(item);
+        this.push(newItem);
+
+      inventory
+        .add(newItem)
+        .then(function(docRef) {
+          console.log("Document written:", docRef);
+
+          // docRef.id
+        })
+        .catch(function(error) {
+          console.error("Error adding document: ", error);
+
+          // let the user know...
+          // TODO: let the user know
+        });
 
         // return this for chaining
         return this;
@@ -17,9 +34,13 @@ export default function InventoryCollection(arr = []) {
         return this;
     }
 
+    arr.addNew = function (newItem) {
+      this.add(newItem);
+    }
+
     arr.updateOrAddValue = function (itemOld, itemNew) {
         if(typeof itemOld === 'undefined'){
-            this.push(new InventoryItem(itemNew));
+            this.add(itemNew);
             return;
         }
 

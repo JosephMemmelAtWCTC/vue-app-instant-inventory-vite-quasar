@@ -17,7 +17,11 @@ const db = firebase.firestore();
 const auth = firebase.auth();
 const storage = firebase.storage().ref();
 
-let accounts = db.collection('accounts');
+
+// Collections (for importing just the needed ones instead of using db)
+const accounts = db.collection('accounts');
+const inventory =  db.collection('inventory'); //TODO: Rename to inventoryRoot?
+
 
 // firebase
-export {db, auth, storage, accounts}
+export {db, auth, storage, accounts, inventory}

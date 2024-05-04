@@ -77,7 +77,7 @@ export default defineComponent({
                 index: i,
                 accountEmail: account.email,
                 id: account.docId,
-                uid: account.authenticationUID,
+                uid: account.docId,
                 lastLogin: "###",
                 role: account.role,
                 avatar: account.image,
@@ -141,7 +141,6 @@ export default defineComponent({
           const supplementalCreateWithStorage = newAccountCreationStorage.createWithStored;
           let newAccount = new Account();
 
-          newAccount.authenticationUID = createdAuthAccount.user.uid;
           newAccount.email = createdAuthAccount.user.email;
           newAccount.image = "https://picsum.photos/200";
           newAccount.role = supplementalCreateWithStorage.type;
@@ -553,13 +552,6 @@ export default defineComponent({
     </q-table>
 
   </div>
-  <button id="add">Add User</button>
-  <button id="update">Update Profile</button>
-  <button id="delete">Delete User</button>
-  <hr>
-  <button id="login">Login</button>
-  <button id="logout">Logout</button>
-  <hr>
   <div id="message"></div>
 </template>
 

@@ -18,3 +18,5 @@ Vuefire to make updates to firebase as soon as changes are made in the modal
 
 sendSignInLinkToEmail - Change entire way of creating new accounts
 
+Send notify when profile image changed
+
