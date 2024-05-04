@@ -15,3 +15,6 @@ Make ProfilePage update all values right away when new account
 
 
 Vuefire to make updates to firebase as soon as changes are made in the modal
+
+sendSignInLinkToEmail - Change entire way of creating new accounts
+

@@ -4,24 +4,20 @@ import EssentialLink from 'components/EssentialLink.vue'
 import NavigateIconItem from "components/NavigateIconItem.vue";
 import { db, auth, storage } from 'src/models/Firebase.js'
 
-import FullUserDetails from "src/models/User";
+import FullUserDetails from "src/models/FullUserDetails";
 
 export default defineComponent({
   name: 'MainLayout',
   components: {NavigateIconItem},
   data(){
     return {
-      appNavigation: {
-      },
-      userInfo: {
-      },
       locationKioskName: "locationKioskName",
       leftDrawerOpen: false,
     };
   },
   props: {
     authUser: {//TODO: Fully remove userInfo
-      // type: FullUserDetails,
+      // type: Pages,
       type: Object,
       required: true,
     },
@@ -32,6 +28,14 @@ export default defineComponent({
         appVersion: "Vue App v4.0 (Demo)",
         sideBarWidth: 180,
       }
+    },
+    library: {
+      type: Object,
+      required: true,
+    },
+    filterSettings: {
+      type: Object,
+      required: true,
     },
   },
   methods: {
@@ -73,7 +77,7 @@ export default defineComponent({
 
           </div>
           <div class="col-auto bg-amber">
-            <Router-Link to="account" v-if="authUser.uid !== ''" :key="this.authUser">
+            <Router-Link to="account" v-if="authUser.uid !== ''">
               <div class="full-height q-py-sm">
                 <div class="row">
                   <div class="col-auto">
@@ -142,7 +146,7 @@ export default defineComponent({
         </navigate-icon-item>
         <navigate-icon-item router-link-to="/inventory" tooltip-info="Inventory" li-extra-classes="p-2 mb-2" icon-class="bi-box-seam"><!--fa-solid fa-boxes-stacked-->
         </navigate-icon-item>
-        <navigate-icon-item tooltip-info="Recents" li-extra-classes="p-2 mb-2" icon-class="bi-arrow-left-right" :badge-text="'library.length'">
+        <navigate-icon-item tooltip-info="Recents" li-extra-classes="p-2 mb-2" icon-class="bi-arrow-left-right" :badge-text="library.length">
         </navigate-icon-item>
 <!--        <navigate-icon-item router-link-to="/account" tooltip-info="Account" li-extra-classes="p-2 mb-2" icon-class="bi-person">-->
 <!--        </navigate-icon-item>-->
@@ -156,7 +160,12 @@ export default defineComponent({
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <router-view
+        :auth-user="this.authUser"
+        :library="this.library"
+        :app-info="this.appInfo"
+        :filter-settings="this.filterSettings"
+      />
     </q-page-container>
   </q-layout>
 </template>

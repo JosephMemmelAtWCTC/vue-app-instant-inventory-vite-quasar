@@ -2,8 +2,8 @@
 import {defineComponent} from "vue";
 import MainContentPage from "components/pages/MainContentPage.vue";
 import "https://www.gstatic.com/firebasejs/8.10.1/firebase.js";
-import { auth } from "src/models/Firebase.js";
-import FullUserDetails from "src/models/User";
+import {accounts, auth, storage} from "src/models/Firebase.js";
+import FullUserDetails from "src/models/FullUserDetails";
 
 export default defineComponent({
   name: "ProfilePage",
@@ -12,14 +12,15 @@ export default defineComponent({
     return {
       isPwd: true,
       locationKioskName: "Changed, TODO",
+      newAuthImage: null,
     };
   },
   props: {
     authUser: {
-      // type: FullUserDetails,
+      // type: Pages,
       type: Object,
       required: true,
-      // default: new FullUserDetails(),
+      // default: new Pages(),
     },
   },
   methods: {
@@ -29,6 +30,63 @@ export default defineComponent({
             this.$router.push({ path: '/login' });
         });
     },
+    // uploadImage(files){
+    //   console.log("this.files[0] = ",files[0]);
+    // },
+    addImage(docId) {
+      // docId and image file are required
+      if (!docId || !this.newAuthImage) {
+        return false;
+      }
+
+      // create a filename we know will be unique
+      // the other option would be to create a folder for each recipe
+      let allowedTypes = ['jpg', 'png', 'gif', 'webp'];
+      let extension = this.newAuthImage.name.toLowerCase().split('.').pop()
+
+      // validate extension
+      if (allowedTypes.indexOf(extension) < 0) {
+        // invalid extension
+
+        // let the user know...
+        // TODO: let the user know WITHOUT alerts
+        alert('Invalid file type.');
+
+        return false;
+      }
+
+      // validate size (less than 200KB
+      if (this.newAuthImage.size > (200 * 1024)) {
+        // file too large
+
+        // let the user know...
+        // TODO: let the user know WITHOUT alerts
+        alert('File too large. 200KB max');
+
+        return false;
+      }
+
+      // TODO: add image to firebase
+      storage.child('accountImages').child(docId)
+        .put(this.newAuthImage)
+        .then(snapshot => {
+          // Clear the form
+          this.newAuthImage = null;
+
+          // Get the image URL
+          return snapshot.ref.getDownloadURL(); //Returns a promise
+        })
+        .then(url => {
+          this.authUser.image = url;
+          return accounts.doc(docId).update({image: url});
+        })
+        .then(() => {
+          console.log('Account updated');
+        })
+        .catch(error => {
+          console.error('Error adding image: ', error);
+        });
+    }
   },
   computed: {
     profileAvatarSrc(){
@@ -40,6 +98,7 @@ export default defineComponent({
     },
   },
   mounted: function(){
+
   }
 });
 </script>
@@ -74,6 +133,22 @@ export default defineComponent({
                  class="full-width"
                  lazy-rules
         ></q-input>
+
+<!--        <q-uploader-->
+<!--          style="max-width: 300px"-->
+<!--          label="Restricted to images"-->
+<!--          accept=".jpg, image/*"-->
+<!--          @uploaded="console.log('uploadingstart')"-->
+<!--          url="./#"-->
+<!--          @added="uploadImage()"-->
+<!--        />-->
+        <q-file filled v-model="newAuthImage" label="Filled" />
+          <!--          @failed="uploadImage()"-->
+
+          <!--          <template v-slot:prepend>-->
+<!--            <q-icon name="attach_file" />-->
+<!--          </template>-->
+
         <q-input filled
                  label="Password"
                  :type="this.isPwd ? 'password' : 'text'"
@@ -86,6 +161,10 @@ export default defineComponent({
 <!--            />-->
 <!--          </template>-->
         </q-input>
+
+        <button @click="addImage(this.authUser.uid)">
+          Upload Image
+        </button>
     </div>
 
 

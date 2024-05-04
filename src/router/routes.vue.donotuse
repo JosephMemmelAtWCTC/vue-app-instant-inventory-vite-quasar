@@ -15,21 +15,12 @@ const library = new InventoryCollection()
       '923087'
     ), 2, 4, Date.now() - 1000 * 60 * 60 * 9)
   );
-const appNavigation = {
-  currentPage: "home",
-  currentPageLabel: "",
-};
 const appInfo = {//TODO: Remove!
   appTitle: "Instant Inventory",
   appVersion: "Vue App v4.0 (Demo)",
   sideBarWidth: 180,
 };
 
-const userInfo = {
-  profileName: "Test Testerson",
-  profileAvatar: "https://avatars.githubusercontent.com/u/67847710",
-  password: "ABCD",
-}
 const appLocationConfig = {
   customLocationName: "Custom Name",
 }
@@ -63,12 +54,12 @@ const routes = [
       {
         path: '',
         component: () => import('src/FullUserDetails/IndexPage.vue'),
-        props: { appNavigation, appInfo, library }
+        props: { appInfo, library }
       },
       {
         path: '/inventory',
         component: () => import('src/FullUserDetails/InventoryPage.vue'),
-        props: { appNavigation, filterSettings, library }
+        props: { filterSettings, library }
       },
       {
         path: '/account',

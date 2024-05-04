@@ -18,10 +18,6 @@ export default defineComponent({
     };
   },
   props: {
-    appNavigation: {
-      type: Object,
-      required: false,
-    },
   },
   methods: {
     attemptLoginAccount(){

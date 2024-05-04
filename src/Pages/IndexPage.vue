@@ -6,6 +6,14 @@ import Category from "src/models/Category";
 import StoreItem from "src/models/StoreItem";
 
 export default defineComponent({
+  data() {
+    return {
+      appInfo: {
+        type: Object,
+        required: true,
+      },
+    }
+  },
   // TODO: Ask about computed appearing
   computed: {
     StoreItem() {
@@ -17,22 +25,16 @@ export default defineComponent({
   },
   components: {PageTitleTable},
   props: {
-    appNavigation: {
+    library: {
       type: Object,
       required: true,
     },
-    library: {
-      type: Object,
-      required: false,
-    },
-    appInfo: {
-      type: Object,
-      required: false,
-    },
+    // appInfo: {
+    //   type: Object,
+    //   required: true,
+    // },
   },
   mounted() {
-    // console.log('appNavigation:', this.appNavigation2);
-    console.log('appNavigation:', this.appNavigation);
   }
 });
 </script>
@@ -41,7 +43,6 @@ export default defineComponent({
 <template>
   <q-page class="flex flex-center">
     <page-title-table
-      v-if="appNavigation.currentPage==='home'"
       :headers="['Categories', 'Items', 'Total Stock', 'Needs Refill']"
       :jumbotron-title="appInfo.appTitle"
       :table-items="[

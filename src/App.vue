@@ -1,6 +1,9 @@
 <template>
   <router-view
-    :auth-user="authUser"
+    :auth-user="this.authUser"
+    :library="this.library"
+    :app-info="this.appInfo"
+    :filter-settings="this.filterSettings"
   />
 </template>
 <!--    :library="library"-->
@@ -12,10 +15,10 @@ import {defineComponent} from "vue";
 
 import "https://www.gstatic.com/firebasejs/8.10.1/firebase.js";//TODO: Ask about repeating imports
 
-import User from "/src/models/User.js"
-import FullUserDetails from "/src/models/User.js";
+import User from "/src/models/FullUserDetails.js"
+import FullUserDetails from "/src/models/FullUserDetails.js";
 
-import { auth, db, storage } from "src/models/Firebase.js";
+import {accounts, auth, db, storage} from "src/models/Firebase.js";
 
 
 
@@ -32,10 +35,6 @@ import InventoryCollection from "./models/InventoryCollection.js"
 import Category from "./models/Category.js"
 import StoreItem from "./models/StoreItem.js"
 import Product from "./models/Product.js"
-import InventoryItem from "src/models/InventoryItem";
-
-// import { InventoryCollection, StoreItem, Category, Product } from "@/models/app-modals.js"
-// import { InventoryCollection, StoreItem, Category, Product } from "@/js/models/app-models.js"
 
 export default defineComponent({
   // components: {OptionsFAB, PageInventoryCardsSearch, EditModal, PageTitleTable, QuasarAppLayout, NavigateIconItem},
@@ -43,6 +42,42 @@ export default defineComponent({
   data() {
     return {
       authUser: new FullUserDetails(),
+
+      library: new InventoryCollection()
+        .add(new Category('Category 1','Category 1\'s description', 'src/assets/icons/folder.svg'))
+        .add(new StoreItem(
+          new Product(
+            'Fjallraven - Foldsack No. 1 Backpack',
+            'Your perfect pack for everyday use and walks in the forest.',
+            'https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg',
+            '923087'
+          ),
+        2, 4, Date.now() - 1000 * 60 * 60 * 9)
+      ),
+      appInfo: {
+        appTitle: "Instant Inventory",
+        appVersion: "Vue App v4.0 (Demo)",
+        sideBarWidth: 180,
+      },
+      filterSettings: {
+        toggles: [
+          {
+            label: "Include Categories",
+            state: true
+          },
+          {
+            label: "Include Items",
+            state: true
+          },
+          {
+            label: "Only Under Threshold",
+            state: false
+          },
+        ],
+        searchString: "",
+      }
+
+
     }
   },
   created() {
@@ -51,6 +86,12 @@ export default defineComponent({
       if (user) {
         // User is signed in.
         this.authUser = new FullUserDetails(new User(user));
+        accounts.doc(this.authUser.uid).get()
+          .then((supplementalAccountDoc) => {
+            const supplementalData = supplementalAccountDoc.data();
+            this.authUser.image = supplementalData.image ?? null;
+            this.authUser.role =supplementalData.role ?? null;
+          })
         console.log('Signed in as: ', user);
         // TODO: Check if first time logged in and make data
         // document.getElementById('message').innerHTML = 'Signed in as: ' + displayName + ' (' + email + ')';

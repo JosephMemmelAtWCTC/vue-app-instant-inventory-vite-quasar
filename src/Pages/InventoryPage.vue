@@ -20,10 +20,6 @@ export default defineComponent({
     };
   },
   props: {
-    appNavigation: {
-      type: Object,
-      required: true,
-    },
     filterSettings: {
       type: Object,
       required: true,
