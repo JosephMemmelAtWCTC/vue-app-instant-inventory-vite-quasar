@@ -90,7 +90,10 @@ export default defineComponent({
   },
   computed: {
     profileAvatarSrc(){
-      if(!this.authUser && this.authUser.image){
+      if(this.authUser && this.authUser.image){
+        // if(this.newAuthImage == null){
+        //   this.newAuthImage = this.authUser.image;
+        // }
         return this.authUser.image;
       }else{
         return "/src/assets/icons/person-circle.svg"
@@ -142,7 +145,7 @@ export default defineComponent({
 <!--          url="./#"-->
 <!--          @added="uploadImage()"-->
 <!--        />-->
-        <q-file filled v-model="newAuthImage" label="Filled" />
+        <q-file filled v-model="newAuthImage" label="New Account Avatar" />
           <!--          @failed="uploadImage()"-->
 
           <!--          <template v-slot:prepend>-->

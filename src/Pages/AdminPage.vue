@@ -545,6 +545,11 @@ export default defineComponent({
           </div>
         </q-td>
       </template>
+      <template v-slot:body-cell-avatar="props">
+        <q-td key="avatar" :props="props">
+          <img :src="props.row.avatar" class="admin-rows-avatar-image" alt="Profile Avatar">
+        </q-td>
+      </template>
     </q-table>
 
   </div>
@@ -573,5 +578,9 @@ export default defineComponent({
   }
   .q-field__append.q-field__marginal.row.no-wrap.items-center{
     width: 20px;
+  }
+
+  .admin-rows-avatar-image{
+    width: 4em;
   }
 </style>
