@@ -24,8 +24,8 @@
     emits: ['opened-modal', 'save-it', 'remove-it'],
     methods: {
       openEditModal(){
-        this.$refs.editModal.openModal();
         this.$emit('opened-modal');
+        this.$refs.editModal.openModal();
       },
 
       saveItem(item){

@@ -20,7 +20,8 @@ const storage = firebase.storage().ref();
 
 // Collections (for importing just the needed ones instead of using db)
 const accounts = db.collection('accounts');
-const inventory =  db.collection('inventory'); //TODO: Rename to inventoryRoot?
+const DEVELOPMENT_TESTING_INVENTORY_DOC_KEY = "4GpErCnogbGLrHeZu26K";
+const inventory = db.collection('inventory').doc(DEVELOPMENT_TESTING_INVENTORY_DOC_KEY); //TODO: Rename to inventoryRoot?
 
 
 // firebase

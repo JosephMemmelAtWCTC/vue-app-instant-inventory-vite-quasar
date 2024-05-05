@@ -1,4 +1,9 @@
-export default function InventoryItem(item){
+export const STORAGE_TYPES = {
+  PRODUCT_GENERIC: "generic_product",
+  CATEGORY: "category"
+};
+export function InventoryItem(item){
+
     const STOCKED_LEVEL_STATUSES = {
         UNSET       : 'Unset',
         IN_STOCK    : 'Stocked',
@@ -36,11 +41,23 @@ export default function InventoryItem(item){
 
     item.getAsData = function(){
 
-      return {
+      const dataItem = {
         reorderMessageCode: this.reorderMessageWhen,
-        inventoryType: item.product? "PRODUCT_GENERIC":"CATEGORY",
-      };
+        inventoryType: item.product? STORAGE_TYPES.PRODUCT_GENERIC: STORAGE_TYPES.CATEGORY,
+      }
+
+      if(dataItem.inventoryType === STORAGE_TYPES.CATEGORY){
+        console.log("item = ",item);
+        dataItem.description = item.description;
+        dataItem.imageURL    = item.imageSrc;
+        dataItem.items       = [];
+        dataItem.title       = item.title;
+      }
+
+      return dataItem;
     }
 
     return item;
 }
+
+export default {InventoryItem, STORAGE_TYPES}

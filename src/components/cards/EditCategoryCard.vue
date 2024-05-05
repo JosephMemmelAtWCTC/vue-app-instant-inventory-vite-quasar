@@ -27,6 +27,7 @@ export default defineComponent({
       this.$emit('remove-it', this.item);
     },
     updateEditCategoryToValues(){
+      console.log("updateEditCategoryToValues(){");
       this.editCategory = Object.assign(new Category(), this.item);
     },
   },

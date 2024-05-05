@@ -8,10 +8,17 @@ export default class Category { //Rename to Group?
         constructor(title, description, imageURL, items = []) {
             this.constructorSaved = this.constructor;
 
+            if(typeof title === "object"){//Check if sending via data
+              description = title.description;
+              imageURL    = title.imageSrc;
+              items       = [];
+              title       = title.title;
+            }
+
             this.title       = title;
             this.description = description;
             this.imageSrc    = imageURL;
-            this.items       = this.items.concat(items)
+            this.items       = this.items.concat(items);
         }
 
         // get hasLowStock(){

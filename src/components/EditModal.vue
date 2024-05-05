@@ -44,7 +44,7 @@ export default defineComponent({
       this.$refs.myForm.validate().then(success => {
         if (success) {
           this.appModal.hideModal();
-          console.log("EventModal.js save-it");
+          console.log("EventModal.js save-it", this.item);
           // NOTE TO SELF: Does not use this.item via $emit when using cards, is used when collected in creating new inventory items
           this.$emit('save-it', [undefined, this.item]);
         } else {
@@ -73,7 +73,7 @@ export default defineComponent({
     }
   },
   mounted(){
-    console.log("MOUNTEDA - ",this.item);
+    // console.log("MOUNTEDA - ",this.item);
     this.appModal = this.$refs.theModal;
   },
 });

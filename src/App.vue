@@ -18,7 +18,7 @@ import "https://www.gstatic.com/firebasejs/8.10.1/firebase.js";//TODO: Ask about
 import User from "/src/models/FullUserDetails.js"
 import FullUserDetails from "/src/models/FullUserDetails.js";
 
-import {accounts, auth, db, storage} from "src/models/Firebase.js";
+import {accounts, auth, db, inventory, storage} from "src/models/Firebase.js";
 
 
 
@@ -43,17 +43,17 @@ export default defineComponent({
     return {
       authUser: new FullUserDetails(),
 
-      library: new InventoryCollection()
-        .add(new Category('Category 1','Category 1\'s description', 'src/assets/icons/folder.svg'))
-        .add(new StoreItem(
-          new Product(
-            'Fjallraven - Foldsack No. 1 Backpack',
-            'Your perfect pack for everyday use and walks in the forest.',
-            'https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg',
-            '923087'
-          ),
-        2, 4, Date.now() - 1000 * 60 * 60 * 9)
-      ),
+      library: new InventoryCollection(),
+        // .add(new Category('Category 1','Category 1\'s description', 'src/assets/icons/folder.svg'))
+        // .add(new StoreItem(
+        //   new Product(
+        //     'Fjallraven - Foldsack No. 1 Backpack',
+        //     'Your perfect pack for everyday use and walks in the forest.',
+        //     'https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg',
+        //     '923087'
+        //   ),
+        // 2, 4, Date.now() - 1000 * 60 * 60 * 9)
+      // ),
       appInfo: {
         appTitle: "Instant Inventory",
         appVersion: "Vue App v4.0 (Demo)",
@@ -79,6 +79,39 @@ export default defineComponent({
 
 
     }
+  },
+  methods: {
+    setLibraryFromDocPath(categoryPath){
+      console.log("setLibraryFromDocPath starting...");
+
+    /*   Structure will be category holding other categories and lists of item references
+    // TODO: ASK ABOUT BEST STRUCTURE !!!
+    Should include list of unique words to aid in searching, store in 2 places?
+    */
+
+      const newDisplayLibrary = new InventoryCollection();
+
+      inventory.collection('categories')
+        .get()
+        .then(categoriesQuerySnapshot => {
+            const data = [];
+            categoriesQuerySnapshot.forEach(doc => {
+              const dataPush = doc.data();
+              dataPush.docId = doc.id;
+              data.push(dataPush);
+            });
+            data.forEach((categoryData, i) => {
+              console.log("category, i", categoryData);
+              const foundCategory = new Category(categoryData);
+              // const foundCategory = new Category(data.title, data.description, data.imageURL, data.items);
+              this.library.add(foundCategory);
+              console.log("foundCategory", foundCategory)
+            });
+        })
+
+      this.library = newDisplayLibrary;
+      return "";
+    },
   },
   created() {
     // TODO: check for logged in user
@@ -106,6 +139,13 @@ export default defineComponent({
         // document.getElementById('message').innerHTML = 'Signed out.';
       }
     });
+
+    // .add(new Category('Category 1','Category 1\'s description', 'src/assets/icons/folder.svg'))
+
+
+    this.setLibraryFromDocPath("/");
+
+
   },
 
 

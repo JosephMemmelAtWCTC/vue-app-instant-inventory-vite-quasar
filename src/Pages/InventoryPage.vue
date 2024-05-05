@@ -92,14 +92,14 @@ export default defineComponent({
                               @save-it="saveItem(this.newCategory)"
                   >
                     <template v-slot="slotProps">
-                      <q-input filled v-model="newItem.title"
+                      <q-input filled v-model="this.newCategory.title"
                                autofocus
                                label="Name"
                                class="full-width"
                                :rules="[val => !!val || '* Required']"
                                lazy-rules
                       ></q-input>
-                      <q-input filled v-model="newItem.description"
+                      <q-input filled v-model="this.newCategory.description"
                                type="textarea"
                                rows="4"
                                label="Description"

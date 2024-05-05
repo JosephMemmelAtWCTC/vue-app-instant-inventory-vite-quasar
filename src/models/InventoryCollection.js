@@ -1,27 +1,13 @@
-import InventoryItem from "src/models/InventoryItem.js"
-import Category from "src/models/Category";
+import {InventoryItem, STORAGE_TYPES } from "src/models/InventoryItem.js"
 import { inventory, auth, storage } from 'src/models/Firebase.js'
 
 
 export default function InventoryCollection(arr = []) {
 
+
     arr.add = function (item) {
       const newItem = new InventoryItem(item);
         this.push(newItem);
-
-      inventory
-        .add(newItem.getAsData())
-        .then(function(docRef) {
-          console.log("Document written:", docRef);
-
-          // docRef.id
-        })
-        .catch(function(error) {
-          console.error("Error adding document: ", error);
-
-          // let the user know...
-          // TODO: let the user know
-        });
 
         // return this for chaining
         return this;
@@ -36,6 +22,21 @@ export default function InventoryCollection(arr = []) {
 
     arr.addNew = function (newItem) {
       this.add(newItem);
+
+      const asData = newItem.getAsData();
+      inventory.collection(asData.inventoryType===STORAGE_TYPES.CATEGORY ? "categories" : "products") //TODO: move to store name inside instead of caculate here
+        .add(asData)
+        .then(function(docRef) {
+          console.log("docRef", docRef);
+
+          // docRef.id
+        })
+        .catch(function(error) {
+          console.error("Error ", error);
+
+          // let the user know...
+          // TODO: let the user know
+        });
     }
 
     arr.updateOrAddValue = function (itemOld, itemNew) {
@@ -65,7 +66,7 @@ export default function InventoryCollection(arr = []) {
       const filteredArray = this.filter(i => types.includes(i.constructor.name));
       // this.forEach(i => console.log(types.includes(i.constructor.name)));
       this.forEach(i => console.log(i.constructor.name));
-      console.log("types = ", types);
+      // console.log("types = ", types);
       return filteredArray;
     }
 
