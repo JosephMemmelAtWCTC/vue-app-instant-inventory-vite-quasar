@@ -2,15 +2,19 @@ export default class Category { //Rename to Group?
         static type = "Category";
         static cardDetailsComponent = "EditCategoryCard";
 
-        items = [];
         title = "";
+        description = "";
+        imageSrc = "";
+
+        items = [];
+
 
         constructor(title, description, imageURL, items = []) {
             this.constructorSaved = this.constructor;
 
             if(typeof title === "object"){//Check if sending via data
               description = title.description;
-              imageURL    = title.imageSrc;
+              imageURL    = title.imageURL;
               items       = [];
               title       = title.title;
             }

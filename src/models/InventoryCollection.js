@@ -23,6 +23,8 @@ export default function InventoryCollection(arr = []) {
     arr.addNew = function (newItem) {
       this.add(newItem);
 
+      console.log("newItem in this.add(newItem) =",newItem);
+
       const asData = newItem.getAsData();
       inventory.collection(asData.inventoryType===STORAGE_TYPES.CATEGORY ? "categories" : "products") //TODO: move to store name inside instead of caculate here
         .add(asData)

@@ -109,6 +109,23 @@ export default defineComponent({
             });
         })
 
+      inventory.collection('products')
+        .get()
+        .then(productsQuerySnapshot => {
+          const data = [];
+          productsQuerySnapshot.forEach(doc => {
+            const dataPush = doc.data();
+            dataPush.docId = doc.id;
+            data.push(dataPush);
+          });
+          data.forEach((productData, i) => {
+            console.log("product, i", productData);
+            const foundProduct = new Product(productData);
+            this.library.add(foundProduct);
+            console.log("foundProduct", foundProduct)
+          });
+        })
+
       this.library = newDisplayLibrary;
       return "";
     },

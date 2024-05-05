@@ -45,13 +45,21 @@ export function InventoryItem(item){
         reorderMessageCode: this.reorderMessageWhen,
         inventoryType: item.product? STORAGE_TYPES.PRODUCT_GENERIC: STORAGE_TYPES.CATEGORY,
       }
-
+      // TODO: IMPORTANT! MOVE INTO INSTANCES INSTEAD OF HERE
       if(dataItem.inventoryType === STORAGE_TYPES.CATEGORY){
-        console.log("item = ",item);
+        console.log("dataItem (Category) = ",item);
         dataItem.description = item.description;
         dataItem.imageURL    = item.imageSrc;
         dataItem.items       = [];
         dataItem.title       = item.title;
+      }else if(dataItem.inventoryType === STORAGE_TYPES.PRODUCT_GENERIC){
+        console.log("dataItem (PRODUCT_GENERIC) = ",item);
+        // dataItem.description = item.product.description;
+        // dataItem.imageURL    = item.product.imageSrc;
+        // dataItem.title       = item.product.title;
+        dataItem.description = item.product.description;
+        dataItem.imageURL    = item.product.imageSrc;
+        dataItem.title       = item.product.title;
       }
 
       return dataItem;

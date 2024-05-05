@@ -4,6 +4,10 @@ export default class StoreItem {
 
     product = {};
 
+    title = "";
+    description = "";
+    imageSrc = "";
+
     constructor(product, inStockLevel, reorderLevel, lastUpdated= Date.now()) {
         this.product      = product;
 
