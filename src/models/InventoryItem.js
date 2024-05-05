@@ -34,5 +34,13 @@ export default function InventoryItem(item){
         // return  === STOCKED_LEVEL_STATUSES.LOW_STOCK || STOCKED_LEVEL_STATUSES.OUT_OF_STOCK;
     }
 
+    item.getAsData = function(){
+
+      return {
+        reorderMessageCode: this.reorderMessageWhen,
+        inventoryType: item.product? "PRODUCT_GENERIC":"CATEGORY",
+      };
+    }
+
     return item;
 }

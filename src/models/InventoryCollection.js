@@ -10,7 +10,7 @@ export default function InventoryCollection(arr = []) {
         this.push(newItem);
 
       inventory
-        .add(newItem)
+        .add(newItem.getAsData())
         .then(function(docRef) {
           console.log("Document written:", docRef);
 
