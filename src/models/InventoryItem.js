@@ -61,7 +61,7 @@ export function InventoryItem(item){
         dataItem.imageURL    = item.product.imageSrc;
         dataItem.title       = item.product.title;
         dataItem.productId   = item.product.productId;
-        dataItem.numInStock  = item.product.numInStock;
+        dataItem.numInStock  = item.numInStock;
       }
 
       return dataItem;

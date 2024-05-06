@@ -28,7 +28,6 @@ export default class Category { //Rename to Group?
             this.imageSrc    = imageURL;
             this.items       = this.items.concat(items);
             this.docId       = docId;
-
         }
 
         // get hasLowStock(){

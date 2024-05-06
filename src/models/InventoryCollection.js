@@ -16,15 +16,16 @@ export default function InventoryCollection(arr = []) {
     arr.remove = function (item) {
       console.log("arr.remove = ", item);
       this.splice(this.indexOf(item), 1)
+      return this;
+    }
 
+    arr.delete = function (item) {
       inventory.collection(item.product? "products" : "categories")
-      .doc(item.docId).delete().then(() => {
+        .doc(item.docId).delete().then(() => {
         console.log("Document successfully deleted!");
       }).catch((error) => {
         console.error("Error removing document: ", error);
       });
-
-      return this;
     }
 
     arr.removeAllOfType = function(type){
@@ -86,13 +87,9 @@ export default function InventoryCollection(arr = []) {
     }
 
     arr.filterByType = function(types){
-      // const filteredArray = this.filter(i => types.includes(i.constructor.name));
-      // // this.forEach(i => console.log(types.includes(i.constructor.name)));
-      // this.forEach(i => console.log(i.constructor.name));
+      const filteredArray = this.filter(i => types.includes(i.constructor.name.toLowerCase()));
       console.log("types = ", types);
-      // return filteredArray;
-      // !!!!@@@
-      return this;
+      return filteredArray;
     }
 
     return arr;

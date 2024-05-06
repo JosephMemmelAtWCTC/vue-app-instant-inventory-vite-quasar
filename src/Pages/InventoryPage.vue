@@ -54,9 +54,11 @@ export default defineComponent({
         filterByConstructors.push(Category.type);
       }
       if(this.filterSettings.toggles[1].state){
-        if(StoreItem.type){
-          filterByConstructors.push(STORAGE_TYPES.PRODUCT_GENERIC);
-        }
+        // filterByConstructors.push(StoreItem.type);
+        // if(StoreItem.type){
+        //   filterByConstructors.push(STORAGE_TYPES.PRODUCT_GENERIC);
+          filterByConstructors.push("product");
+        // }
       }
 
       filteredResults = this.library.filterByType(filterByConstructors);
@@ -77,7 +79,7 @@ export default defineComponent({
       :filter-settings="filterSettings"
       :current-combined-items-list="filteredLibrary"
       search-label="Filter Search"
-      @remove-item="this.library.remove($event)"
+      @remove-item="this.library.delete($event)"
     >
 <!--      @remove-category="removeCategory"-->
       <template #extra>
