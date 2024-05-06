@@ -43,7 +43,7 @@ export function InventoryItem(item){
 
       const dataItem = {
         reorderMessageCode: this.reorderMessageWhen,
-        inventoryType: item.product? STORAGE_TYPES.PRODUCT_GENERIC: STORAGE_TYPES.CATEGORY,
+        inventoryType: item.product? STORAGE_TYPES.PRODUCT_GENERIC : STORAGE_TYPES.CATEGORY,
       }
       // TODO: IMPORTANT! MOVE INTO INSTANCES INSTEAD OF HERE
       if(dataItem.inventoryType === STORAGE_TYPES.CATEGORY){
@@ -60,6 +60,8 @@ export function InventoryItem(item){
         dataItem.description = item.product.description;
         dataItem.imageURL    = item.product.imageSrc;
         dataItem.title       = item.product.title;
+        dataItem.productId   = item.product.productId;
+        dataItem.numInStock  = item.product.numInStock;
       }
 
       return dataItem;

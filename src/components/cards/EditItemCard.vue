@@ -93,13 +93,13 @@
           <div class="input-group mb-3 w-100">
 
                 <div class="col-2 d-block z-2">
-                    <button type="button" @click="editInventoryItem.inStockLevel -= (editInventoryItem.inStockLevel > 0? 1:0)" class="h-100 d-block rounded-0 rounded-start-3 form-control focus-ring-primary">
+                    <button type="button" @click="editInventoryItem.numInStock -= (editInventoryItem.numInStock > 0? 1:0)" class="h-100 d-block rounded-0 rounded-start-3 form-control focus-ring-primary">
                         <i class="bi bi-dash"></i>
                     </button>
                 </div>
                 <div class="col-8 form-control m-0 p-0">
 
-                    <q-input filled v-model.number="editInventoryItem.inStockLevel"
+                    <q-input filled v-model.number="editInventoryItem.numInStock"
                              type="number"
                              label="# in stock"
                              class="full-width w-100"
@@ -108,7 +108,7 @@
                     ></q-input>
                 </div>
                 <div class="col-2 d-block z-2">
-                    <button type="button" @click="editInventoryItem.inStockLevel++" class="h-100 rounded-0 rounded-end-3 form-control focus-ring-primary">
+                    <button type="button" @click="editInventoryItem.numInStock++" class="h-100 rounded-0 rounded-end-3 form-control focus-ring-primary">
                         <i class="bi bi-plus"></i>
                     </button>
                 </div>

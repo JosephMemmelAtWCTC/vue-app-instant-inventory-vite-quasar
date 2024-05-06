@@ -40,7 +40,7 @@ export default function InventoryCollection(arr = []) {
       const asData = newItem.getAsData();
       this.splice(this.length-1, 1);
 
-      inventory.collection(asData.inventoryType===STORAGE_TYPES.CATEGORY ? "categories" : "products") //TODO: move to store name inside instead of caculate here
+      inventory.collection(asData.inventoryType===STORAGE_TYPES.CATEGORY ? "categories" : "products") //TODO: move to store name inside instead of calculate here
         .add(asData)
         .then(function(docRef) {
           console.log("docRef", docRef);

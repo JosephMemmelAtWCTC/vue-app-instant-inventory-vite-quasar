@@ -8,17 +8,17 @@ export default class StoreItem {
     description = "";
     imageSrc = "";
 
-    constructor(product, inStockLevel, reorderLevel, lastUpdated= Date.now()) {
+    constructor(product, numInStock, reorderLevel, lastUpdated= Date.now()) {
 
         this.product      = product;
 
-        this.inStockLevel = inStockLevel;
+        this.numInStock = numInStock;
         this.reorderLevel = reorderLevel;
 
         this.lastUpdated  = lastUpdated;
     }
 
     get hasLowStock(){
-        return this.inStockLevel <= this.reorderLevel;
+        return this.numInStock <= this.reorderLevel;
     }
 }

@@ -90,12 +90,12 @@ export default defineComponent({
         dataPush.docId = doc.id;
         data.push(dataPush);
       });
-      data.forEach((categoryData, i) => {
-        console.log("category, i", categoryData);
-        const found = new objectConstructor(categoryData);
+      data.forEach((inventoryData, i) => {
+        console.log("inventoryItemData, i", inventoryData);
+        const found = new objectConstructor(inventoryData);
         // const foundCategory = new Category(data.title, data.description, data.imageURL, data.items);
         this.library.add(found);
-        console.log("foundCategory", found)
+        console.log("foundItem", found)
       });
     },
 

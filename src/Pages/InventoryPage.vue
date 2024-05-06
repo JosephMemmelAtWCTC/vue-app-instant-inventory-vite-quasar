@@ -9,7 +9,6 @@ import EditModal from "components/EditModal.vue";
 import Product from "src/models/Product";
 import {InventoryItem, STORAGE_TYPES} from "src/models/InventoryItem";
 
-// const newItem = new StoreItem(new Product("","","https://picsum.photos/200/300",""), 1, undefined)
 
 export default defineComponent({
   name: "InventoryPage",
@@ -155,13 +154,13 @@ export default defineComponent({
                       <div class="input-group mb-3 w-100">
 
                         <div class="col-2 d-block z-2">
-                          <button type="button" @click="this.newItem.inStockLevel -= (slotProps.editItem.inStockLevel > 0? 1:0)" class="h-100 d-block rounded-0 rounded-start-3 form-control focus-ring-primary">
+                          <button type="button" @click="this.newItem.numInStock -= (slotProps.editItem.numInStock > 0? 1:0)" class="h-100 d-block rounded-0 rounded-start-3 form-control focus-ring-primary">
                             <i class="bi bi-dash"></i>
                           </button>
                         </div>
                         <div class="col-8 form-control m-0 p-0">
 
-                          <q-input filled v-model.number="this.newItem.inStockLevel"
+                          <q-input filled v-model.number="this.newItem.numInStock"
                                    type="number"
                                    label="# in stock"
                                    class="full-width w-100"
@@ -170,7 +169,7 @@ export default defineComponent({
                           ></q-input>
                         </div>
                         <div class="col-2 d-block z-2">
-                          <button type="button" @click="this.newItem.inStockLevel++" class="h-100 rounded-0 rounded-end-3 form-control focus-ring-primary">
+                          <button type="button" @click="this.newItem.numInStock++" class="h-100 rounded-0 rounded-end-3 form-control focus-ring-primary">
                             <i class="bi bi-plus"></i>
                           </button>
                         </div>

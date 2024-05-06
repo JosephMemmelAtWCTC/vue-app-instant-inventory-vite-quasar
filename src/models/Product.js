@@ -5,21 +5,25 @@ export default class Product {
   static type = STORAGE_TYPES.PRODUCT_GENERIC;
   static cardDetailsComponent = "EditItemCard";
 
-  constructor(title, description, imageURL, productId) {
-      this.constructorSaved = this.constructor;
+  constructor(title, description, imageURL, productId, numInStock) {
+    this.constructorSaved = this.constructor;
 
 
-      if(typeof title === "object"){//Check if sending via data
-        description = title.description;
-        imageURL    = title.imageURL;
-        productId   = title.productId;
-        title       = title.title;
-      }
-
-        this.title        = title;
-        this.description  = description;
-        this.imageSrc     = imageURL;
-        this.productId    = productId;
+    if(typeof title === "object"){//Check if sending via data
+      description = title.description;
+      imageURL    = title.imageURL;
+      productId   = title.productId;
+      numInStock  = title.numInStock;
+      // REMEMBER, ALWAYS NEEDS TO BE LAST
+      title       = title.title;
+      console.log("title.numInStock",title);
     }
+
+    this.title        = title;
+    this.description  = description;
+    this.imageSrc     = imageURL;
+    this.productId    = productId;
+    this.numInStock   = numInStock;
+  }
 
 }

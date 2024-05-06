@@ -54,7 +54,7 @@ export default defineComponent({
   >
     <slot :item="slotProps.item">
       <div :class="{'text-warning-emphasis': slotProps.item.hasLowStock}">
-        {{ slotProps.item.inStockLevel }}{{ slotProps.item.reorderLevel === -1 || slotProps.item.reorderLevel === undefined || slotProps.item.reorderLevel === null ? "" : "/"+slotProps.item.reorderLevel }} item{{ slotProps.item.inStockLevel == 1 ? "" : "s" }} in stock
+        {{ slotProps.item.numInStock }}{{ slotProps.item.reorderLevel === -1 || slotProps.item.reorderLevel === undefined || slotProps.item.reorderLevel === null ? "" : "/"+slotProps.item.reorderLevel }} item{{ slotProps.item.numInStock == 1 ? "" : "s" }} in stock
         <i v-if="slotProps.item.hasLowStock" class="bi bi-exclamation-diamond-fill"></i>
       </div>
     </slot>
