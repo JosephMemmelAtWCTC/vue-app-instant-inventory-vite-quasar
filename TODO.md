@@ -20,3 +20,9 @@ sendSignInLinkToEmail - Change entire way of creating new accounts
 
 Send notify when profile image changed
 
+
+TODO FROM CLASS
+- Edit icon for editing w/ hover change text
+-
+- Image compression
+

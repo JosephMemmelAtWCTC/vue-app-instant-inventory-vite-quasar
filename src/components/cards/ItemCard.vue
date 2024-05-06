@@ -42,7 +42,7 @@ export default defineComponent({
 
 <template>
   <image-card
-    @card-clicked="passCardWasClickedUp"
+    @card-clicked="this.sendUpdateCardClicked"
     :imageSrc="item.imageSrc"
     :item="item"
     :headerText="item.title"

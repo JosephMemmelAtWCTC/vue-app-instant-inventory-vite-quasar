@@ -55,6 +55,7 @@ export default defineComponent({
     >
 <!--        itemsList.filter(item => item.hasLowStock).length-->
       <template #jumbotronsubtext>
+        <h1 class="w-100">Company Name Here</h1>
         <p class="w-100">ConnectionInfo</p>
         <p class="">{{appInfo.appVersion}}</p>
       </template>

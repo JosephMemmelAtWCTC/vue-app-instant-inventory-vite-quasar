@@ -34,6 +34,12 @@
       removeItem(item){
         this.$emit('remove-it', item);
       },
+
+      sendUpdateCardOpenCategory(docId){
+        console.log("sendUpdateCardOpenCategory in EditCard", docId);
+        this.$emit('card-navigate', docId);
+      }
+
     },
     computed: {
       cardType(){
@@ -44,7 +50,7 @@
 </script>
 
 <template>
-  <component :is="cardComponent" :item="item" @click="openEditModal" >
+  <component :is="cardComponent" :item="item" @card-clicked="openEditModal" @card-navigate="sendUpdateCardOpenCategory">
   </component>
   <edit-modal :item="this.editCopy"
               @save-it="saveItem"

@@ -53,9 +53,17 @@ export default defineComponent({
 
 <template>
   <div :class="wrapperClass">
-    <div class="card" @click="sendUpdateCardClicked" :style="'height:'+cardHeight">
+    <div class="card" :style="'height:'+cardHeight">
       <slot name="header">
-        <div class="card-header bg-transparent text-truncate">{{ headerText }}</div>
+        <div class="card-header bg-transparent text-truncate">
+          {{ headerText }}
+          <q-icon
+            name="bi-pencil-square"
+            @click.stop="sendUpdateCardClicked"
+            class="hover-show-hand"
+          >
+          </q-icon>
+        </div>
       </slot>
       <img :src="imageSrc" class="displayImage p-0 m-0 rounded-0 border-bottom w-auto" alt="Loading..."><!--TODO:-->
       <div class="card-body overflow-y-scroll">

@@ -30,6 +30,10 @@ export default defineComponent({
       console.log("updateEditCategoryToValues(){");
       this.editCategory = Object.assign(new Category(), this.item);
     },
+    sendUpdateCardOpenCategory(docId){
+      console.log("sendUpdateCardOpenCategory in EditCategoryCard", docId);
+      this.$emit('card-navigate', docId);
+    }
   },
   created: function () {
     this.updateEditCategoryToValues();
@@ -43,7 +47,9 @@ export default defineComponent({
              :item="this.item"
              @save-it="saveCategory"
              @remove-it="removeItem"
-             @opened-modal="updateEditCategoryToValues">
+             @opened-modal="updateEditCategoryToValues"
+             @card-navigate="sendUpdateCardOpenCategory"
+  >
       <template #form="slotProps">
       <q-input filled v-model="editCategory.title"
                autofocus

@@ -23,7 +23,7 @@
         required: false,
       },
     },
-    emits: ['card-clicked'],
+    emits: ['card-clicked', 'card-navigate'],
     methods: {
       sendUpdateCardClicked() {
         if(this.item){
@@ -31,6 +31,10 @@
         }else{
           this.$emit('card-clicked');
         }
+      },
+      sendUpdateCardOpenCategory(docId){
+        console.log("sendUpdateCardOpenCategory", docId);
+        this.$emit('card-navigate', docId);
       }
     },
   });
@@ -38,7 +42,8 @@
 
 <template>
   <image-card
-    @card-clicked="passCardWasClickedUp"
+    @click="this.sendUpdateCardOpenCategory(item.docId)"
+    @card-clicked="this.sendUpdateCardClicked"
     :imageSrc="item.imageSrc"
     :item="item"
     :headerText="item.title"

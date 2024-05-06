@@ -1,9 +1,10 @@
 import {InventoryItem, STORAGE_TYPES } from "src/models/InventoryItem.js"
 import { inventory, auth, storage } from 'src/models/Firebase.js'
+import Category from "src/models/Category";
+import Product from "src/models/Product";
 
 
 export default function InventoryCollection(arr = []) {
-
 
     arr.add = function (item) {
       const newItem = new InventoryItem(item);
@@ -58,7 +59,6 @@ export default function InventoryCollection(arr = []) {
         .catch(function(error) {
           console.error("Error ", error);
 
-          // let the user know...
           // TODO: let the user know
         });
     }
@@ -89,6 +89,62 @@ export default function InventoryCollection(arr = []) {
     //   TODO: Notify if failed, etc
 
     }
+
+    function onInventorySnapshot(categoriesQuerySnapshot, objectConstructor){
+    // TODO: Move to inventoryCollection
+      arr.removeAllOfType(objectConstructor.type);
+      const data = [];
+      categoriesQuerySnapshot.forEach(doc => {
+        const dataPush = doc.data();
+        dataPush.docId = doc.id;
+        data.push(dataPush);
+      });
+      data.forEach((inventoryData, i) => {
+        console.log("inventoryItemData, i", inventoryData);
+        const found = new objectConstructor(inventoryData);
+        // const foundCategory = new Category(data.title, data.description, data.imageURL, data.items);
+        arr.add(found);
+        console.log("foundItem", found)
+      });
+    }
+
+
+    arr.setFirebaseDoc = function(path){
+      let categoriesCollection = null;
+      let productsCollection = null;
+
+      if(path){
+      }else{
+        categoriesCollection = inventory.collection('categories');
+        productsCollection = inventory.collection('products');
+      }
+
+      categoriesCollection
+        .onSnapshot(snapshot => {
+          onInventorySnapshot(snapshot, Category);
+        })
+      productsCollection
+        .onSnapshot(snapshot => {
+          onInventorySnapshot(snapshot, Product);
+        })
+    }
+
+
+
+
+    arr.navigateTo = function(docId, navigationType){
+      if(navigationType === "relative"){
+
+      }
+    }
+
+
+
+
+
+
+
+
 
     arr.updateOrAddValue = function (itemOld, itemNew) {
         if(typeof itemOld === 'undefined'){

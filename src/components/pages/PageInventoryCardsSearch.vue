@@ -22,7 +22,7 @@
         required: true,
       },
     },
-    emits: ['save-it','remove-category', 'remove-item'],
+    emits: ['save-it','remove-category', 'remove-item','card-navigate'],
     methods: {
       removeItem(removeItem) {
         this.$emit('remove-item', removeItem);
@@ -31,6 +31,9 @@
         console.log("Saved send up PageInventoryCardsSearch");
         this.$emit('save-it', item);
       },
+      sendUpdateCardOpenCategory(docId){
+        this.$emit('card-navigate', docId);
+      }
     },
   });
 </script>
@@ -73,6 +76,7 @@
             <cards-list v-bind:items="currentCombinedItemsList"
                         @save-it="saveItem"
                         @remove-it="removeItem"
+                        @card-navigate="sendUpdateCardOpenCategory"
             >
             </cards-list>
         </div>

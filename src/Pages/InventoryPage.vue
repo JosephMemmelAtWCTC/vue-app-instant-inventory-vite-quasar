@@ -36,6 +36,9 @@ export default defineComponent({
       // this.library.updateOrAddValue(item);
       this.library.addNew(item);
     },
+    onUpdateCardOpenCategory(docId){
+      this.library.navigateTo(docId, "relative");
+    }
   },
   computed: {
     StoreItem() {
@@ -81,6 +84,7 @@ export default defineComponent({
       search-label="Filter Search"
       @remove-item="this.library.delete($event)"
       @save-it="this.library.update($event)"
+      @card-navigate="onUpdateCardOpenCategory"
     >
 <!--      @remove-category="removeCategory"-->
       <template #extra>

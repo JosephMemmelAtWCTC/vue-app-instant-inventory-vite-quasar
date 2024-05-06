@@ -69,10 +69,6 @@ export default defineComponent({
             label: "Include Items",
             state: true
           },
-          {
-            label: "Only Under Threshold",
-            state: false
-          },
         ],
         searchString: "",
       }
@@ -81,23 +77,6 @@ export default defineComponent({
     }
   },
   methods: {
-    // TODO: Move to inventoryCollection
-    onInventorySnapshot(categoriesQuerySnapshot, objectConstructor){
-      this.library.removeAllOfType(objectConstructor.type);
-      const data = [];
-      categoriesQuerySnapshot.forEach(doc => {
-        const dataPush = doc.data();
-        dataPush.docId = doc.id;
-        data.push(dataPush);
-      });
-      data.forEach((inventoryData, i) => {
-        console.log("inventoryItemData, i", inventoryData);
-        const found = new objectConstructor(inventoryData);
-        // const foundCategory = new Category(data.title, data.description, data.imageURL, data.items);
-        this.library.add(found);
-        console.log("foundItem", found)
-      });
-    },
 
     setLibraryFromDocPath(categoryPath){
       console.log("setLibraryFromDocPath starting...");
@@ -109,14 +88,7 @@ export default defineComponent({
 
       const newDisplayLibrary = new InventoryCollection();
 
-      inventory.collection('categories')
-        .onSnapshot(snapshot => {
-          this.onInventorySnapshot(snapshot, Category);
-        })
-      inventory.collection('products')
-        .onSnapshot(snapshot => {
-          this.onInventorySnapshot(snapshot, Product);
-        })
+      newDisplayLibrary.setFirebaseDoc();
 
       this.library = newDisplayLibrary;
       return "";

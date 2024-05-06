@@ -12,7 +12,7 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ['save-it', 'remove-it'],
+  emits: ['save-it', 'remove-it', 'card-navigate'],
   methods: {
     saveItem(item){
       console.log("Saved send up CardsList", item);
@@ -22,6 +22,9 @@ export default defineComponent({
       console.log("Removed send up CardsList");
       this.$emit('remove-it', item);
     },
+    sendUpdateCardOpenCategory(docId){
+      this.$emit('card-navigate', docId);
+    }
   },
 });
 </script>
@@ -32,6 +35,7 @@ export default defineComponent({
              :item="item"
              :edit-item="item"
              @save-it="saveItem"
-             @remove-it="removeItem">
+             @remove-it="removeItem"
+             @card-navigate="sendUpdateCardOpenCategory">
   </component>
 </template>
