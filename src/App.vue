@@ -81,6 +81,24 @@ export default defineComponent({
     }
   },
   methods: {
+
+    onInventorySnapshot(categoriesQuerySnapshot, objectConstructor){
+      this.library.removeAllOfType(objectConstructor.type);
+      const data = [];
+      categoriesQuerySnapshot.forEach(doc => {
+        const dataPush = doc.data();
+        dataPush.docId = doc.id;
+        data.push(dataPush);
+      });
+      data.forEach((categoryData, i) => {
+        console.log("category, i", categoryData);
+        const found = new objectConstructor(categoryData);
+        // const foundCategory = new Category(data.title, data.description, data.imageURL, data.items);
+        this.library.add(found);
+        console.log("foundCategory", found)
+      });
+    },
+
     setLibraryFromDocPath(categoryPath){
       console.log("setLibraryFromDocPath starting...");
 
@@ -92,38 +110,12 @@ export default defineComponent({
       const newDisplayLibrary = new InventoryCollection();
 
       inventory.collection('categories')
-        .get()
-        .then(categoriesQuerySnapshot => {
-            const data = [];
-            categoriesQuerySnapshot.forEach(doc => {
-              const dataPush = doc.data();
-              dataPush.docId = doc.id;
-              data.push(dataPush);
-            });
-            data.forEach((categoryData, i) => {
-              console.log("category, i", categoryData);
-              const foundCategory = new Category(categoryData);
-              // const foundCategory = new Category(data.title, data.description, data.imageURL, data.items);
-              this.library.add(foundCategory);
-              console.log("foundCategory", foundCategory)
-            });
+        .onSnapshot(snapshot => {
+          this.onInventorySnapshot(snapshot, Category);
         })
-
       inventory.collection('products')
-        .get()
-        .then(productsQuerySnapshot => {
-          const data = [];
-          productsQuerySnapshot.forEach(doc => {
-            const dataPush = doc.data();
-            dataPush.docId = doc.id;
-            data.push(dataPush);
-          });
-          data.forEach((productData, i) => {
-            console.log("product, i", productData);
-            const foundProduct = new Product(productData);
-            this.library.add(foundProduct);
-            console.log("foundProduct", foundProduct)
-          });
+        .onSnapshot(snapshot => {
+          this.onInventorySnapshot(snapshot, Product);
         })
 
       this.library = newDisplayLibrary;

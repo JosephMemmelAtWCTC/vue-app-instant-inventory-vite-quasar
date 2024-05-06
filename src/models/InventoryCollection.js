@@ -20,12 +20,26 @@ export default function InventoryCollection(arr = []) {
         return this;
     }
 
+    arr.removeAllOfType = function(type){
+      for(let i = 0; i < this.length; i++){
+        const element = arr[i];
+        console.log("element", element);
+        if(element.constructor.type === type){
+          console.log("removing...");
+          arr.remove(element);
+          i--;
+        }
+      }
+    }
+
     arr.addNew = function (newItem) {
       this.add(newItem);
 
       console.log("newItem in this.add(newItem) =",newItem);
 
       const asData = newItem.getAsData();
+      this.splice(this.length-1, 1);
+
       inventory.collection(asData.inventoryType===STORAGE_TYPES.CATEGORY ? "categories" : "products") //TODO: move to store name inside instead of caculate here
         .add(asData)
         .then(function(docRef) {

@@ -1,5 +1,7 @@
+import {STORAGE_TYPES} from "src/models/InventoryItem";
+
 export default class Category { //Rename to Group?
-        static type = "Category";
+        static type = STORAGE_TYPES.CATEGORY;
         static cardDetailsComponent = "EditCategoryCard";
 
         title = "";
