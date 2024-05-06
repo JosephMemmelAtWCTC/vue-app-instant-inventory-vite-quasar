@@ -63,6 +63,33 @@ export default function InventoryCollection(arr = []) {
         });
     }
 
+    arr.update = function (oldNew){
+      const oldVersion = oldNew[0];
+      const newVersion = oldNew[1];
+      console.log("<<<<<<", oldVersion);
+      console.log(">>>>>>", newVersion);
+
+      //   TODO: Only send updates to changed fields
+
+      const diffrences = {};
+      for(const fieldKey in newVersion){
+        if(oldVersion[fieldKey] !== newVersion[fieldKey]) {
+          diffrences[fieldKey] = newVersion[fieldKey];
+        }
+      }
+
+      console.log("<><><>", diffrences);
+      // console.log("to", oldVersion.constructorSaved.name, STORAGE_TYPES.CATEGORY.toLowerCase());
+
+      inventory.collection(oldVersion.constructorSaved.name.toLowerCase()===STORAGE_TYPES.CATEGORY ? "categories" : "products")
+        .doc(oldVersion.docId)
+        .update(diffrences)
+
+
+    //   TODO: Notify if failed, etc
+
+    }
+
     arr.updateOrAddValue = function (itemOld, itemNew) {
         if(typeof itemOld === 'undefined'){
             this.add(itemNew);
