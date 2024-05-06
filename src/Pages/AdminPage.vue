@@ -295,43 +295,7 @@ export default defineComponent({
 
   },
   created: function () {
-    // accounts = storage.child('accounts');
-    // const storage2 = firebase.storage().ref();
-
-    // const storage = firebase.storage().ref();
-
-// or with a config object:
-    // firebase.auth()
-    //   .listUsers(100)
-    //   .then((listUsersResult) => {
-    //     listUsersResult.users.forEach((userRecord) => {
-    //       console.log('user', userRecord.toJSON());
-    //     });
-    //     if (listUsersResult.pageToken) {
-    //       // List next batch of users.
-    //       listAllUsers(listUsersResult.pageToken);
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.error('Error listing users:', error);
-    //   });
-
-    // for (let i = 0; i < 5; i++) {
-    //   this.rows = this.rows.concat(
-    //     {
-    //       name: 'Frozen Yogurt',
-    //       calories: 159,
-    //       fat: 6.0,
-    //       carbs: 24,
-    //       protein: 4.0,
-    //       sodium: 87,
-    //       calcium: '14%',
-    //       iron: '1%'
-    //     }
-    //   );
-    // this.rows.forEach((row, index) => {
-    //   row.index = index
-    // })
+    this.testLoading();
   },
   computed: {
     submitButtonStatus() {

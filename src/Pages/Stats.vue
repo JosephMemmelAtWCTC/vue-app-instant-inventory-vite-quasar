@@ -26,10 +26,14 @@ export default defineComponent({
         labels: [ 'Categories', 'Products' ],
         datasets: [
           {
+            label: 'Item Count',
             data: [
               this.library.filterByType([STORAGE_TYPES.CATEGORY.toLowerCase()]).length,
               this.library.filterByType(["product"]).length,
             ],
+            // backgroundColor: [
+            // TODO: Give each own header and color
+            // ],
           }
         ]
       };
