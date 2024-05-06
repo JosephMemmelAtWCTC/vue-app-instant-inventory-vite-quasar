@@ -74,7 +74,7 @@ export default defineComponent({
 
 
 <template>
-  <q-page class="flex flex-center">
+  <q-page class="flex">
     <page-inventory-cards-search
       :filter-settings="filterSettings"
       :current-combined-items-list="filteredLibrary"

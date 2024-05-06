@@ -47,7 +47,8 @@ export default defineComponent({
       :jumbotron-title="appInfo.appTitle"
       :table-items="[
         this.library.filterByType([Category.type]).length,
-        this.library.filterByType([StoreItem.type]).length,
+        // this.library.filterByType([StoreItem.type]).length,
+        this.library.filterByType(['product']).length,
         '#',
         ''
       ]"

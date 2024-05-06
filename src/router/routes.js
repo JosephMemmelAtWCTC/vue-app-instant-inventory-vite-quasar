@@ -28,14 +28,29 @@ const routes = [
         // props: true,
       },
       {
-        path: '/app',
-        component: () => import('src/Pages/MarketingDownloadApp.vue'),
-        // component: () => import('Pages/ErrorNotFound.vue'),
-        // props: { }
+        path: '/recents',
+        component: () => import('src/Pages/ComingSoon.vue'),
+      },
+      {
+        path: '/notifications',
+        component: () => import('src/Pages/ComingSoon.vue'),
+      },
+      {
+        path: '/stats',
+        component: () => import('src/Pages/Stats.vue'),
       },
       {
         path: '/admin',
         component: () => import('src/Pages/AdminPage.vue'),
+        // component: () => import('Pages/ErrorNotFound.vue'),
+        // props: { }
+      },
+
+
+
+      {
+        path: '/app',
+        component: () => import('src/Pages/MarketingDownloadApp.vue'),
         // component: () => import('Pages/ErrorNotFound.vue'),
         // props: { }
       },

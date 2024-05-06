@@ -113,6 +113,19 @@ export default defineComponent({
                 </div>
               </div>
             </Router-Link>
+            <Router-Link to="login" v-else>
+              <div class="full-height q-py-sm">
+                <div class="row">
+                  <div class="col-auto">
+                    <div class="column full-height justify-center">
+                      <div class="col">
+                        Log In
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Router-Link>
           </div>
         </div>
       </q-toolbar>
@@ -146,11 +159,15 @@ export default defineComponent({
         </navigate-icon-item>
         <navigate-icon-item router-link-to="/inventory" tooltip-info="Inventory" li-extra-classes="p-2 mb-2" icon-class="bi-box-seam"><!--fa-solid fa-boxes-stacked-->
         </navigate-icon-item>
-        <navigate-icon-item tooltip-info="Recents" li-extra-classes="p-2 mb-2" icon-class="bi-arrow-left-right" :badge-text="library.length">
+        <navigate-icon-item router-link-to="/recents" tooltip-info="Recents" li-extra-classes="p-2 mb-2" icon-class="bi-arrow-left-right" :badge-text="library.length">
+        </navigate-icon-item>
+        <navigate-icon-item router-link-to="/notifications" tooltip-info="Notifications" li-extra-classes="p-2 mb-2" icon-class="bi-bell" :badge-text="library.length">
+        </navigate-icon-item>
+        <navigate-icon-item router-link-to="/stats" tooltip-info="Statistics" li-extra-classes="p-2 mb-2" icon-class="bi-clipboard2-data">
         </navigate-icon-item>
 <!--        <navigate-icon-item router-link-to="/account" tooltip-info="Account" li-extra-classes="p-2 mb-2" icon-class="bi-person">-->
 <!--        </navigate-icon-item>-->
-        <navigate-icon-item router-link-to="/admin" tooltip-info="Admin" li-extra-classes="p-2 mb-2" icon-class="bi-terminal">
+        <navigate-icon-item router-link-to="/admin" tooltip-info="Admin" li-extra-classes="p-2 mb-2" icon-class="bi-terminal" v-if="authUser.role.toLowerCase() === 'admin'">
         </navigate-icon-item>
       </q-list>
         <footer>
