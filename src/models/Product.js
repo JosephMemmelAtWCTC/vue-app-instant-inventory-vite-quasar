@@ -5,11 +5,12 @@ export default class Product {
   static type = STORAGE_TYPES.PRODUCT_GENERIC;
   static cardDetailsComponent = "EditItemCard";
 
-  constructor(title, description, imageURL, productId, numInStock) {
+  constructor(title, description, imageURL, productId, numInStock, docId) {
     this.constructorSaved = this.constructor;
 
 
     if(typeof title === "object"){//Check if sending via data
+      docId       = title.docId;
       description = title.description;
       imageURL    = title.imageURL;
       productId   = title.productId;
@@ -24,6 +25,7 @@ export default class Product {
     this.imageSrc     = imageURL;
     this.productId    = productId;
     this.numInStock   = numInStock;
+    this.docId        = docId;
   }
 
 }

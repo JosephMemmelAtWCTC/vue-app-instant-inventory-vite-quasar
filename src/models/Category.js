@@ -11,13 +11,15 @@ export default class Category { //Rename to Group?
         items = [];
 
 
-        constructor(title, description, imageURL, items = []) {
+        constructor(title, description, imageURL, docId, items = []) {
             this.constructorSaved = this.constructor;
 
             if(typeof title === "object"){//Check if sending via data
               description = title.description;
               imageURL    = title.imageURL;
               items       = [];
+              docId       = title.docId;
+              // REMEMBER, ALWAYS NEEDS TO BE LAST
               title       = title.title;
             }
 
@@ -25,6 +27,8 @@ export default class Category { //Rename to Group?
             this.description = description;
             this.imageSrc    = imageURL;
             this.items       = this.items.concat(items);
+            this.docId       = docId;
+
         }
 
         // get hasLowStock(){

@@ -77,6 +77,7 @@ export default defineComponent({
       :filter-settings="filterSettings"
       :current-combined-items-list="filteredLibrary"
       search-label="Filter Search"
+      @remove-item="this.library.remove($event)"
     >
 <!--      @remove-category="removeCategory"-->
       <template #extra>

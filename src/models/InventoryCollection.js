@@ -14,10 +14,17 @@ export default function InventoryCollection(arr = []) {
     }
 
     arr.remove = function (item) {
-        console.log("arr.remove = ", item);
-        this.splice(this.indexOf(item), 1)
+      console.log("arr.remove = ", item);
+      this.splice(this.indexOf(item), 1)
 
-        return this;
+      inventory.collection(item.product? "products" : "categories")
+      .doc(item.docId).delete().then(() => {
+        console.log("Document successfully deleted!");
+      }).catch((error) => {
+        console.error("Error removing document: ", error);
+      });
+
+      return this;
     }
 
     arr.removeAllOfType = function(type){

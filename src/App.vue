@@ -81,7 +81,7 @@ export default defineComponent({
     }
   },
   methods: {
-
+    // TODO: Move to inventoryCollection
     onInventorySnapshot(categoriesQuerySnapshot, objectConstructor){
       this.library.removeAllOfType(objectConstructor.type);
       const data = [];
