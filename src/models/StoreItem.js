@@ -1,6 +1,6 @@
 export default class StoreItem {
     static type = "StoreItem";
-    static cardDetailsComponent = "editItemCard";
+    static cardDetailsComponent = "EditItemCard";
 
     product = {};
 
@@ -9,6 +9,7 @@ export default class StoreItem {
     imageSrc = "";
 
     constructor(product, inStockLevel, reorderLevel, lastUpdated= Date.now()) {
+
         this.product      = product;
 
         this.inStockLevel = inStockLevel;

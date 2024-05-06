@@ -65,11 +65,13 @@ export default function InventoryCollection(arr = []) {
     }
 
     arr.filterByType = function(types){
-      const filteredArray = this.filter(i => types.includes(i.constructor.name));
-      // this.forEach(i => console.log(types.includes(i.constructor.name)));
-      this.forEach(i => console.log(i.constructor.name));
-      // console.log("types = ", types);
-      return filteredArray;
+      // const filteredArray = this.filter(i => types.includes(i.constructor.name));
+      // // this.forEach(i => console.log(types.includes(i.constructor.name)));
+      // this.forEach(i => console.log(i.constructor.name));
+      console.log("types = ", types);
+      // return filteredArray;
+      // !!!!@@@
+      return this;
     }
 
     return arr;

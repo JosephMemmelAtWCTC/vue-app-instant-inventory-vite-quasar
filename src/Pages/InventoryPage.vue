@@ -7,6 +7,7 @@ import Category from "src/models/Category";
 import OptionsFAB from "components/OptionsFAB.vue";
 import EditModal from "components/EditModal.vue";
 import Product from "src/models/Product";
+import {InventoryItem, STORAGE_TYPES} from "src/models/InventoryItem";
 
 // const newItem = new StoreItem(new Product("","","https://picsum.photos/200/300",""), 1, undefined)
 
@@ -54,7 +55,9 @@ export default defineComponent({
         filterByConstructors.push(Category.type);
       }
       if(this.filterSettings.toggles[1].state){
-        filterByConstructors.push(StoreItem.type);
+        if(StoreItem.type){
+          filterByConstructors.push(STORAGE_TYPES.PRODUCT_GENERIC);
+        }
       }
 
       filteredResults = this.library.filterByType(filterByConstructors);

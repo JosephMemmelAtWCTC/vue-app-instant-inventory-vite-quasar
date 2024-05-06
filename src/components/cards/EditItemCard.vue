@@ -7,7 +7,7 @@
   import EditCard from "components/cards/EditCard.vue";
 
   export default defineComponent({
-    name: "editItemCard",
+    name: "EditItemCard",
     components: {EditCard},
     data() {
       return {
@@ -47,20 +47,20 @@
                @remove-it="removeItem"
                @opened-modal="updateEditItemToValues">
         <template #form="slotProps">
-            <q-input filled v-model="editInventoryItem.product.title"
+            <q-input filled v-model="editInventoryItem.title"
                      label="Name"
                      class="full-width"
                      autofocus
                      :rules="[val => !!val || '* Required']"
                      lazy-rules
             ></q-input>
-            <q-input filled v-model="editInventoryItem.product.productId"
+            <q-input filled v-model="editInventoryItem.productId"
                      label="Product ID"
                      class="full-width"
                      :rules="[val => !!val || '* Required']"
                      lazy-rules
             ></q-input>
-            <q-input filled v-model="editInventoryItem.product.description"
+            <q-input filled v-model="editInventoryItem.description"
                      type="textarea"
                      rows="4"
                      label="Description"

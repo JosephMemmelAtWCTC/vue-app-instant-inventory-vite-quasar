@@ -43,10 +43,10 @@ export default defineComponent({
 <template>
   <image-card
     @card-clicked="passCardWasClickedUp"
-    :imageSrc="item.product.imageSrc"
+    :imageSrc="item.imageSrc"
     :item="item"
-    :headerText="item.product.title"
-    :descriptionText="item.product.description"
+    :headerText="item.title"
+    :descriptionText="item.description"
     class="my-1"
     wrapper-class="animate-pop-in hover-expand"
     card-height="450px"
