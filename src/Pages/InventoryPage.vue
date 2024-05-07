@@ -116,6 +116,7 @@ export default defineComponent({
     <page-inventory-cards-search :key="filteredLibrary"
       :filter-settings="filterSettings"
       :current-combined-items-list="filteredLibrary"
+      :breadCrumbs="this.library.breadCrumbs"
       search-label="Filter Search"
       @remove-item="this.library.delete($event)"
       @save-it="this.library.update($event)"

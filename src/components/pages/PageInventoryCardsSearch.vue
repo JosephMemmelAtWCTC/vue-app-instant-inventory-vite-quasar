@@ -17,6 +17,10 @@
         type: Array,
         required: true,
       },
+      breadCrumbs: {
+        type: Object,
+        required: false,
+      },
       filterSettings: {
         type: Object,
         required: true,
@@ -60,7 +64,7 @@
                     <nav aria-label="Inventory Explorer Breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#" class="link-primary">Warehouse</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Category ____</li>
+                            <li class="breadcrumb-item active" aria-current="page">{{breadCrumbs.path}}</li>
                         </ol>
                     </nav>
                 </div>
@@ -73,7 +77,7 @@
         >
         </results-possibly-empty>
         <div class="row g-2 m-1 row-cols-1 row-cols-sm-2 row-cols-md-4 g-1">
-            <cards-list v-bind:items="currentCombinedItemsList"
+            <cards-list :items="currentCombinedItemsList"
                         @save-it="saveItem"
                         @remove-it="removeItem"
                         @card-navigate="sendUpdateCardOpenCategory"

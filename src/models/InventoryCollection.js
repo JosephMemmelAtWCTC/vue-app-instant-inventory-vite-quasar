@@ -5,6 +5,8 @@ import Product from "src/models/Product";
 
 
 export default function InventoryCollection(arr = []) {
+  let currentInventory = inventory;
+
 
     arr.add = function (item) {
       const newItem = new InventoryItem(item);
@@ -21,7 +23,7 @@ export default function InventoryCollection(arr = []) {
     }
 
     arr.delete = function (item) {
-      inventory.collection(item.product? "products" : "categories")
+      currentInventory.collection(item.product? "products" : "categories")
         .doc(item.docId).delete().then(() => {
         console.log("Document successfully deleted!");
       }).catch((error) => {
@@ -49,7 +51,7 @@ export default function InventoryCollection(arr = []) {
       const asData = newItem.getAsData();
       this.splice(this.length-1, 1);
 
-      inventory.collection(asData.inventoryType===STORAGE_TYPES.CATEGORY ? "categories" : "products") //TODO: move to store name inside instead of calculate here
+      currentInventory.collection(asData.inventoryType===STORAGE_TYPES.CATEGORY ? "categories" : "products") //TODO: move to store name inside instead of calculate here
         .add(asData)
         .then(function(docRef) {
           console.log("docRef", docRef);
@@ -81,7 +83,7 @@ export default function InventoryCollection(arr = []) {
       console.log("<><><>", diffrences);
       // console.log("to", oldVersion.constructorSaved.name, STORAGE_TYPES.CATEGORY.toLowerCase());
 
-      inventory.collection(oldVersion.constructorSaved.name.toLowerCase()===STORAGE_TYPES.CATEGORY ? "categories" : "products")
+      currentInventory.collection(oldVersion.constructorSaved.name.toLowerCase()===STORAGE_TYPES.CATEGORY ? "categories" : "products")
         .doc(oldVersion.docId)
         .update(diffrences)
 
@@ -117,11 +119,11 @@ export default function InventoryCollection(arr = []) {
       console.log("Settings firebaseDoc to ", path);
 
       if(path){
-        categoriesCollection = inventory.collection('categories');
-        productsCollection = inventory.collection('products');
+        categoriesCollection = currentInventory.collection('categories');
+        productsCollection = currentInventory.collection('products');
       }else{
-        categoriesCollection = inventory.collection('categories');
-        productsCollection = inventory.collection('products');
+        categoriesCollection = currentInventory.collection('categories');
+        productsCollection = currentInventory.collection('products');
       }
 
       categoriesCollection
@@ -139,7 +141,16 @@ export default function InventoryCollection(arr = []) {
         // categoriesCollection.doc(docId).get().then(docRef => {
         //   console.log("relative docRef = ", docRef.data());
 
-          categoriesCollection.doc(docId).collection('categories')
+        currentInventory = categoriesCollection.doc(docId)
+
+        currentInventory.get().then(document => {
+          arr.breadCrumbs = {
+            path: document.data().title,
+          }
+        });
+
+
+        currentInventory.collection('categories')
             .get()
             .then(snapshot => {
               snapshot.forEach(doc => {
@@ -157,7 +168,9 @@ export default function InventoryCollection(arr = []) {
       }
     }
 
-
+    arr.breadCrumbs = {
+        path: currentInventory.title,
+    }
 
 
 
