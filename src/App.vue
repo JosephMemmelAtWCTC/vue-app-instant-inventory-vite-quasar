@@ -3,8 +3,9 @@
     :auth-user="this.authUser"
     :library="this.library"
     :app-info="this.appInfo"
-    :filter-settings="this.filterSettings"
   />
+<!--  @call-filter-settings-refresh="console.log('{{{{{{{')"-->
+
 </template>
 <!--    :library="library"-->
 <!--    :appNavigation="appNavigation"-->
@@ -59,25 +60,14 @@ export default defineComponent({
         appVersion: "Vue App v4.0 (Demo)",
         sideBarWidth: 180,
       },
-      filterSettings: {
-        toggles: [
-          {
-            label: "Include Categories",
-            state: true
-          },
-          {
-            label: "Include Items",
-            state: true
-          },
-        ],
-        searchString: "",
-      }
-
 
     }
   },
   methods: {
-
+    handleFilterSettingsRefresh() {
+      console.log('Received call-filter-settings-refresh event');
+      // Handle the event here
+    },
     setLibraryFromDocPath(categoryPath){
       console.log("setLibraryFromDocPath starting...");
 
@@ -129,95 +119,6 @@ export default defineComponent({
 
   },
 
-
-  // data() {
-  //   return {
-  //     // appInfo: {
-  //     //   appTitle: "Instant Inventory",
-  //     //   appVersion: "Vue App v4.0 (Demo)",
-  //     // },
-  //     // appPageConfigSettings: {
-  //     //   profileName: "Test Testerson",
-  //     //   customName: "Custom Name",
-  //     // },
-  //     // appNavigation: {
-  //     //   currentPage: "home",
-  //     //   currentPageLabel: "",
-  //     // },
-  //     //
-  //     // newItem: new StoreItem(new Product("","","https://picsum.photos/200/300",""), 1, undefined),
-  //     // newCategory: new Category("","","src/assets/icons/folder.svg"),
-  //   }
-  // },
-  // methods: {
-  //   // openNavPage(pageLabel) {
-  //   //   this.currentPageLabel = pageLabel.charAt(0).toUpperCase() + pageLabel.slice(1);
-  //   //
-  //   //   this.appNavigation.currentPage = pageLabel;
-  //   // },
-  //   // saveItem(item){
-  //   //   console.log("It came here", item);
-  //   //   // // this.library
-  //   //   console.log("Old", item[0]);
-  //   //   console.log("New", item[1]);
-  //   //   this.library.updateOrAddValue(item[0], item[1])
-  //   // },
-  //   // removeItem(removeItem) {
-  //   //   console.log("It came here removeItem", removeItem);
-  //   //
-  //   //   this.library.remove(removeItem);
-  //   // },
-  //
-  // },
-  //
-  // computed: {
-  //   // StoreItem() {
-  //   //   return StoreItem
-  //   // },
-  //   // Category() {
-  //   //   return Category
-  //   // },
-  //   // computedCurrentPageTitle() {
-  //   //   return this.appNavigation.currentPage.charAt(0).toUpperCase() + this.appNavigation.currentPage.slice(1);
-  //   // },
-  //   // filteredLibrary() {
-  //   //   let filteredResults = [];
-  //   //
-  //   //   const filterByConstructors = [];
-  //   //   const filterByThreshold = [];
-  //   //
-  //   //   if(this.filterSettings.toggles[0].state){
-  //   //     filterByConstructors.push(Category.type);
-  //   //   }
-  //   //   if(this.filterSettings.toggles[1].state){
-  //   //     filterByConstructors.push(StoreItem.type);
-  //   //   }
-  //   //
-  //   //   filteredResults = this.library.filterByType(filterByConstructors);
-  //   //
-  //   //   // if(this.filterSettings.toggles[2].state){
-  //   //   //   filterByThreshold.push(InventoryItem.STOCKED_LEVEL_STATUSES.);
-  //   //   // }
-  //   //   return filteredResults;
-  //   // }
-  // },
-  //
-  // created: function () {
-  //
-  // },
-  // mounted() {
-  //   // this.currentPageTitle = this.appNavigation.currentPageLabel.charAt(0).toUpperCase() + this.appNavigation.currentPageLabel.slice(1);
-  // },
-  // // watch:   calls the function if the value changes
-  // // https://travishorn.com/add-localstorage-to-your-vue-app-in-2-lines-of-code-56eb2c9f371b
-  // watch: {
-  //   // library: {
-  //   //   handler() {
-  //   //     console.log('Library changed: ');
-  //   //   },
-  //   //   deep: true,
-  //   // },
-  // },
 })
 </script>
 

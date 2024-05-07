@@ -17,6 +17,20 @@ export default defineComponent({
     return {
       newCategory: new Category("","","src/assets/icons/folder.svg"),
       newItem: new StoreItem(new Product("","","https://picsum.photos/200/300",""), 1, undefined),
+
+      filterSettings: {
+        toggles: [
+          {
+            label: "Include Categories",
+            state: true
+          },
+          {
+            label: "Include Items",
+            state: true
+          },
+        ],
+        searchString: "",
+      }
     };
   },
   props: {
@@ -30,6 +44,7 @@ export default defineComponent({
       required: true,
     }
   },
+  emits: ["call-filter-settings-refresh"],
   methods: {
     saveItem(item){//TODO: Rename to saveIt
       console.log("item:::::::", item);
@@ -37,17 +52,17 @@ export default defineComponent({
       this.library.addNew(item);
     },
     onUpdateCardOpenCategory(docId){
-      this.library.navigateTo(docId, "relative");
-    }
-  },
-  computed: {
-    StoreItem() {
-      return StoreItem
+      console.log("~~~~~~~~B");
+      this.library.navigateTo(docId, "relative").then(()=>{
+        console.log("~~~~~~~~C");
+        this.filteredLibrary = this.filterAsideAsComputedDosntDetect();
+        this.filterSettings.toggles[0].state = !this.filterSettings.toggles[0].state
+        this.$emit('call-filter-settings-refresh');
+        console.log("call-filter-settings-refresh")
+      });
     },
-    Category() {
-      return Category
-    },
-    filteredLibrary() {
+
+    filterAsideAsComputedDosntDetect(){
       let filteredResults = [];
 
       const filterByConstructors = [];
@@ -60,7 +75,7 @@ export default defineComponent({
         // filterByConstructors.push(StoreItem.type);
         // if(StoreItem.type){
         //   filterByConstructors.push(STORAGE_TYPES.PRODUCT_GENERIC);
-          filterByConstructors.push("product");
+        filterByConstructors.push("product");
         // }
       }
 
@@ -72,13 +87,33 @@ export default defineComponent({
       return filteredResults;
     }
   },
+  computed: {
+    StoreItem() {
+      return StoreItem
+    },
+    Category() {
+      return Category
+    },
+    filteredLibrary() {
+      return this.filterAsideAsComputedDosntDetect();
+    }
+  },
+  watch: {
+    library: {
+      handler() {
+        // this.$emit('example', '');
+        console.log("~~~~~~~~A");
+      },
+      deep: true,
+    },
+  },
 });
 </script>
 
 
 <template>
   <q-page class="flex">
-    <page-inventory-cards-search
+    <page-inventory-cards-search :key="filteredLibrary"
       :filter-settings="filterSettings"
       :current-combined-items-list="filteredLibrary"
       search-label="Filter Search"

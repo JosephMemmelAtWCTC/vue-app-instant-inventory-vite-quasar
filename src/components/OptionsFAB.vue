@@ -25,14 +25,6 @@ export default defineComponent({
       required: true,
     }
   },
-  emits: [],
-  watch: {
-    example: {
-      handler() {
-        this.$emit('example', '');
-      },
-    },
-  },
 });
 </script>
 

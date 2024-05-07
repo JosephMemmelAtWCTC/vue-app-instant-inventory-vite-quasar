@@ -32,9 +32,9 @@ export default function InventoryCollection(arr = []) {
     arr.removeAllOfType = function(type){
       for(let i = 0; i < this.length; i++){
         const element = arr[i];
-        console.log("element", element);
+        // console.log("element", element);
         if(element.constructor.type === type){
-          console.log("removing...");
+          // console.log("removing...");
           arr.remove(element);
           i--;
         }
@@ -91,6 +91,7 @@ export default function InventoryCollection(arr = []) {
     }
 
     function onInventorySnapshot(categoriesQuerySnapshot, objectConstructor){
+      console.log("Start of onInventorySnapshot");
     // TODO: Move to inventoryCollection
       arr.removeAllOfType(objectConstructor.type);
       const data = [];
@@ -109,11 +110,15 @@ export default function InventoryCollection(arr = []) {
     }
 
 
+    let categoriesCollection = null;
+    let productsCollection = null;
+
     arr.setFirebaseDoc = function(path){
-      let categoriesCollection = null;
-      let productsCollection = null;
+      console.log("Settings firebaseDoc to ", path);
 
       if(path){
+        categoriesCollection = inventory.collection('categories');
+        productsCollection = inventory.collection('products');
       }else{
         categoriesCollection = inventory.collection('categories');
         productsCollection = inventory.collection('products');
@@ -129,14 +134,29 @@ export default function InventoryCollection(arr = []) {
         })
     }
 
-
-
-
-    arr.navigateTo = function(docId, navigationType){
+    arr.navigateTo = async function(docId, navigationType){
       if(navigationType === "relative"){
+        // categoriesCollection.doc(docId).get().then(docRef => {
+        //   console.log("relative docRef = ", docRef.data());
 
+          categoriesCollection.doc(docId).collection('categories')
+            .get()
+            .then(snapshot => {
+              snapshot.forEach(doc => {
+                console.log("docdata:", doc.data());
+              });
+              onInventorySnapshot(snapshot, Category);
+            })
+            .catch(error => {
+              return
+            });
+          // })
+          // .catch(error => {
+          //   console.error("Error getting document:", error);
+          // });
       }
     }
+
 
 
 

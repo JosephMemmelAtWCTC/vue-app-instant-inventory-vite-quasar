@@ -157,7 +157,7 @@ export default defineComponent({
 <!--        />-->
         <navigate-icon-item router-link-to="/" tooltip-info="Home" li-extra-classes="p-2 mb-2" icon-class="bi-house">
         </navigate-icon-item>
-        <navigate-icon-item router-link-to="/inventory" tooltip-info="Inventory" li-extra-classes="p-2 mb-2" icon-class="bi-box-seam"><!--fa-solid fa-boxes-stacked-->
+        <navigate-icon-item router-link-to="/inventory" @click="this.library.setFirebaseDoc()" tooltip-info="Inventory" li-extra-classes="p-2 mb-2" icon-class="bi-box-seam"><!--fa-solid fa-boxes-stacked-->
         </navigate-icon-item>
         <navigate-icon-item router-link-to="/recents" tooltip-info="Recents" li-extra-classes="p-2 mb-2" icon-class="bi-arrow-left-right" :badge-text="library.length">
         </navigate-icon-item>
