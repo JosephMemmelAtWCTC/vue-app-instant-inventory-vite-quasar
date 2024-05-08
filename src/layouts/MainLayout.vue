@@ -33,6 +33,10 @@ export default defineComponent({
       type: Object,
       required: true,
     },
+    inventoryExplorer: {
+      type: Object,
+      required: true,
+    },
     filterSettings: {
       type: Object,
       required: true,
@@ -180,6 +184,7 @@ export default defineComponent({
       <router-view
         :auth-user="this.authUser"
         :library="this.library"
+        :inventory-explorer="this.inventoryExplorer"
         :app-info="this.appInfo"
         :filter-settings="this.filterSettings"
       />

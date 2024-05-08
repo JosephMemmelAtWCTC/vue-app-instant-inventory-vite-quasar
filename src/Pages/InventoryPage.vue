@@ -8,11 +8,24 @@ import OptionsFAB from "components/OptionsFAB.vue";
 import EditModal from "components/EditModal.vue";
 import Product from "src/models/Product";
 import {InventoryItem, STORAGE_TYPES} from "src/models/InventoryItem";
+import ResultsPossiblyEmpty from "components/pages/ResultsPossiblyEmpty.vue";
+import TogglesArray from "components/TogglesArray.vue";
+import CardsList from "components/CardsList.vue";
+import MainContentPage from "components/pages/MainContentPage.vue";
+import InventoryExplorer from "src/models/InventoryExplorer";
 
 
 export default defineComponent({
   name: "InventoryPage",
-  components: {EditModal, OptionsFAB, PageInventoryCardsSearch},
+  components: {
+    MainContentPage,
+    CardsList,
+    TogglesArray,
+    ResultsPossiblyEmpty,
+    EditModal,
+    OptionsFAB,
+  },
+  // PageInventoryCardsSearch,
   data() {
     return {
       newCategory: new Category("","","src/assets/icons/folder.svg"),
@@ -34,12 +47,13 @@ export default defineComponent({
     };
   },
   props: {
-    filterSettings: {
+    library: {
+      // type: InventoryCollection,
       type: Object,
       required: true,
     },
-    library: {
-      // type: InventoryCollection,
+    inventoryExplorer: {
+      // type: InventoryExplorer,
       type: Object,
       required: true,
     }
@@ -50,6 +64,12 @@ export default defineComponent({
       console.log("item:::::::", item);
       // this.library.updateOrAddValue(item);
       this.library.addNew(item);
+    },
+    removeItem(removeItem) {
+      this.inventory.remove(removeItem);
+    },
+    sendUpdateCardOpenCategory(docId){
+      this.$emit('card-navigate', docId);
     },
     onUpdateCardOpenCategory(docId){
       console.log("~~~~~~~~B");
@@ -113,17 +133,68 @@ export default defineComponent({
 
 <template>
   <q-page class="flex">
-    <page-inventory-cards-search :key="filteredLibrary"
-      :filter-settings="filterSettings"
-      :current-combined-items-list="filteredLibrary"
-      :breadCrumbs="this.library.breadCrumbs"
-      search-label="Filter Search"
-      @remove-item="this.library.delete($event)"
-      @save-it="this.library.update($event)"
-      @card-navigate="onUpdateCardOpenCategory"
-    >
+
+
+
+
+
+
+<!--    <page-inventory-cards-search :key="filteredLibrary"-->
+<!--      :filter-settings="filterSettings"-->
+<!--      :current-combined-items-list="filteredLibrary"-->
+<!--      :breadCrumbs="this.library.breadCrumbs"-->
+<!--      search-label="Filter Search"-->
+<!--      @remove-item="this.library.delete($event)"-->
+<!--      @save-it="this.library.update($event)"-->
+<!--      @card-navigate="onUpdateCardOpenCategory"-->
+<!--    >-->
 <!--      @remove-category="removeCategory"-->
-      <template #extra>
+      <main-content-page>
+<!--        <p>TESTP{{inventoryExplorer.test}}</p>-->
+        <p :title="'w'">TESTP {{inventoryExplorer.getAllNumOfCategories()}}</p>
+        <header class="bg-body-tertiary rounded-3">
+          <div class="row align-items-center p-2">
+            <div class="col-auto d-flex text-center align-items-center">
+              <p class="ms-4">{{searchLabel}}</p>
+            </div>
+
+            <div class="col end-0">
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="searchTextDescribe"><i class="bi ms-1 bi-search"></i></span>
+                <input type="text" v-model="filterSettings.searchString" class="form-control focus-ring-primary" placeholder="" aria-label="Search" aria-describedby="searchTextDescribe">
+              </div>
+            </div>
+
+            <toggles-array :options="filterSettings.toggles">
+            </toggles-array>
+
+            <div class="col-12 ps-3 mb-0 pb-0">
+              <nav aria-label="Inventory Explorer Breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="#" class="link-primary">Warehouse</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">{{'eee---'}}</li>
+                </ol>
+              </nav>
+            </div>
+          </div>
+        </header>
+        <results-possibly-empty
+          :display-is-empty="filteredLibrary.length === 0"
+          empty-title="Whoops"
+          empty-text="It looks like there are no results that fit your search criteria, try loosing your requirements or adding more items."
+        >
+        </results-possibly-empty>
+        <div class="row g-2 m-1 row-cols-1 row-cols-sm-2 row-cols-md-4 g-1">
+          <cards-list :items="filteredLibrary"
+                      @save-it="saveItem"
+                      @remove-it="this.library.delete($event)"
+                      @card-navigate="removeItem"
+          >
+          </cards-list>
+        </div>
+
+
+
         <div class="position-fixed bottom-0 end-0 p-3">
           <options-f-a-b z-index="1000"
                          symbol-classes="bi bi-plus">
@@ -249,7 +320,6 @@ export default defineComponent({
             </template>
           </options-f-a-b>
         </div>
-      </template>
-    </page-inventory-cards-search>
+      </main-content-page>
   </q-page>
 </template>

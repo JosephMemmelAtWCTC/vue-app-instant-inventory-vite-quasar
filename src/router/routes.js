@@ -5,7 +5,7 @@ const routes = [
     // props: { appNavigation, appInfo, userInfo, authUser,
     //   locationKioskName: appLocationConfig.customLocationName,
     // },
-    // props: true,
+    props: true,
     children: [
       {
         path: '/',

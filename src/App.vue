@@ -2,6 +2,7 @@
   <router-view
     :auth-user="this.authUser"
     :library="this.library"
+    :inventory-explorer="this.inventoryExplorer"
     :app-info="this.appInfo"
   />
 <!--  @call-filter-settings-refresh="console.log('{{{{{{{')"-->
@@ -36,6 +37,7 @@ import InventoryCollection from "./models/InventoryCollection.js"
 import Category from "./models/Category.js"
 import StoreItem from "./models/StoreItem.js"
 import Product from "./models/Product.js"
+import InventoryExplorer from "src/models/InventoryExplorer";
 
 export default defineComponent({
   // components: {OptionsFAB, PageInventoryCardsSearch, EditModal, PageTitleTable, QuasarAppLayout, NavigateIconItem},
@@ -45,6 +47,7 @@ export default defineComponent({
       authUser: new FullUserDetails(),
 
       library: new InventoryCollection(),
+      inventoryExplorer: new InventoryExplorer(),
         // .add(new Category('Category 1','Category 1\'s description', 'src/assets/icons/folder.svg'))
         // .add(new StoreItem(
         //   new Product(
@@ -63,6 +66,7 @@ export default defineComponent({
 
     }
   },
+
   methods: {
     handleFilterSettingsRefresh() {
       console.log('Received call-filter-settings-refresh event');
@@ -85,6 +89,8 @@ export default defineComponent({
     },
   },
   created() {
+    // this.inventoryExplorer = new InventoryExplorer();
+
     // TODO: check for logged in user
     auth.onAuthStateChanged(user => {
       if (user) {
