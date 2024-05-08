@@ -12,7 +12,7 @@ import ResultsPossiblyEmpty from "components/pages/ResultsPossiblyEmpty.vue";
 import TogglesArray from "components/TogglesArray.vue";
 import CardsList from "components/CardsList.vue";
 import MainContentPage from "components/pages/MainContentPage.vue";
-import InventoryExplorer from "src/models/InventoryExplorer";
+import inventoryExplorer from "src/models/InventoryExplorer";
 
 
 export default defineComponent({
@@ -66,10 +66,12 @@ export default defineComponent({
       this.library.addNew(item);
     },
     removeItem(removeItem) {
-      this.inventory.remove(removeItem);
+      // this.inventory.remove(removeItem);@@@
     },
     sendUpdateCardOpenCategory(docId){
-      this.$emit('card-navigate', docId);
+      // this.$emit('card-navigate', docId);
+      console.log('navigateTo before in send up');
+      this.inventoryExplorer.navigateTo(docId, "relative")
     },
     onUpdateCardOpenCategory(docId){
       console.log("~~~~~~~~B");
@@ -149,9 +151,10 @@ export default defineComponent({
 <!--      @card-navigate="onUpdateCardOpenCategory"-->
 <!--    >-->
 <!--      @remove-category="removeCategory"-->
-      <main-content-page>
+      <main-content-page
+    >
 <!--        <p>TESTP{{inventoryExplorer.test}}</p>-->
-        <p>TESTP {{this.inventoryExplorer.getAllNumOfCategories()}}</p>
+        <p>TESTP {{inventoryExplorer.getAllNumOfCategories()}}</p>
         <header class="bg-body-tertiary rounded-3">
           <div class="row align-items-center p-2">
             <div class="col-auto d-flex text-center align-items-center">
@@ -185,11 +188,22 @@ export default defineComponent({
         >
         </results-possibly-empty>
         <div class="row g-2 m-1 row-cols-1 row-cols-sm-2 row-cols-md-4 g-1">
-          <cards-list :items="filteredLibrary"
+<!--          <cards-list :items="filteredLibrary"-->
+<!--                      @save-it="saveItem"-->
+<!--                      @remove-it="this.library.delete($event)"-->
+<!--                      @card-navigate="sendUpdateCardOpenCategory"-->
+<!--          >-->
+<!--&lt;!&ndash;            @card-navigate="onUpdateCardOpenCategory"&ndash;&gt;-->
+<!--            &lt;!&ndash;                      @card-navigate="removeItem"&ndash;&gt;-->
+<!--          </cards-list>-->
+          <cards-list :items="inventoryExplorer.currentlyIn.libraryCollection"
                       @save-it="saveItem"
                       @remove-it="this.library.delete($event)"
-                      @card-navigate="removeItem"
+                      @card-navigate="sendUpdateCardOpenCategory"
+                      :key="inventoryExplorer.currentlyIn.libraryCollection"
           >
+<!--            @card-navigate="onUpdateCardOpenCategory"-->
+            <!--                      @card-navigate="removeItem"-->
           </cards-list>
         </div>
 

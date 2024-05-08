@@ -25,4 +25,4 @@ const inventory = db.collection('inventory').doc(DEVELOPMENT_TESTING_INVENTORY_D
 
 
 // firebase
-export {db, auth, storage, accounts, inventory}
+export {db, auth, storage, accounts, inventory, DEVELOPMENT_TESTING_INVENTORY_DOC_KEY}
