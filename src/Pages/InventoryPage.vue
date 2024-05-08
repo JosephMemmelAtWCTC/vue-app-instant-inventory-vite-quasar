@@ -151,7 +151,7 @@ export default defineComponent({
 <!--      @remove-category="removeCategory"-->
       <main-content-page>
 <!--        <p>TESTP{{inventoryExplorer.test}}</p>-->
-        <p :title="'w'">TESTP {{inventoryExplorer.getAllNumOfCategories()}}</p>
+        <p>TESTP {{this.inventoryExplorer.getAllNumOfCategories()}}</p>
         <header class="bg-body-tertiary rounded-3">
           <div class="row align-items-center p-2">
             <div class="col-auto d-flex text-center align-items-center">

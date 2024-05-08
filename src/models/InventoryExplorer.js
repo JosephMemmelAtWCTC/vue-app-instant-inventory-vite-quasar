@@ -7,9 +7,10 @@ import Product from "src/models/Product";
 function InventoryExplorer() {
   const m = {
     getAllNumOfCategories: getAllNumOfCategories,
+    recursiveCounter: recursiveCounter,
   }
     function getAllNumOfCategories(){
-      return "this.recursiveCounter(inventory)";
+      return this.recursiveCounter(inventory);
       // let categoriesCount = 0;//Not including the root library
     }
 
@@ -19,16 +20,50 @@ function InventoryExplorer() {
         productsCount: 0,
       }
 
-      collectionRef.get().then(snapshot => {
-
-        categoriesQuerySnapshot.forEach(doc => {
+      // collectionRef
+      //   .get()
+      //   .then(snapshot => {
+      //     snapshot.forEach(doc => {
+      //       const dataPush = doc.data();
+      //       dataPush.docId = doc.id;
+      //       data.push(dataPush);
+      //       console.log("snapshot data", dataPush);
+      //     });
+      //   })
+      collectionRef
+        .get()
+        .then(doc => {
           const dataPush = doc.data();
           dataPush.docId = doc.id;
-          data.push(dataPush);
-          console.log("InventoryExplorer", data);
+          console.log("doc snapshot", dataPush);
+          return doc;
+
+        })
+        .then(doc => {
+          doc.ref.collection('categories')
+              .get()
+              .then(snapshot => {
+                snapshot.forEach(doc => {
+                  console.log("docdata:", doc.data());
+                });
+              })
+        })
+        // .then(doc =>{
+        //   doc.ref.collection('categories')
+        //     .get()
+        //     .then(snapshot => {
+        //       snapshot.forEach(doc => {
+        //         console.log("docdata:", doc.data());
+        //       });
+        //     })
+        // })
+        .catch(error => {
+          console.error("error", error);
         });
 
-      });
+
+
+      return inventoryCounter;
     }
 
   return m;
