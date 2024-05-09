@@ -143,7 +143,13 @@ export default defineComponent({
         filterByConstructors.push("product");
         // }
       }
-      return this.inventoryExplorer.currentlyIn.libraryCollection.filterByType(filterByConstructors);
+
+      let filteredDownTo = this.inventoryExplorer.currentlyIn.libraryCollection.filterByType(filterByConstructors);
+      if(this.filterSettings.searchString.length > 0 ){
+        // filteredDownTo.filterByString();
+      }
+
+      return filteredDownTo;
     }
   },
   created: function(){

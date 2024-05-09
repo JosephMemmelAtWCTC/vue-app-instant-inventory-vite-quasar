@@ -51,6 +51,10 @@ $breadcrumb-divider: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/
 // ANIMATIONS END
 
 
+.q-tabs__content.scroll--mobile.row.no-wrap.items-center.self-stretch.hide-scrollbar.relative-position.q-tabs__content--align-justify{
+  flex-wrap: nowrap;
+}
+
 //TODO: ASK WHY IT NEEDS TO BE HERE AND DOES NOT WORK IN SCOPED
 .q-avatar__content{
   border: solid 5px $primary;
