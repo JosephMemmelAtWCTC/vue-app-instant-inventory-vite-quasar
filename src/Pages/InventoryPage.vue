@@ -128,6 +128,13 @@ export default defineComponent({
       return this.filterAsideAsComputedDosntDetect();
     }
   },
+  created: function(){
+    this.inventoryExplorer.navigateTo("root")
+      .then((message)=>{
+        this.trigger++;
+        // this.$emit("resize")
+      });
+  },
   watch: {
     library: {
       handler() {
@@ -162,7 +169,6 @@ export default defineComponent({
       <main-content-page
     >
 <!--        <p>TESTP{{inventoryExplorer.test}}</p>-->
-        <p>TESTP {{inventoryExplorer.getAllNumOfCategories()}}</p>
         <header class="bg-body-tertiary rounded-3">
           <div class="row align-items-center p-2">
             <div class="col-auto d-flex text-center align-items-center">
@@ -204,7 +210,6 @@ export default defineComponent({
 <!--&lt;!&ndash;            @card-navigate="onUpdateCardOpenCategory"&ndash;&gt;-->
 <!--            &lt;!&ndash;                      @card-navigate="removeItem"&ndash;&gt;-->
 <!--          </cards-list>-->
-          <button @click="trigger++">TEST</button>
           <cards-list :items="inventoryExplorer.currentlyIn.libraryCollection"
                       @save-it="saveItem"
                       @remove-it="this.library.delete($event)"

@@ -21,7 +21,6 @@ function InventoryExplorer() {
     },
   }
 
-  navigateTo("root");
 
   function getAllNumOfCategories(){
       return this.recursiveCounter(inventory);
@@ -33,10 +32,10 @@ function InventoryExplorer() {
         // navigateTo
 
 
-      // if(docId === "root"){
-      //   // m.currentlyIn.currerentDocId = docId;
-      //   m.currentlyIn.currentDoc = inventory;
-      // }
+      if(docId === "root"){
+        // m.currentlyIn.currerentDocId = docId;
+        m.currentlyIn.currentDoc = inventory;
+      }
       return m.currentlyIn.currentDoc.get().then(snapshot =>{
         if(docId !== "root"){
           m.currentlyIn.currentDoc = m.currentlyIn.currentDoc.collection("categories").doc(docId);
