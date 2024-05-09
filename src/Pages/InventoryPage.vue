@@ -43,7 +43,8 @@ export default defineComponent({
           },
         ],
         searchString: "",
-      }
+      },
+      trigger: 0,
     };
   },
   props: {
@@ -72,6 +73,13 @@ export default defineComponent({
       // this.$emit('card-navigate', docId);
       console.log('navigateTo before in send up');
       this.inventoryExplorer.navigateTo(docId, "relative")
+        .then((message)=>{
+          console.log("this.triggerthis.triggerthis.triggerthis.trigger: ",message);
+
+          this.trigger++;
+          // this.$emit("resize")
+        });
+
     },
     onUpdateCardOpenCategory(docId){
       console.log("~~~~~~~~B");
@@ -196,11 +204,12 @@ export default defineComponent({
 <!--&lt;!&ndash;            @card-navigate="onUpdateCardOpenCategory"&ndash;&gt;-->
 <!--            &lt;!&ndash;                      @card-navigate="removeItem"&ndash;&gt;-->
 <!--          </cards-list>-->
+          <button @click="trigger++">TEST</button>
           <cards-list :items="inventoryExplorer.currentlyIn.libraryCollection"
                       @save-it="saveItem"
                       @remove-it="this.library.delete($event)"
                       @card-navigate="sendUpdateCardOpenCategory"
-                      :key="inventoryExplorer.currentlyIn.libraryCollection"
+                      :key="trigger"
           >
 <!--            @card-navigate="onUpdateCardOpenCategory"-->
             <!--                      @card-navigate="removeItem"-->

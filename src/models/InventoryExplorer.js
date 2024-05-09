@@ -8,12 +8,16 @@ import InventoryCollectionProper from "src/models/InventoryCollectionProper";
 function InventoryExplorer() {
 
   const m = {
+    // getAllNumOfCategories: async function () {
+    //   return await getAllNumOfCategories;
+    // },
     getAllNumOfCategories: getAllNumOfCategories,
     recursiveCounter: recursiveCounter,
     navigateTo: navigateTo,
     currentlyIn: {
       currentDoc: inventory,
       libraryCollection: new InventoryCollectionProper(),
+      // emit up
     },
   }
 
@@ -33,22 +37,23 @@ function InventoryExplorer() {
       //   // m.currentlyIn.currerentDocId = docId;
       //   m.currentlyIn.currentDoc = inventory;
       // }
-      m.currentlyIn.currentDoc.get().then(snapshot =>{
+      return m.currentlyIn.currentDoc.get().then(snapshot =>{
         if(docId !== "root"){
           m.currentlyIn.currentDoc = m.currentlyIn.currentDoc.collection("categories").doc(docId);
         }
-        m.currentlyIn.currentDoc.get()
+        return m.currentlyIn.currentDoc.get()
         .then(doc => {
           // const dataPush = doc.data();
           // dataPush.docId = doc.id;
           console.log("doc snapshoesfiopsoijsljkht", doc.data());
           if(doc.data() === undefined){
             console.log("Undefined second copy, not continuing")
+            return "Undefined second copy, not continuing";
             // Promise.reject(new Error("Undefined second copy, not continuing"));
             // Promise.reject("Undefined second copy, not continuing");
           }else{
             const data = [];
-            doc.ref.collection('categories')
+            return doc.ref.collection('categories')
               .get()
               .then(snapshot => {
                 snapshot.forEach(doc => {
@@ -61,10 +66,10 @@ function InventoryExplorer() {
               })
               .then(data => {
                 if(data){
-                  // m.currentlyIn.libraryCollection = new InventoryCollectionProper()
+                  m.currentlyIn.libraryCollection = new InventoryCollectionProper();
                 }
-                data.forEach((inventoryData, i) => {
-                  console.log("inventoryItemData, i", inventoryData);
+                //https://www.squash.io/how-to-use-async-await-with-a-foreach-loop-in-javascript/
+                return Promise.all(data.map(async (inventoryData) => {
                   let objectConstructor = null;
                   if(inventoryData.inventoryType === "category"){
                     objectConstructor = Category;
@@ -72,26 +77,32 @@ function InventoryExplorer() {
                     objectConstructor = Product;
                   }
                   const found = new objectConstructor(inventoryData);
-                  // const foundCategory = new Category(data.title, data.description, data.imageURL, data.items);
-                  m.currentlyIn.libraryCollection.add(found);
-                  console.log("foundItem (InventoryExplorer)", found)
-                });
+                  console.log("foundItem (InventoryExplorer)", found);
+                  return m.currentlyIn.libraryCollection.add(found);
+                }));
               })
-            return doc;
+            .then(() => {
+              return "Ready for trigger"
+            })
+            return "doc";
           }
+          return "kkkkkk";
         })
         .catch(error => {
+          console.error("Error at InventoryExplorer",error)
+          return "?JJJJJJJ";
+        })
 
-        });
 
-
-        // .then(doc => {
-        //
+        // .then(() => {
+        //   return "Ready for trigger"
         // })
+        return "ollll";
       })
-
     }
-    async function recursiveCounter(collectionRef) {
+
+
+  async function recursiveCounter(collectionRef) {
       const inventoryCounter = {
         categoriesCount: 0,
         productsCount: 0,

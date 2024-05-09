@@ -33,7 +33,7 @@ const routes = [
       },
       {
         path: '/notifications',
-        component: () => import('src/Pages/ComingSoon.vue'),
+        component: () => import('src/Pages/Notifications.vue'),
       },
       {
         path: '/stats',
