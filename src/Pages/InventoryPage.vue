@@ -13,6 +13,7 @@ import TogglesArray from "components/TogglesArray.vue";
 import CardsList from "components/CardsList.vue";
 import MainContentPage from "components/pages/MainContentPage.vue";
 import inventoryExplorer from "src/models/InventoryExplorer";
+import InventoryCollectionProper from "src/models/InventoryCollectionProper";
 
 
 export default defineComponent({
@@ -125,7 +126,24 @@ export default defineComponent({
       return Category
     },
     filteredLibrary() {
-      return this.filterAsideAsComputedDosntDetect();
+      this.trigger;//TODO: Find a better way.
+      // return this.filterAsideAsComputedDosntDetect();
+      let filteredResults = [];
+
+      const filterByConstructors = [];
+      const filterByThreshold = [];
+
+      if(this.filterSettings.toggles[0].state){
+        filterByConstructors.push(Category.type);
+      }
+      if(this.filterSettings.toggles[1].state){
+        // filterByConstructors.push(StoreItem.type);
+        // if(StoreItem.type){
+        //   filterByConstructors.push(STORAGE_TYPES.PRODUCT_GENERIC);
+        filterByConstructors.push("product");
+        // }
+      }
+      return this.inventoryExplorer.currentlyIn.libraryCollection.filterByType(filterByConstructors);
     }
   },
   created: function(){
@@ -210,7 +228,8 @@ export default defineComponent({
 <!--&lt;!&ndash;            @card-navigate="onUpdateCardOpenCategory"&ndash;&gt;-->
 <!--            &lt;!&ndash;                      @card-navigate="removeItem"&ndash;&gt;-->
 <!--          </cards-list>-->
-          <cards-list :items="inventoryExplorer.currentlyIn.libraryCollection"
+<!--          <cards-list :items="inventoryExplorer.currentlyIn.libraryCollection"-->
+          <cards-list :items="filteredLibrary"
                       @save-it="saveItem"
                       @remove-it="this.library.delete($event)"
                       @card-navigate="sendUpdateCardOpenCategory"
