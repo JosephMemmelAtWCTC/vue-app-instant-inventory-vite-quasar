@@ -28,8 +28,8 @@ const routes = [
         // props: true,
       },
       {
-        path: '/recents',
-        component: () => import('src/Pages/ComingSoon.vue'),
+        path: '/records',
+        component: () => import('pages/Records.vue'),
       },
       {
         path: '/notifications',

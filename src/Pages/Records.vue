@@ -1,10 +1,6 @@
 <script>
 import {defineComponent} from "vue";
 
-import PageTitleTable from "components/pages/PageTitleTable.vue"
-import Category from "src/models/Category";
-import StoreItem from "src/models/StoreItem";
-
 export default defineComponent({
   data() {
     return {

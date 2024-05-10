@@ -163,7 +163,7 @@ export default defineComponent({
         </navigate-icon-item>
         <navigate-icon-item router-link-to="/inventory" @click="this.library.setFirebaseDoc()" tooltip-info="Inventory" li-extra-classes="p-2 mb-2" icon-class="bi-box-seam"><!--fa-solid fa-boxes-stacked-->
         </navigate-icon-item>
-        <navigate-icon-item router-link-to="/recents" tooltip-info="Recents" li-extra-classes="p-2 mb-2" icon-class="bi-arrow-left-right" :badge-text="library.length">
+        <navigate-icon-item router-link-to="/records" tooltip-info="Records" li-extra-classes="p-2 mb-2" icon-class="bi-arrow-left-right" :badge-text="library.length">
         </navigate-icon-item>
         <navigate-icon-item router-link-to="/notifications" tooltip-info="Notifications" li-extra-classes="p-2 mb-2" icon-class="bi-bell" :badge-text="library.length">
         </navigate-icon-item>

@@ -17,12 +17,13 @@ function InventoryExplorer() {
     currentlyIn: {
       currentDoc: inventory,
       libraryCollection: new InventoryCollectionProper(),
+      addNew: addNew
       // emit up
     },
   }
 
 
-  function getAllNumOfCategories(){
+    function getAllNumOfCategories(){
       return this.recursiveCounter(inventory);
       // let categoriesCount = 0;//Not including the root library
     }
@@ -52,34 +53,14 @@ function InventoryExplorer() {
             // Promise.reject("Undefined second copy, not continuing");
           }else{
             const data = [];
-            return doc.ref.collection('categories')
+            return doc.ref.collection("categories")
               .get()
-              .then(snapshot => {
-                snapshot.forEach(doc => {
-                  console.log("m docdata:", doc.data());
-                  const dataPush = doc.data();
-                  dataPush.docId = doc.id;
-                  data.push(dataPush);
-                });
-                return data;
-              })
-              .then(data => {
-                if(data){
-                  m.currentlyIn.libraryCollection = new InventoryCollectionProper();
-                }
-                //https://www.squash.io/how-to-use-async-await-with-a-foreach-loop-in-javascript/
-                return Promise.all(data.map(async (inventoryData) => {
-                  let objectConstructor = null;
-                  if(inventoryData.inventoryType === "category"){
-                    objectConstructor = Category;
-                  }else{
-                    objectConstructor = Product;
-                  }
-                  const found = new objectConstructor(inventoryData);
-                  console.log("foundItem (InventoryExplorer)", found);
-                  return m.currentlyIn.libraryCollection.add(found);
-                }));
-              })
+              .then(takeCareOfCurrentSnapshot)
+            .then(() => {
+              return m.currentlyIn.currentDoc.collection("categories").onSnapshot(snapshot =>
+                takeCareOfCurrentSnapshot(snapshot)
+              );
+            })
             .then(() => {
               return "Ready for trigger"
             })
@@ -99,6 +80,68 @@ function InventoryExplorer() {
         return "ollll";
       })
     }
+
+    function takeCareOfCurrentSnapshot(snapshot){
+    const data = [];
+      snapshot.forEach(doc => {
+        console.log("m docdata:", doc.data());
+        const dataPush = doc.data();
+        dataPush.docId = doc.id;
+        data.push(dataPush);
+      });
+      if(data){
+        m.currentlyIn.libraryCollection = new InventoryCollectionProper();
+      }
+      //https://www.squash.io/how-to-use-async-await-with-a-foreach-loop-in-javascript/
+      return Promise.all(data.map(async (inventoryData) => {
+        let objectConstructor = null;
+        if(inventoryData.inventoryType === "category"){
+          objectConstructor = Category;
+        }else{
+          objectConstructor = Product;
+        }
+        const found = new objectConstructor(inventoryData);
+        console.log("foundItem (InventoryExplorer)", found);
+        return m.currentlyIn.libraryCollection.add(found);
+      }));
+    }
+
+
+
+
+
+  function addNew(oldNew){
+    const oldVersion = oldNew[0];
+    const newVersion = oldNew[1];
+    if(oldVersion.docId){
+    //   Update item
+
+      console.log("<<<<<<", oldVersion);
+      console.log(">>>>>>", newVersion);
+
+      //   TODO: Only send updates to changed fields
+
+      const diffrences = {};
+      for(const fieldKey in newVersion){
+        if(oldVersion[fieldKey] !== newVersion[fieldKey]) {
+          diffrences[fieldKey] = newVersion[fieldKey];
+        }
+      }
+
+      console.log("<><><>", diffrences);
+      // console.log("to", oldVersion.constructorSaved.name, STORAGE_TYPES.CATEGORY.toLowerCase());
+
+      return m.currentlyIn.currentDoc.collection("categories")
+        .doc(oldVersion.docId)
+        .update(diffrences)
+        .then(() => {
+          return "Ready for update completed"
+        })
+      //   TODO: Notify if failed, etc
+
+    }
+    return "Update completed";
+  }
 
 
   async function recursiveCounter(collectionRef) {

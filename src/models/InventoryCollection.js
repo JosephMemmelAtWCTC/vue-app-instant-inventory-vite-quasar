@@ -44,25 +44,25 @@ export default function InventoryCollection(arr = []) {
     }
 
     arr.addNew = function (newItem) {
-      this.add(newItem);
+      // this.add(newItem);
 
       console.log("newItem in this.add(newItem) =",newItem);
 
-      const asData = newItem.getAsData();
-      this.splice(this.length-1, 1);
-
-      currentInventory.collection(asData.inventoryType===STORAGE_TYPES.CATEGORY ? "categories" : "products") //TODO: move to store name inside instead of calculate here
-        .add(asData)
-        .then(function(docRef) {
-          console.log("docRef", docRef);
-
-          // docRef.id
-        })
-        .catch(function(error) {
-          console.error("Error ", error);
-
-          // TODO: let the user know
-        });
+      // const asData = newItem.getAsData();
+      // this.splice(this.length-1, 1);
+      //
+      // currentInventory.collection(asData.inventoryType===STORAGE_TYPES.CATEGORY ? "categories" : "products") //TODO: move to store name inside instead of calculate here
+      //   .add(asData)
+      //   .then(function(docRef) {
+      //     console.log("docRef", docRef);
+      //
+      //     // docRef.id
+      //   })
+      //   .catch(function(error) {
+      //     console.error("Error ", error);
+      //
+      //     // TODO: let the user know
+      //   });
     }
 
     arr.update = function (oldNew){

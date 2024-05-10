@@ -65,7 +65,13 @@ export default defineComponent({
     saveItem(item){//TODO: Rename to saveIt
       console.log("item:::::::", item);
       // this.library.updateOrAddValue(item);
-      this.library.addNew(item);
+      this.inventoryExplorer.currentlyIn.addNew(item)
+        .then((message)=>{
+          console.log("addNewaddNewaddNewaddNewaddNewaddNew ",message);
+
+          this.trigger++;
+          // this.$emit("resize")
+        });
     },
     removeItem(removeItem) {
       // this.inventory.remove(removeItem);@@@
