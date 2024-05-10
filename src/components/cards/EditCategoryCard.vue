@@ -32,7 +32,8 @@ export default defineComponent({
     },
     sendUpdateCardOpenCategory(docId){
       console.log("sendUpdateCardOpenCategory in EditCategoryCard", docId);
-      this.$emit('card-navigate', docId);
+      // this.$emit('card-navigate', docId);
+    //   TODO: ASK!!! WHY!!! FOR SOME REASON THIS WAS DUPLICATING IT
     }
   },
   created: function () {

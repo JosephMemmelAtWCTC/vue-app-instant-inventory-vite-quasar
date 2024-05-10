@@ -88,16 +88,16 @@ export default defineComponent({
         });
 
     },
-    onUpdateCardOpenCategory(docId){
-      console.log("~~~~~~~~B");
-      this.library.navigateTo(docId, "relative").then(()=>{
-        console.log("~~~~~~~~C");
-        this.filteredLibrary = this.filterAsideAsComputedDosntDetect();
-        this.filterSettings.toggles[0].state = !this.filterSettings.toggles[0].state
-        this.$emit('call-filter-settings-refresh');
-        console.log("call-filter-settings-refresh")
-      });
-    },
+    // onUpdateCardOpenCategory(docId){
+    //   console.log("~~~~~~~~B");
+    //   this.library.navigateTo(docId, "relative").then(()=>{
+    //     console.log("~~~~~~~~C");
+    //     this.filteredLibrary = this.filterAsideAsComputedDosntDetect();
+    //     this.filterSettings.toggles[0].state = !this.filterSettings.toggles[0].state
+    //     this.$emit('call-filter-settings-refresh');
+    //     console.log("call-filter-settings-refresh")
+    //   });
+    // },
 
     filterAsideAsComputedDosntDetect(){
       let filteredResults = [];
