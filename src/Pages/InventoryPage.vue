@@ -63,7 +63,7 @@ export default defineComponent({
   emits: ["call-filter-settings-refresh"],
   methods: {
     saveItem(item){//TODO: Rename to saveIt
-      console.log("item:::::::", item);
+      // console.log("item:::::::", item);
       // this.library.updateOrAddValue(item);
       this.inventoryExplorer.currentlyIn.addNew(item)
         .then((message)=>{
@@ -74,7 +74,12 @@ export default defineComponent({
         });
     },
     removeItem(removeItem) {
-      // this.inventory.remove(removeItem);@@@
+      this.inventoryExplorer.currentlyIn.remove(removeItem)
+        .then((message)=>{
+          console.log("removed ",message);
+          this.trigger++;
+          // this.$emit("resize")
+        });
     },
     sendUpdateCardOpenCategory(docId){
       // this.$emit('card-navigate', docId);
@@ -243,7 +248,7 @@ export default defineComponent({
 <!--          <cards-list :items="inventoryExplorer.currentlyIn.libraryCollection"-->
           <cards-list :items="filteredLibrary"
                       @save-it="saveItem"
-                      @remove-it="this.library.delete($event)"
+                      @remove-it="removeItem"
                       @card-navigate="sendUpdateCardOpenCategory"
                       :key="trigger"
           >

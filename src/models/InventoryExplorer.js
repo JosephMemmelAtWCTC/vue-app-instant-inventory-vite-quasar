@@ -25,8 +25,8 @@ function InventoryExplorer() {
       currentDocId: null,
       currentDoc: inventory,
       libraryCollection: new InventoryCollectionProper(),
-      addNew: addNew
-      // emit up
+      addNew: addNew,
+      remove: remove,
     },
   }
 
@@ -126,7 +126,16 @@ function InventoryExplorer() {
 
 
 
-
+  function remove(item){
+    return m.currentlyIn.currentDoc.collection("categories")
+      .doc(item.docId).delete().then(() => {
+      console.log("Document successfully deleted!");
+      return "Document successfully deleted!"
+    }).catch((error) => {
+      console.error("Error removing document: ", error);
+        return "Error removing document: " + error;
+      });
+  }
 
   function addNew(oldNew){
 

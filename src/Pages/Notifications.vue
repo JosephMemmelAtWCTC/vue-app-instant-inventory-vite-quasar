@@ -66,7 +66,7 @@ export default defineComponent({
 
           <q-tab-panels v-model="tab" animated>
             <q-tab-panel name="out_of_stock">
-              <div class="text-h6">{{ allOutOfStock.length }} Items out of stock</div>
+              <div class="text-h6">{{ allOutOfStock.length }} Item{{ allOutOfStock.length !== 1? "s":"" }} out of stock</div>
 
               <div class="q-pa-md">
                 <q-list bordered padding>
@@ -87,7 +87,7 @@ export default defineComponent({
             </q-tab-panel>
 
             <q-tab-panel name="reorder_level_reached">
-              <div class="text-h6">{{ allReorderLevelReached.length }} Items whose reorder level has been reached</div>
+              <div class="text-h6">{{ allReorderLevelReached.length }} Item{{ allReorderLevelReached.length !== 1? "s":"" }} whose reorder level has been reached</div>
 
               <div class="q-pa-md">
                 <q-list bordered padding>

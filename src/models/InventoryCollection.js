@@ -23,12 +23,12 @@ export default function InventoryCollection(arr = []) {
     }
 
     arr.delete = function (item) {
-      currentInventory.collection(item.product? "products" : "categories")
-        .doc(item.docId).delete().then(() => {
-        console.log("Document successfully deleted!");
-      }).catch((error) => {
-        console.error("Error removing document: ", error);
-      });
+      // currentInventory.collection(item.product? "products" : "categories")
+      //   .doc(item.docId).delete().then(() => {
+      //   console.log("Document successfully deleted!");
+      // }).catch((error) => {
+      //   console.error("Error removing document: ", error);
+      // });
     }
 
     arr.removeAllOfType = function(type){
