@@ -1,5 +1,9 @@
 <script>
 import {defineComponent, ref} from "vue";
+import {notifications} from "src/models/Firebase";
+
+import NotificationItem from "components/NotificationItem.vue";
+import Notification from "src/models/Notification.js";
 
 export default defineComponent({
   data() {
@@ -7,9 +11,10 @@ export default defineComponent({
       tab: ref('out_of_stock'),
       // innerTab: ref('innerMails'),
       // splitterModel: ref(20)
+      notificationsList: [],
     };
   },
-  components: {},
+  components: {NotificationItem},
   props: {
     inventoryExplorer: {
       // type: InventoryExplorer,
@@ -18,8 +23,39 @@ export default defineComponent({
     }
   },
   mounted() {
+  },
+  created: function () {
+    notifications.onSnapshot(snapshot => {
+      this.notificationsList = [];
+      snapshot.forEach(doc => {
+        console.log("m docdata:", doc.data());
+        const dataPush = doc.data();
+        dataPush.docId = doc.id;
+
+        const notification = new Notification(dataPush)
+        // console.log("notification.getAsData()",notification.getAsData());
+
+        this.notificationsList.push({
+            level: notification.level,
+            docId: notification.docId,
+            title: notification.title,
+            numInStock: notification.numInStock,
+            reorderLevel: notification.reorderLevel,
+            lastUpdated: notification.lastUpdated,
+            image: notification.image,
+          }
+        );
+      });
+    })
+  },
+  computed: {
+    allOutOfStock(){
+      // return this.notificationsList.filter(n => n.type === "out_of_stock");
+      return this.notificationsList.filter(n => n.level === "out_of_stock");
+    }
   }
 });
+
 
 </script>
 
@@ -51,24 +87,11 @@ export default defineComponent({
 
               <div class="q-pa-md">
                 <q-list bordered padding>
-                  <q-item>
-                    <q-item-section top thumbnail class="q-ml-none">
-                      <img src="https://cdn.quasar.dev/img/mountains.jpg">
-                    </q-item-section>
-
-                    <q-item-section>
-                      <q-item-label>Single line item</q-item-label>
-                      <q-item-label caption lines="2">Secondary line text. Lorem ipsum dolor sit amet, consectetur adipiscit elit.</q-item-label>
-                    </q-item-section>
-
-                    <q-item-section side top>
-                      <q-item-label caption>5 min ago</q-item-label>
-                      <q-icon name="star" color="yellow" />
-                    </q-item-section>
-                  </q-item>
-                  <q-separator spaced inset="item" />
-
-
+                  <Notification-Item v-for="(notification, i) in allOutOfStock" :key="i"
+                                    :title="notification.title"
+                  >
+                    test
+                  </Notification-Item>
                 </q-list>
               </div>
 
