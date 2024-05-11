@@ -38,32 +38,18 @@ export default defineComponent({
       type: String,
       required: false,
     },
+    disableHover: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
-  // methods: {
-  //   Routes() {
-  //     return Routes
-  //   }
-  // },
   computed: {
     isOnCurrentRoute(){
-      // console.log("this.path",this.path);
       console.log("this.$route ",this.$route.path );
-      // const route=;
-
-      // path = computed(() =>this.$route.path)
       return this.routerLinkTo === this.$route.path;
     }
   },
-  // watch: {
-  //   route: {
-  //     handler() {
-  //       // https://stackoverflow.com/a/65989529
-  //       const route=useRoute();
-  //       path = computed(() =>route.path)
-  //     },
-  //     deep: true,
-  //   },
-  // },
   mounted(){
   }
 });
@@ -80,7 +66,7 @@ export default defineComponent({
             >
             <span>{{iconContent}}</span>
             </i>
-            <Transition name="slide-fade">
+            <Transition name="slide-fade" v-if="!disableHover">
                 <span v-if="hover || isOnCurrentRoute" class="animationText ms-2">{{tooltipInfo}}</span>
             </Transition>
 <!--                <q-tooltip v-if="tooltipInfo" anchor="center right" self="center left" :offset="[10, 10]">-->

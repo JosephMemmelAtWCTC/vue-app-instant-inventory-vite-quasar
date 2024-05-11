@@ -263,11 +263,13 @@ export default defineComponent({
         </div>
 
 
-
         <div class="position-fixed bottom-0 end-0 p-3">
           <options-f-a-b z-index="1000"
                          symbol-classes="bi bi-plus"
-                         v-if="leftDrawerOpen">
+                         fab-positioning-margin-right="50px !important"
+                         fab-positioning-margin-bottom="50px !important"
+                         :fab-button-size="this.leftDrawerOpen? 84:30"
+                         :rounded="this.leftDrawerOpen">
             <template #open v-slot="slotProps">
               <ul>
                 <li>

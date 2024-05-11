@@ -5,10 +5,12 @@ import NavigateIconItem from "components/NavigateIconItem.vue";
 import { db, auth, storage } from 'src/models/Firebase.js'
 
 import FullUserDetails from "src/models/FullUserDetails";
+import OptionsFAB from "components/OptionsFAB.vue";
+import EditModal from "components/EditModal.vue";
 
 export default defineComponent({
   name: 'MainLayout',
-  components: {NavigateIconItem},
+  components: {EditModal, OptionsFAB, NavigateIconItem},
   data(){
     return {
       locationKioskName: "locationKioskName",
@@ -165,10 +167,6 @@ export default defineComponent({
       bordered
       :width="appInfo.sideBarWidth"
     >
-<!--      <q-popup-edit v-model="editableKioskNameLocal" auto-save v-slot="scope">-->
-<!--        <q-input v-model="scope.value" dense autofocus @keyup.enter="scope.set" autocomplete-->
-<!--                 :rules="[val => val.length > 1 || 'Title requires at least 1 character', [val => val.length < 20 || 'Title cannot at least 1 character']]"/>-->
-<!--      </q-popup-edit>-->
       <q-list>
         <navigate-icon-item router-link-to="/" tooltip-info="Home" li-extra-classes="p-2 mb-2" icon-class="bi-house">
         </navigate-icon-item>
@@ -191,7 +189,7 @@ export default defineComponent({
         </footer>
     </q-drawer>
 
-    <q-page-container class="overflow-hidden-y">
+    <q-page-container class="overflow-hidden">
       <router-view
         :auth-user="this.authUser"
         :library="this.library"
@@ -205,16 +203,15 @@ export default defineComponent({
     </q-page-container>
     <q-footer class="fixed-bottom transparent navigation-footer container-fluid m-0 p-0" v-if="!leftDrawerOpen">
 
-      <div class="row q-gutter-none m-0 p-0 overflow-x-hidden">
+      <div class="row q-gutter-none m-0 p-0 overflow-x-hidden transparent">
         <div class="col-4 spacer-from-top q-gutter-none bg-red h-100">
           <div class="row bg-body-secondary h-100">
             <div class="col-12 h-50">
-              <div class="col-12 h-50 bg-blue">
-              </div>
+
               <div class="row q-gutter-none " :class="('row-cols-'+(authUserIsAdmin?'3':'2'))">
-                <navigate-icon-item router-link-to="/" li-extra-classes="p-2 mb-2" class="col" icon-class="bi-house"></navigate-icon-item>
-                <navigate-icon-item router-link-to="/inventory" @click="this.library.setFirebaseDoc()" li-extra-classes="p-2 mb-2" class="col" icon-class="bi-box-seam"><!--fa-solid fa-boxes-stacked--></navigate-icon-item>
-                <navigate-icon-item router-link-to="/stats" li-extra-classes="p-2 mb-2" class="col" icon-class="bi-clipboard2-data" v-if="authUserIsAdmin"></navigate-icon-item>
+                <navigate-icon-item disable-hover router-link-to="/" li-extra-classes="p-2 mb-2" class="col" icon-class="bi-house"></navigate-icon-item>
+                <navigate-icon-item disable-hover router-link-to="/inventory" @click="this.library.setFirebaseDoc()" li-extra-classes="p-2 mb-2" class="col" icon-class="bi-box-seam"><!--fa-solid fa-boxes-stacked--></navigate-icon-item>
+                <navigate-icon-item disable-hover router-link-to="/stats" li-extra-classes="p-2 mb-2" class="col" icon-class="bi-clipboard2-data" v-if="authUserIsAdmin"></navigate-icon-item>
               </div>
             </div>
           </div>
@@ -229,12 +226,10 @@ export default defineComponent({
         <div class="col-4 spacer-from-top q-gutter-none bg-red h-100">
           <div class="row bg-body-secondary h-100">
             <div class="col-12 h-50">
-              <div class="col-12 h-50 bg-blue">
-              </div>
               <div class="row q-gutter-none " :class="('row-cols-'+(authUserIsAdmin?'3':'2'))">
-                <navigate-icon-item router-link-to="/records" li-extra-classes="p-2 mb-2" icon-class="bi-arrow-left-right" :badge-text="library.length"></navigate-icon-item>
-                <navigate-icon-item router-link-to="/notifications" li-extra-classes="p-2 mb-2" icon-class="bi-bell" :badge-text="notificationsList.length+''"></navigate-icon-item>
-                <navigate-icon-item router-link-to="/admin" li-extra-classes="p-2 mb-2" icon-class="bi-terminal" v-if="authUserIsAdmin"></navigate-icon-item>
+                <navigate-icon-item disable-hover router-link-to="/records" li-extra-classes="p-2 mb-2" icon-class="bi-arrow-left-right" :badge-text="library.length"></navigate-icon-item>
+                <navigate-icon-item disable-hover router-link-to="/notifications" li-extra-classes="p-2 mb-2" icon-class="bi-bell" :badge-text="notificationsList.length+''"></navigate-icon-item>
+                <navigate-icon-item disable-hover router-link-to="/admin" li-extra-classes="p-2 mb-2" icon-class="bi-terminal" v-if="authUserIsAdmin"></navigate-icon-item>
               </div>
             </div>
           </div>
@@ -278,6 +273,14 @@ export default defineComponent({
   }
 
   .navigation-footer .row {
+  }
+
+  .transparent{
+    pointer-events: none;
+  }
+
+  .transparent > *:not(.transparent){
+    pointer-events: auto;
   }
 
 </style>
