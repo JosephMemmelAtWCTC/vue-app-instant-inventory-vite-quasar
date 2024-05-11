@@ -37,6 +37,16 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    warningIcon: {
+      type: String,
+      required: false,
+      default: "bi-exclamation-circle",
+    },
+    warningColor: {
+      type: String,
+      required: false,
+      default: "primary",
+    },
   },
   emits: [],
   watch: {
@@ -75,7 +85,7 @@ export default defineComponent({
       </div>
       <div class="">
         <q-item-section side top>
-          <q-icon name="warning" color="danger" />
+          <q-icon :name="warningIcon" :color="warningColor" />
         </q-item-section>
       </div>
     </div>

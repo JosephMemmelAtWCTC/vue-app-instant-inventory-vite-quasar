@@ -9,7 +9,6 @@ export default defineComponent({
   data() {
     return {
       tab: ref('out_of_stock'),
-      // innerTab: ref('innerMails'),
       // splitterModel: ref(20)
     };
   },
@@ -34,7 +33,10 @@ export default defineComponent({
     allOutOfStock(){
       // return this.notificationsList.filter(n => n.type === "out_of_stock");
       return this.notificationsList.filter(n => n.level === "out_of_stock").sort((a, b) => {return a.lastUpdated-b.lastUpdated});
-    }
+    },
+    allReorderLevelReached(){
+      return this.notificationsList.filter(n => n.level === "reorder_level_reached").sort((a, b) => {return a.lastUpdated-b.lastUpdated});
+    },
   }
 });
 
@@ -63,9 +65,8 @@ export default defineComponent({
           <q-separator />
 
           <q-tab-panels v-model="tab" animated>
-<!--            MAKE EACH A COMPONENT-->
             <q-tab-panel name="out_of_stock">
-              <div class="text-h6">Items out of stock</div>
+              <div class="text-h6">{{ allOutOfStock.length }} Items out of stock</div>
 
               <div class="q-pa-md">
                 <q-list bordered padding>
@@ -77,23 +78,35 @@ export default defineComponent({
                                     :reorderLevel="notification.reorderLevel"
                                     :lastUpdated="notification.lastUpdated"
                                     :image="notification.image"
+                                    warning-icon="bi-exclamation-triangle-fill"
+                                    warning-color="danger"
                   >
-                    test
                   </Notification-Item>
                 </q-list>
               </div>
-
             </q-tab-panel>
 
-<!--            <q-tab-panel name="alarms">-->
-<!--              <div class="text-h6">Alarms</div>-->
-<!--              Lorem ipsum dolor sit amet consectetur adipisicing elit.-->
-<!--            </q-tab-panel>-->
+            <q-tab-panel name="reorder_level_reached">
+              <div class="text-h6">{{ allReorderLevelReached.length }} Items whose reorder level has been reached</div>
 
-<!--            <q-tab-panel name="movies">-->
-<!--              <div class="text-h6">Movies</div>-->
-<!--              Lorem ipsum dolor sit amet consectetur adipisicing elit.-->
-<!--            </q-tab-panel>-->
+              <div class="q-pa-md">
+                <q-list bordered padding>
+                  <Notification-Item v-for="(notification, i) in allReorderLevelReached" :key="i"
+                                     :level="notification.level"
+                                     :docId="notification.docId"
+                                     :title="notification.title"
+                                     :numInStock="notification.numInStock"
+                                     :reorderLevel="notification.reorderLevel"
+                                     :lastUpdated="notification.lastUpdated"
+                                     :image="notification.image"
+                                     warning-icon="bi-exclamation-triangle-fill"
+                                     warning-color="warning"
+                  >
+                  </Notification-Item>
+                </q-list>
+              </div>
+            </q-tab-panel>
+
           </q-tab-panels>
         </q-card>
 
