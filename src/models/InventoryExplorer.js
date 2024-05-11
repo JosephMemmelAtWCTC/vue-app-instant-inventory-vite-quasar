@@ -122,15 +122,13 @@ function InventoryExplorer() {
 
 
   function addNew(oldNew){
-    const oldVersion = oldNew[0];
-    const newVersion = oldNew[1];
-    if(oldVersion.docId){
-    //   Update item
+
+    if(oldNew.constructor === Array){
+      const oldVersion = oldNew[0];
+      const newVersion = oldNew[1];
 
       console.log("<<<<<<", oldVersion);
       console.log(">>>>>>", newVersion);
-
-      //   TODO: Only send updates to changed fields
 
       const diffrences = {};
       for(const fieldKey in newVersion){
@@ -140,9 +138,37 @@ function InventoryExplorer() {
       }
 
       console.log("<><><>",oldVersion.docId, diffrences);
-      console.log("Current document reference:", m.currentlyIn.currentDoc);
       const path = m.currentlyIn.currentDoc.collection("categories").doc(oldVersion.docId);
       console.log("path", path.path);
+
+      return m.currentlyIn.currentDoc.collection("categories")
+        .doc(oldVersion.docId)
+        .update(diffrences)
+        .then((docRef) => {
+          return "Ready for update completed"
+        })
+    }else{
+      const newItem = new InventoryItem(oldNew);
+
+      // debugger
+      // console.log(oldNew);
+      // oldNew = Object.assign(oldNew.constructorSaved, oldNew);
+
+      return m.currentlyIn.currentDoc.collection("categories")
+        .add(newItem.getAsData())
+        .then(() => {
+          return "Ready for new completed"
+        })
+    }
+
+    // if(newVersion.docId){
+    //   Update item
+
+
+
+      //   TODO: Only send updates to changed fields
+    // inventory/4GpErCnogbGLrHeZu26K/categories/jfUkFIy9oWBFSmr5IJ2E
+
       // "path"
       // inventory/4GpErCnogbGLrHeZu26K/
       // categories/5HCy41f47V4MEQQBlGjg/
@@ -159,17 +185,10 @@ function InventoryExplorer() {
       // console.log("<><><>2",m.currentlyIn.currentDoc.collection("categories"));
       // console.log("to", oldVersion.constructorSaved.name, STORAGE_TYPES.CATEGORY.toLowerCase());
 
-      return m.currentlyIn.currentDoc.collection("categories")
-      // return m.currentlyIn.currentDoc.collection("categories")
-        .doc(oldVersion.docId)
-        .update(diffrences)
-        .then(() => {
-          return "Ready for update completed"
-        })
       //   TODO: Notify if failed, etc
 
-    }
-    return "Update completed";
+    // }
+    // return "Update completed";
   }
 
 
