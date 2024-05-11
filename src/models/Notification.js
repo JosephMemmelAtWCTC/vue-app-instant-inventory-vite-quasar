@@ -14,17 +14,19 @@ export function Notification(title, level, docId, numInStock, reorderLevel, last
     }
   }
 
-
-
   if(typeof title === "object"){
-    level = title.level
-    docId = title.docId
-    title = title.title
-    numInStock = title.numInStock
-    reorderLevel = title.reorderLevel
-    lastUpdated = title.lastUpdated
-    image = title.image
+    level = title.level;
+    docId = title.docId;
+    numInStock = title.numInStock;
+    reorderLevel = title.reorderLevel;
+    lastUpdated = title.lastUpdated;
+    image = title.image;
+
+    title = title.title;
   }
+
+  // console.log("====", title, level, docId, numInStock, reorderLevel, lastUpdated, image);
+
 
   m.level = level ? level : '';
   m.docId = docId ? docId : '';

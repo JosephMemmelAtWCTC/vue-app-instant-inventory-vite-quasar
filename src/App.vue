@@ -4,6 +4,7 @@
     :library="this.library"
     :inventory-explorer="this.inventoryExplorer"
     :app-info="this.appInfo"
+    :notificationsList="this.notificationsList"
   />
 <!--  @call-filter-settings-refresh="console.log('{{{{{{{')"-->
 
@@ -20,7 +21,7 @@ import "https://www.gstatic.com/firebasejs/8.10.1/firebase.js";//TODO: Ask about
 import User from "/src/models/FullUserDetails.js"
 import FullUserDetails from "/src/models/FullUserDetails.js";
 
-import {accounts, auth, db, inventory, storage} from "src/models/Firebase.js";
+import {accounts, auth, db, inventory, notifications, storage} from "src/models/Firebase.js";
 
 
 
@@ -38,6 +39,7 @@ import Category from "./models/Category.js"
 import StoreItem from "./models/StoreItem.js"
 import Product from "./models/Product.js"
 import InventoryExplorer from "src/models/InventoryExplorer";
+import Notification from "src/models/Notification";
 
 export default defineComponent({
   // components: {OptionsFAB, PageInventoryCardsSearch, EditModal, PageTitleTable, QuasarAppLayout, NavigateIconItem},
@@ -48,16 +50,9 @@ export default defineComponent({
 
       library: new InventoryCollection(),
       inventoryExplorer: new InventoryExplorer(),
-        // .add(new Category('Category 1','Category 1\'s description', 'src/assets/icons/folder.svg'))
-        // .add(new StoreItem(
-        //   new Product(
-        //     'Fjallraven - Foldsack No. 1 Backpack',
-        //     'Your perfect pack for everyday use and walks in the forest.',
-        //     'https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg',
-        //     '923087'
-        //   ),
-        // 2, 4, Date.now() - 1000 * 60 * 60 * 9)
-      // ),
+
+      notificationsList: [],
+
       appInfo: {
         appTitle: "Instant Inventory",
         appVersion: "Vue App v4.0 (Demo)",
@@ -122,6 +117,30 @@ export default defineComponent({
 
     this.setLibraryFromDocPath("/");
 
+    notifications.onSnapshot(snapshot => {
+      this.notificationsList = [];
+      snapshot.forEach(doc => {
+        console.log("m docdata:", doc.data());
+        const dataPush = doc.data();
+        dataPush.docId = doc.id;
+
+
+        console.log("=====", dataPush)
+        const notification = new Notification(dataPush)
+        // console.log("notification.getAsData()",notification.getAsData());
+
+        this.notificationsList.push({
+            level: notification.level,
+            docId: notification.docId,
+            title: notification.title,
+            numInStock: notification.numInStock,
+            reorderLevel: notification.reorderLevel,
+            lastUpdated: notification.lastUpdated,
+            image: notification.image,
+          }
+        );
+      });
+    })
 
   },
 

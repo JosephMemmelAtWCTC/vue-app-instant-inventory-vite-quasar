@@ -41,6 +41,10 @@ export default defineComponent({
       type: Object,
       required: true,
     },
+    notificationsList: {
+      type: Array,
+      required: true,
+    }
   },
   methods: {
     toggleLeftDrawer(){
@@ -165,7 +169,7 @@ export default defineComponent({
         </navigate-icon-item>
         <navigate-icon-item router-link-to="/records" tooltip-info="Records" li-extra-classes="p-2 mb-2" icon-class="bi-arrow-left-right" :badge-text="library.length">
         </navigate-icon-item>
-        <navigate-icon-item router-link-to="/notifications" tooltip-info="Notifications" li-extra-classes="p-2 mb-2" icon-class="bi-bell" :badge-text="library.length">
+        <navigate-icon-item router-link-to="/notifications" tooltip-info="Notifications" li-extra-classes="p-2 mb-2" icon-class="bi-bell" :badge-text="notificationsList.length+''">
         </navigate-icon-item>
         <navigate-icon-item router-link-to="/stats" tooltip-info="Statistics" li-extra-classes="p-2 mb-2" icon-class="bi-clipboard2-data">
         </navigate-icon-item>
@@ -187,6 +191,7 @@ export default defineComponent({
         :inventory-explorer="this.inventoryExplorer"
         :app-info="this.appInfo"
         :filter-settings="this.filterSettings"
+        :notificationsList="this.notificationsList"
       />
     </q-page-container>
   </q-layout>

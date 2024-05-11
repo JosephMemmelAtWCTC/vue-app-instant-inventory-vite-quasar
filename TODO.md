@@ -26,3 +26,8 @@ TODO FROM CLASS
 -
 - Image compression
 
+
+
+
+
+Add pull to refresh and refresh button on notifications

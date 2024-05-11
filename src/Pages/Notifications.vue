@@ -11,7 +11,6 @@ export default defineComponent({
       tab: ref('out_of_stock'),
       // innerTab: ref('innerMails'),
       // splitterModel: ref(20)
-      notificationsList: [],
     };
   },
   components: {NotificationItem},
@@ -20,38 +19,21 @@ export default defineComponent({
       // type: InventoryExplorer,
       type: Object,
       required: true,
-    }
+    },
+    notificationsList: {
+      type: Array,
+      required: true,
+    },
   },
   mounted() {
   },
   created: function () {
-    notifications.onSnapshot(snapshot => {
-      this.notificationsList = [];
-      snapshot.forEach(doc => {
-        console.log("m docdata:", doc.data());
-        const dataPush = doc.data();
-        dataPush.docId = doc.id;
 
-        const notification = new Notification(dataPush)
-        // console.log("notification.getAsData()",notification.getAsData());
-
-        this.notificationsList.push({
-            level: notification.level,
-            docId: notification.docId,
-            title: notification.title,
-            numInStock: notification.numInStock,
-            reorderLevel: notification.reorderLevel,
-            lastUpdated: notification.lastUpdated,
-            image: notification.image,
-          }
-        );
-      });
-    })
   },
   computed: {
     allOutOfStock(){
       // return this.notificationsList.filter(n => n.type === "out_of_stock");
-      return this.notificationsList.filter(n => n.level === "out_of_stock");
+      return this.notificationsList.filter(n => n.level === "out_of_stock").sort((a, b) => {return a.lastUpdated-b.lastUpdated});
     }
   }
 });
@@ -83,12 +65,18 @@ export default defineComponent({
           <q-tab-panels v-model="tab" animated>
 <!--            MAKE EACH A COMPONENT-->
             <q-tab-panel name="out_of_stock">
-              <div class="text-h6">Out Of Stock</div>
+              <div class="text-h6">Items out of stock</div>
 
               <div class="q-pa-md">
                 <q-list bordered padding>
                   <Notification-Item v-for="(notification, i) in allOutOfStock" :key="i"
+                                    :level="notification.level"
+                                    :docId="notification.docId"
                                     :title="notification.title"
+                                    :numInStock="notification.numInStock"
+                                    :reorderLevel="notification.reorderLevel"
+                                    :lastUpdated="notification.lastUpdated"
+                                    :image="notification.image"
                   >
                     test
                   </Notification-Item>
