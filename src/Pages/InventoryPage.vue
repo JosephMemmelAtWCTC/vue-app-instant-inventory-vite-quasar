@@ -338,7 +338,7 @@ export default defineComponent({
                                    type="number"
                                    label="# in stock"
                                    class="full-width w-100"
-                                   :rules="[val => !!val || 'You need to have a quantity', val => val > 0 || 'Count cannot be less than 0']"
+                                   :rules="[val => val !== null || 'You need to have a quantity', val => val >= 0 || 'Count cannot be less than 0']"
                                    lazy-rules
                           ></q-input>
                         </div>

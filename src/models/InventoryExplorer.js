@@ -1,5 +1,12 @@
 import {InventoryItem, STORAGE_TYPES } from "src/models/InventoryItem.js"
-import {inventory, auth, storage, db, DEVELOPMENT_TESTING_INVENTORY_DOC_KEY} from 'src/models/Firebase.js'
+import {
+  inventory,
+  auth,
+  storage,
+  db,
+  DEVELOPMENT_TESTING_INVENTORY_DOC_KEY,
+  notifications
+} from 'src/models/Firebase.js'
 import Category from "src/models/Category";
 import Product from "src/models/Product";
 import InventoryCollectionProper from "src/models/InventoryCollectionProper";
@@ -137,7 +144,7 @@ function InventoryExplorer() {
         }
       }
 
-      console.log("<><><>",oldVersion.docId, diffrences);
+      console.log("<><><>", oldVersion.docId, diffrences);
       const path = m.currentlyIn.currentDoc.collection("categories").doc(oldVersion.docId);
       console.log("path", path.path);
 
@@ -145,51 +152,70 @@ function InventoryExplorer() {
         .doc(oldVersion.docId)
         .update(diffrences)
         .then((docRef) => {
+          console.log("checkForNoticescheckForNotices", diffrences, newVersion);
+
+          if(oldVersion.constructorSaved.type === STORAGE_TYPES.PRODUCT_GENERIC){
+            checkForNotices(newVersion);
+          }
           return "Ready for update completed"
         })
     }else{
       const newItem = new InventoryItem(oldNew);
-
       // debugger
-      // console.log(oldNew);
       // oldNew = Object.assign(oldNew.constructorSaved, oldNew);
 
       return m.currentlyIn.currentDoc.collection("categories")
         .add(newItem.getAsData())
-        .then(() => {
-          return "Ready for new completed"
+        .then((docRef) => {
+
+          if(newItem.inventoryType === STORAGE_TYPES.PRODUCT_GENERIC){
+            // TODO: docRef gives `Paused on exception
+            // TypeError: doc is undefined`
+
+            // return checkForNotices(docRef);
+            // console.log("checkForNotices Data newItem.getAsData()", "newItem.getAsData()");
+            // console.log("checkForNotices Data", newItem.getAsData());
+
+            return checkForNotices(newItem.getAsData());
+          }
+
+          return docRef;
+        })
+
+    }
+      //   TODO: Notify if failed, etc
+  }
+
+  function checkForNotices(asData){
+    // TODO: Also trigger for add
+    console.log("in checkForNotices()");
+
+    // const dataPush = doc.data();
+    // dataPush.docId = doc.id;
+    console.log("checkForNotices Data", asData);
+
+    if(asData.numInStock === 0){
+      notifications.add(
+          {
+            level: "out_of_stock",
+            docId: "GET_WORKING",
+            title: asData.title,
+            numInStock: asData.numInStock,
+            reorderLevel: asData.reorderLevel,
+            lastUpdated: asData.lastUpdated,
+          }
+        )
+        .then((docRef) => {
+
         })
     }
 
-    // if(newVersion.docId){
-    //   Update item
-
-
-
-      //   TODO: Only send updates to changed fields
-    // inventory/4GpErCnogbGLrHeZu26K/categories/jfUkFIy9oWBFSmr5IJ2E
-
-      // "path"
-      // inventory/4GpErCnogbGLrHeZu26K/
-      // categories/5HCy41f47V4MEQQBlGjg/
-      // categories/5HCy41f47V4MEQQBlGjg/   -- duplicated
-      // categories/IVRNVKMxaxkOJa5CNHVi    --Correct
-
-      // m.currentlyIn.currentDoc.get()
-      //   .then(doc => {
-      //     const dataPush = doc.data();
-      //     console.log("doc snapshotm.currentlyIn.currentDoc", dataPush);
-      //     return doc;
-      //   })
-
-      // console.log("<><><>2",m.currentlyIn.currentDoc.collection("categories"));
-      // console.log("to", oldVersion.constructorSaved.name, STORAGE_TYPES.CATEGORY.toLowerCase());
-
-      //   TODO: Notify if failed, etc
-
-    // }
-    // return "Update completed";
+    // return doc;
+    return asData;
   }
+
+
+
 
 
   async function recursiveCounter(collectionRef) {
