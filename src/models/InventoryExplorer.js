@@ -204,7 +204,9 @@ function InventoryExplorer() {
     console.log("checkForNotices Data", asData);
 
     if(asData.numInStock === 0){
-      notifications.add(
+    // .doc(createdAuthAccount.user.uid).set(newAccount)
+
+      notifications.doc(asData.docId).set(
           {
             level: "out_of_stock",
             docId: "GET_WORKING",
