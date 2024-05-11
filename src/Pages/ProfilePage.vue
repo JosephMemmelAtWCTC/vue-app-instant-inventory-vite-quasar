@@ -30,9 +30,6 @@ export default defineComponent({
             this.$router.push({ path: '/login' });
         });
     },
-    // uploadImage(files){
-    //   console.log("this.files[0] = ",files[0]);
-    // },
     addImage(docId) {
       // docId and image file are required
       if (!docId || !this.newAuthImage) {
@@ -56,7 +53,8 @@ export default defineComponent({
       }
 
       // validate size (less than 200KB
-      if (this.newAuthImage.size > (200 * 1024)) {
+      // if (this.newAuthImage.size > (200 * 1024)) {
+      if (false) {
         // file too large
 
         // let the user know...
@@ -137,20 +135,7 @@ export default defineComponent({
                  lazy-rules
         ></q-input>
 
-<!--        <q-uploader-->
-<!--          style="max-width: 300px"-->
-<!--          label="Restricted to images"-->
-<!--          accept=".jpg, image/*"-->
-<!--          @uploaded="console.log('uploadingstart')"-->
-<!--          url="./#"-->
-<!--          @added="uploadImage()"-->
-<!--        />-->
         <q-file filled v-model="newAuthImage" label="New Account Avatar" />
-          <!--          @failed="uploadImage()"-->
-
-          <!--          <template v-slot:prepend>-->
-<!--            <q-icon name="attach_file" />-->
-<!--          </template>-->
 
         <q-input filled
                  label="Password"
@@ -170,33 +155,6 @@ export default defineComponent({
         </button>
     </div>
 
-
-    <!--        :rules="[val => !!val || '* Required']"-->
-
-        <!--        <div class="m-0 h-100 position-relative">-->
-
-<!--          <div class="p-md-4 p-md-0 rounded-0 row h-auto d-flex align-items-start">-->
-<!--  &lt;!&ndash;          <div class="col-12 h-auto">&ndash;&gt;-->
-<!--  &lt;!&ndash;            <img width="15%" src="." class="border-secondary p-2 border-2 mx-auto d-block" alt="Profile Picture">&ndash;&gt;-->
-<!--  &lt;!&ndash;          </div>&ndash;&gt;-->
-<!--            <div class="col-12 col-md-12 h-auto">-->
-<!--              <label for="profile-name" class="col-12 col-form-label">Name:</label>-->
-<!--              <input type="text" class="form-control focus-ring-primary" id="profile-name" v-model="userInfo.profileName">-->
-<!--            </div>-->
-<!--            <div id="permissionsChips" class="col-12 h-auto mt-2">-->
-<!--              <p>Permissions</p>-->
-<!--              &lt;!&ndash;                                TODO: Make settable via table&ndash;&gt;-->
-<!--              <p>-->
-<!--                <span class="badge text-bg-primary me-1">Admin</span>-->
-<!--                <span class="badge text-bg-primary">Add Items</span>-->
-<!--              </p>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <div class="position-absolute bottom-0 start-50 translate-middle-x mb-4">-->
-<!--            &lt;!&ndash;                    <div class="col-auto pt-4 mx-auto h-auto position-absolute bottom-0 start-100 mb-5 translate-middle-x">&ndash;&gt;-->
-<!--            <button type="button" class="btn btn-danger">Sign Out</button>-->
-<!--          </div>-->
-<!--        </div>-->
       <div class="col-6">
         <button @click="this.signOut">Sign Out</button>
       </div>

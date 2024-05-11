@@ -50,33 +50,45 @@ export default defineComponent({
     toggleLeftDrawer(){
       this.leftDrawerOpen = !this.leftDrawerOpen;
     }
-  }
+  },
+  computed: {
+    imgSize() {
+      return 74/(this.leftDrawerOpen?1:1.5);
+    },
+    authUserIsAdmin() {
+      return this.authUser.role.toLowerCase() === 'admin';
+    }
+  },
 });
 </script>
 
 <template>
   <q-layout view="hHh Lpr lFf">
-    <q-header elevated class="q-ma-none-forced">
-      <q-toolbar>
+    <q-header elevated class="q-ma-none-forced full-width">
+      <q-toolbar class="">
         <div class="row justify-between q-ma-none-forced q-gutter-none">
-          <div class="col-auto q-pa-none-forced">
+          <div class="q-pa-none-forced"
+               :class="leftDrawerOpen?'col-auto':'col-12'">
             <div class="bg-accent full-height q-pa-sm position-relative"
-              :style="'width:'+appInfo.sideBarWidth+'px'"
+                 :style="leftDrawerOpen?'width:'+appInfo.sideBarWidth+'px':''"
+                 :class="!leftDrawerOpen?'full-width':''"
             >
-              <p class="text-center absolute-center">
+              <p class="text-center absolute-center full-width">
                 {{ this.locationKioskName }}
               </p>
             </div>
           </div>
+
+
           <div class="col-6">
-            <q-btn
-              flat
-              dense
-              round
-              icon="menu"
-              aria-label="Menu"
-              @click="toggleLeftDrawer"
-            />
+<!--            <q-btn-->
+<!--              flat-->
+<!--              dense-->
+<!--              round-->
+<!--              icon="menu"-->
+<!--              aria-label="Menu"-->
+<!--              @click="toggleLeftDrawer"-->
+<!--            />-->
 
             <q-toolbar-title>
 <!--              {{ appNavigation.currentPageLabel }}-->
@@ -88,19 +100,26 @@ export default defineComponent({
             <Router-Link to="account" v-if="authUser.uid !== ''">
               <div class="full-height q-py-sm">
                 <div class="row">
+                  <div class="col" v-if="!this.leftDrawerOpen">
+                    <span>
+                    <q-chip color="colorAdmin" text-color="white">
+                      <span>
+                      <q-icon name="bi-person-badge" class="chip-icon" />
+                      {{ authUser.role }}
+                      </span>
+                    </q-chip>
+                    </span>
+                  </div>
                   <div class="col-auto">
                     <div class="column full-height justify-center">
                       <div class="col">
                         {{authUser.email}}
                       </div>
-                      <div class="col">
-<!--                        <q-chip color="primary" text-color="white" icon="event">-->
-<!--                          Add-->
-<!--                        </q-chip>-->
+                      <div class="col" v-if="this.leftDrawerOpen">
                         <span>
                         <q-chip color="colorAdmin" text-color="white">
                           <span>
-                          <q-icon name="event" class="chip-icon" />
+                          <q-icon name="bi-person-badge" class="chip-icon" />
                           {{ authUser.role }}
                           </span>
                         </q-chip>
@@ -109,10 +128,10 @@ export default defineComponent({
                     </div>
                   </div>
                   <div class="col-auto">
-                    <q-avatar size="76px" class="q-ml-md">
+                    <q-avatar :size="imgSize+'px'" class="q-ml-md">
                       <q-img
                         :src="authUser.image"
-                        spinner-size="64px"
+                        :spinner-size="(imgSize/2)+'px'"
                         spinner-color="secondary"
                         class="profile-avatar"
                       />
@@ -150,19 +169,7 @@ export default defineComponent({
 <!--        <q-input v-model="scope.value" dense autofocus @keyup.enter="scope.set" autocomplete-->
 <!--                 :rules="[val => val.length > 1 || 'Title requires at least 1 character', [val => val.length < 20 || 'Title cannot at least 1 character']]"/>-->
 <!--      </q-popup-edit>-->
-
       <q-list>
-<!--        <q-item-label-->
-<!--          header-->
-<!--        >-->
-<!--          Essential Links-->
-<!--        </q-item-label>-->
-
-<!--        <EssentialLink-->
-<!--          v-for="link in linksList"-->
-<!--          :key="link.title"-->
-<!--          v-bind="link"-->
-<!--        />-->
         <navigate-icon-item router-link-to="/" tooltip-info="Home" li-extra-classes="p-2 mb-2" icon-class="bi-house">
         </navigate-icon-item>
         <navigate-icon-item router-link-to="/inventory" @click="this.library.setFirebaseDoc()" tooltip-info="Inventory" li-extra-classes="p-2 mb-2" icon-class="bi-box-seam"><!--fa-solid fa-boxes-stacked-->
@@ -171,35 +178,77 @@ export default defineComponent({
         </navigate-icon-item>
         <navigate-icon-item router-link-to="/notifications" tooltip-info="Notifications" li-extra-classes="p-2 mb-2" icon-class="bi-bell" :badge-text="notificationsList.length+''">
         </navigate-icon-item>
-        <navigate-icon-item router-link-to="/stats" tooltip-info="Statistics" li-extra-classes="p-2 mb-2" icon-class="bi-clipboard2-data">
+        <navigate-icon-item router-link-to="/stats" tooltip-info="Statistics" li-extra-classes="p-2 mb-2" icon-class="bi-clipboard2-data" v-if="authUserIsAdmin">
         </navigate-icon-item>
 <!--        <navigate-icon-item router-link-to="/account" tooltip-info="Account" li-extra-classes="p-2 mb-2" icon-class="bi-person">-->
 <!--        </navigate-icon-item>-->
-        <navigate-icon-item router-link-to="/admin" tooltip-info="Admin" li-extra-classes="p-2 mb-2" icon-class="bi-terminal" v-if="authUser.role.toLowerCase() === 'admin'">
+        <navigate-icon-item router-link-to="/admin" tooltip-info="Admin" li-extra-classes="p-2 mb-2" icon-class="bi-terminal" v-if="authUserIsAdmin">
         </navigate-icon-item>
       </q-list>
-        <footer>
+        <footer class="sidebar-footer">
           <navigate-icon-item router-link-to="/app" iconContent="Experience Our App" li-extra-classes="p-2 mb-2" icon-class="bi-phone">
           </navigate-icon-item>
         </footer>
     </q-drawer>
 
-    <q-page-container>
+    <q-page-container class="overflow-hidden-y">
       <router-view
         :auth-user="this.authUser"
         :library="this.library"
         :inventory-explorer="this.inventoryExplorer"
         :app-info="this.appInfo"
         :filter-settings="this.filterSettings"
-        :notificationsList="this.notificationsList"
+        :notifications-list="this.notificationsList"
+        :left-drawer-open="leftDrawerOpen"
       />
+
     </q-page-container>
+    <q-footer class="fixed-bottom transparent navigation-footer container-fluid m-0 p-0" v-if="!leftDrawerOpen">
+
+      <div class="row q-gutter-none m-0 p-0 overflow-x-hidden">
+        <div class="col-4 spacer-from-top q-gutter-none bg-red h-100">
+          <div class="row bg-body-secondary h-100">
+            <div class="col-12 h-50">
+              <div class="col-12 h-50 bg-blue">
+              </div>
+              <div class="row q-gutter-none " :class="('row-cols-'+(authUserIsAdmin?'3':'2'))">
+                <navigate-icon-item router-link-to="/" li-extra-classes="p-2 mb-2" class="col" icon-class="bi-house"></navigate-icon-item>
+                <navigate-icon-item router-link-to="/inventory" @click="this.library.setFirebaseDoc()" li-extra-classes="p-2 mb-2" class="col" icon-class="bi-box-seam"><!--fa-solid fa-boxes-stacked--></navigate-icon-item>
+                <navigate-icon-item router-link-to="/stats" li-extra-classes="p-2 mb-2" class="col" icon-class="bi-clipboard2-data" v-if="authUserIsAdmin"></navigate-icon-item>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col centerNavTallOption">
+          <button id="scanButton" data-navPageTarget="inventory" @click="openNavPage('inventory')" type="button" class="link-secondary primaryNavMovePage btn btn-primary w-100 p-3 rounded-0 rounded-top-5 h-100">
+            <img src="src/assets/icons/upc-scan.svg" class="scan-qr-code" alt="Scan Barcode">
+          </button>
+        </div>
+
+        <div class="col-4 spacer-from-top q-gutter-none bg-red h-100">
+          <div class="row bg-body-secondary h-100">
+            <div class="col-12 h-50">
+              <div class="col-12 h-50 bg-blue">
+              </div>
+              <div class="row q-gutter-none " :class="('row-cols-'+(authUserIsAdmin?'3':'2'))">
+                <navigate-icon-item router-link-to="/records" li-extra-classes="p-2 mb-2" icon-class="bi-arrow-left-right" :badge-text="library.length"></navigate-icon-item>
+                <navigate-icon-item router-link-to="/notifications" li-extra-classes="p-2 mb-2" icon-class="bi-bell" :badge-text="notificationsList.length+''"></navigate-icon-item>
+                <navigate-icon-item router-link-to="/admin" li-extra-classes="p-2 mb-2" icon-class="bi-terminal" v-if="authUserIsAdmin"></navigate-icon-item>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </q-footer>
   </q-layout>
 </template>
 
 
 <style scoped>
-  footer{
+  footer.sidebar-footer{
     position: absolute;
     bottom: 0;
     width: 100%;
@@ -211,4 +260,24 @@ export default defineComponent({
   .q-pa-none-forced{
     padding: 0 0 !important;
   }
+  .spacer-from-top{
+    margin-top: 10%;
+  }
+
+  .because-removing-row-fails{
+    padding: 0;
+  }
+
+  /*.footer:not(.sidebar-footer){*/
+  .navigation-footer{
+    //height: 200px;
+  }
+
+  img.scan-qr-code{
+    width: 100px;
+  }
+
+  .navigation-footer .row {
+  }
+
 </style>

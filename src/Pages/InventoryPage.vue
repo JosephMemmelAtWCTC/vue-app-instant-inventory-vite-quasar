@@ -58,6 +58,11 @@ export default defineComponent({
       // type: InventoryExplorer,
       type: Object,
       required: true,
+    },
+    leftDrawerOpen: {
+      type: Boolean,
+      required: true,
+      default: true,
     }
   },
   emits: ["call-filter-settings-refresh"],
@@ -261,7 +266,8 @@ export default defineComponent({
 
         <div class="position-fixed bottom-0 end-0 p-3">
           <options-f-a-b z-index="1000"
-                         symbol-classes="bi bi-plus">
+                         symbol-classes="bi bi-plus"
+                         v-if="leftDrawerOpen">
             <template #open v-slot="slotProps">
               <ul>
                 <li>

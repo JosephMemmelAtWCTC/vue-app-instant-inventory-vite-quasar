@@ -4,7 +4,7 @@
     :library="this.library"
     :inventory-explorer="this.inventoryExplorer"
     :app-info="this.appInfo"
-    :notificationsList="this.notificationsList"
+    :notifications-list="this.notificationsList"
   />
 <!--  @call-filter-settings-refresh="console.log('{{{{{{{')"-->
 
