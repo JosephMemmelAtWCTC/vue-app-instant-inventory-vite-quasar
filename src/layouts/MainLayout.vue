@@ -7,6 +7,8 @@ import { db, auth, storage } from 'src/models/Firebase.js'
 import FullUserDetails from "src/models/FullUserDetails";
 import OptionsFAB from "components/OptionsFAB.vue";
 import EditModal from "components/EditModal.vue";
+import StoreItem from "src/models/StoreItem";
+import Product from "src/models/Product";
 
 export default defineComponent({
   name: 'MainLayout',
@@ -15,6 +17,7 @@ export default defineComponent({
     return {
       locationKioskName: "locationKioskName",
       leftDrawerOpen: false,
+      newItem: new StoreItem(new Product("","","https://picsum.photos/200/300",""), 1, undefined),
     };
   },
   props: {
@@ -218,7 +221,14 @@ export default defineComponent({
         </div>
 
         <div class="col centerNavTallOption">
-          <button id="scanButton" data-navPageTarget="inventory" @click="openNavPage('inventory')" type="button" class="link-secondary primaryNavMovePage btn btn-primary w-100 p-3 rounded-0 rounded-top-5 h-100">
+          <button id="scanButton" type="button" class="link-secondary primaryNavMovePage btn btn-primary w-100 p-3 rounded-0 rounded-top-5 h-100"
+                  @click="()=>{
+                    if(this.$route.path !== 'inventory'){
+                      this.$router.push({ path: '/inventory' });
+                    }
+                    this.$refs.newItemModal.openModal();
+                  }"
+          >
             <img src="src/assets/icons/upc-scan.svg" class="scan-qr-code" alt="Scan Barcode">
           </button>
         </div>
@@ -239,6 +249,73 @@ export default defineComponent({
 
     </q-footer>
   </q-layout>
+
+<!-- Add Item Control via scanner: TODO: Ask if this is best place, it should be separate from it's children -->
+  <edit-modal :item="this.newItem"
+              title="New Item"
+              submit-button-text="Create Item"
+              ref="newItemModal"
+              @save-it="inventoryExplorer.currentlyIn.addNew(this.newItem)"
+  >
+    <template v-slot="slotProps">
+      <q-input filled v-model="this.newItem.product.title"
+               label="Name"
+               class="full-width"
+               autofocus
+               :rules="[val => !!val || '* Required']"
+               lazy-rules
+      ></q-input>
+      <q-input filled v-model="this.newItem.product.productId"
+               label="Product ID"
+               class="full-width"
+               :rules="[val => !!val || '* Required']"
+               lazy-rules
+      ></q-input>
+      <q-input filled v-model="this.newItem.product.description"
+               type="textarea"
+               rows="4"
+               label="Description"
+               class="full-width"
+               :rules="[val => !!val || '* Required']"
+               lazy-rules
+      ></q-input>
+      <q-input filled v-model.number="this.newItem.reorderLevel"
+               type="number"
+               label="Reorder Level"
+               clearable
+               clear-icon="bi-x"
+               placeholder="Leave blank to ignore reorder"
+               class="full-width clearable"
+               :rules="[val => val >= 0 || 'Count cannot be less than 0']"
+               lazy-rules
+      ></q-input>
+      <div class="input-group mb-3 w-100">
+
+        <div class="col-2 d-block z-2">
+          <button type="button" @click="this.newItem.numInStock -= (slotProps.editItem.numInStock > 0? 1:0)" class="h-100 d-block rounded-0 rounded-start-3 form-control focus-ring-primary">
+            <i class="bi bi-dash"></i>
+          </button>
+        </div>
+        <div class="col-8 form-control m-0 p-0">
+
+          <q-input filled v-model.number="this.newItem.numInStock"
+                   type="number"
+                   label="# in stock"
+                   class="full-width w-100"
+                   :rules="[val => val !== null || 'You need to have a quantity', val => val >= 0 || 'Count cannot be less than 0']"
+                   lazy-rules
+          ></q-input>
+        </div>
+        <div class="col-2 d-block z-2">
+          <button type="button" @click="this.newItem.numInStock++" class="h-100 rounded-0 rounded-end-3 form-control focus-ring-primary">
+            <i class="bi bi-plus"></i>
+          </button>
+        </div>
+      </div>
+    </template>
+  </edit-modal>
+
+
 </template>
 
 

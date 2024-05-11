@@ -63,7 +63,8 @@ export default defineComponent({
       type: Boolean,
       required: true,
       default: true,
-    }
+    },
+
   },
   emits: ["call-filter-settings-refresh"],
   methods: {
