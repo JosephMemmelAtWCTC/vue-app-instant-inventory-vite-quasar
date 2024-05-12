@@ -23,6 +23,7 @@ function InventoryExplorer() {
     navigateTo: navigateTo,
     currentlyIn: {
       currentDocId: null,
+      breadcrumbs: [],
       currentDoc: inventory,
       libraryCollection: new InventoryCollectionProper(),
       addNew: addNew,
@@ -59,6 +60,8 @@ function InventoryExplorer() {
           m.currentlyIn.currentDocId = docId;
           return m.currentlyIn.currentDoc.get()
             .then(doc => {
+              m.currentlyIn.breadcrumbs.push(doc.data().title);
+
               // const dataPush = doc.data();
               // dataPush.docId = doc.id;
               console.log("doc snapshoesfiopsoijsljkht", doc.data());
@@ -70,15 +73,19 @@ function InventoryExplorer() {
                 // Promise.reject("Undefined second copy, not continuing");
               }else{
                 const data = [];
+
                 return doc.ref.collection("categories")
                   .get()
-                  .then(takeCareOfCurrentSnapshot)
-                  .then(() => {
-                    return m.currentlyIn.currentDoc.collection("categories").onSnapshot(snapshot =>
-                      takeCareOfCurrentSnapshot(snapshot)
-                    );
+                  .then(snapshot => {
+                    return takeCareOfCurrentSnapshot(snapshot);
                   })
                   .then(() => {
+                    return m.currentlyIn.currentDoc.collection("categories").onSnapshot(snapshot => {
+                      takeCareOfCurrentSnapshot(snapshot);
+                    });
+                  })
+
+              .then(() => {
                     return "Ready for trigger"
                   })
                 return "doc";
@@ -174,14 +181,19 @@ function InventoryExplorer() {
       // oldNew = Object.assign(oldNew.constructorSaved, oldNew);
 
       console.log("newItem = new InventoryItem(oldNew)", newItem);
-      const imgFile = newItem.product.imageURL;
-      newItem.product.imageURL = null;
+
+      let imgFile = null;
+      if(newItem.inventoryType === STORAGE_TYPES.PRODUCT_GENERIC){
+        imgFile = newItem.product.imageURL;
+        newItem.product.imageURL = null;
+      }
 
       return m.currentlyIn.currentDoc.collection("categories")
         .add(newItem.getAsData())
         .then((docRef) => {
 
-          if(newItem.inventoryType === STORAGE_TYPES.PRODUCT_GENERIC){
+          // if(newItem.inventoryType === STORAGE_TYPES.PRODUCT_GENERIC){
+          if(imgFile){
             // TODO: docRef gives `Paused on exception
             // TypeError: doc is undefined`
 

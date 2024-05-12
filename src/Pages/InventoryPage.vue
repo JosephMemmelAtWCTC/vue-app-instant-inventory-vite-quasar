@@ -1,6 +1,5 @@
 <script>
 import {defineComponent} from "vue";
-import PageInventoryCardsSearch from "components/pages/PageInventoryCardsSearch.vue";
 import InventoryCollection from "src/models/InventoryCollection";
 import StoreItem from "src/models/StoreItem";
 import Category from "src/models/Category";
@@ -30,7 +29,6 @@ export default defineComponent({
     OptionsFAB,
     StreamBarcodeReader
   },
-  // PageInventoryCardsSearch,
   data() {
     return {
       newCategory: new Category("","","src/assets/icons/folder.svg"),
@@ -99,7 +97,7 @@ export default defineComponent({
       console.log('navigateTo before in send up');
       this.inventoryExplorer.navigateTo(docId, "relative")
         .then((message)=>{
-          console.log("this.triggerthis.triggerthis.triggerthis.trigger: ",message);
+          console.log("this.triggerthis.triggerthis.triggerthis.trigger: ", message);
 
           this.trigger++;
           // this.$emit("resize")
@@ -223,22 +221,6 @@ export default defineComponent({
 
 <template>
   <q-page class="flex">
-
-
-
-
-
-
-<!--    <page-inventory-cards-search :key="filteredLibrary"-->
-<!--      :filter-settings="filterSettings"-->
-<!--      :current-combined-items-list="filteredLibrary"-->
-<!--      :breadCrumbs="this.library.breadCrumbs"-->
-<!--      search-label="Filter Search"-->
-<!--      @remove-item="this.library.delete($event)"-->
-<!--      @save-it="this.library.update($event)"-->
-<!--      @card-navigate="onUpdateCardOpenCategory"-->
-<!--    >-->
-<!--      @remove-category="removeCategory"-->
       <main-content-page
     >
 <!--        <p>TESTP{{inventoryExplorer.test}}</p>-->
@@ -261,8 +243,8 @@ export default defineComponent({
             <div class="col-12 ps-3 mb-0 pb-0">
               <nav aria-label="Inventory Explorer Breadcrumb">
                 <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="#" class="link-primary">Warehouse</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">{{'eee---'}}</li>
+                  <li class="breadcrumb-item" v-for="(breadcrumb, i) in inventoryExplorer.currentlyIn.breadcrumbs" :key="i">{{ breadcrumb }}</li>
+<!--                  <li class="breadcrumb-item active" aria-current="page">{{'test'}}</li>-->
                 </ol>
               </nav>
             </div>

@@ -30,7 +30,6 @@ import EditModal from "components/EditModal.vue";
 import OptionsFAB from "components/OptionsFAB.vue";
 
 
-import PageInventoryCardsSearch from "components/pages/PageInventoryCardsSearch.vue";
 import PageTitleTable from "components/pages/PageTitleTable.vue";
 
 
@@ -42,7 +41,6 @@ import InventoryExplorer from "src/models/InventoryExplorer";
 import Notification from "src/models/Notification";
 
 export default defineComponent({
-  // components: {OptionsFAB, PageInventoryCardsSearch, EditModal, PageTitleTable, QuasarAppLayout, NavigateIconItem},
 
   data() {
     return {
