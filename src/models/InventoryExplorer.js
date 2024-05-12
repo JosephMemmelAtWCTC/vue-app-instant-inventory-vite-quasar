@@ -44,6 +44,7 @@ function InventoryExplorer() {
 
       if(docId === "root"){
         m.currentlyIn.currentDoc = inventory;
+        m.currentlyIn.breadcrumbs = [];
       }
       if(docId === m.currentlyIn.currentDocId){
         console.log("FAILING: Tried to duplicate category/id path");
@@ -85,7 +86,7 @@ function InventoryExplorer() {
                     });
                   })
 
-              .then(() => {
+                  .then(() => {
                     return "Ready for trigger"
                   })
                 return "doc";
@@ -182,8 +183,16 @@ function InventoryExplorer() {
 
       console.log("newItem = new InventoryItem(oldNew)", newItem);
 
+
       let imgFile = null;
-      if(newItem.inventoryType === STORAGE_TYPES.PRODUCT_GENERIC){
+      console.log("newItem.inventoryType", newItem.inventoryType, STORAGE_TYPES.PRODUCT_GENERIC)
+
+      // if(newItem.inventoryType === STORAGE_TYPES.PRODUCT_GENERIC){
+      // if(newItem.constructorSaved.type === STORAGE_TYPES.PRODUCT_GENERIC){
+      if(newItem.product){
+
+          console.log("newItem.inventor2yType", newItem.inventoryType, STORAGE_TYPES.PRODUCT_GENERIC)
+
         imgFile = newItem.product.imageURL;
         newItem.product.imageURL = null;
       }
@@ -192,16 +201,10 @@ function InventoryExplorer() {
         .add(newItem.getAsData())
         .then((docRef) => {
 
-          // if(newItem.inventoryType === STORAGE_TYPES.PRODUCT_GENERIC){
-          if(imgFile){
-            // TODO: docRef gives `Paused on exception
-            // TypeError: doc is undefined`
+          if(newItem.inventoryType === STORAGE_TYPES.PRODUCT_GENERIC){
+          // if(imgFile){@@@
 
-            // return checkForNotices(docRef);
-            // console.log("checkForNotices Data newItem.getAsData()", "newItem.getAsData()");
-            // console.log("checkForNotices Data", newItem.getAsData());
-
-            checkForNotices(newItem.getAsData());
+            return checkForNotices(newItem.getAsData());
           }
 
           return docRef;
@@ -210,8 +213,11 @@ function InventoryExplorer() {
           return docRef.get();
         })
         .then((doc) => {
+          if(imgFile === null){
+            return "Not storing img in storage";
+          }
           console.log("doc.data());", doc.data());
-          storage.child('inventoryItems').child(doc.id)
+          return storage.child('inventoryItems').child(doc.id)
 
             .put(imgFile)
             .then(snapshot => {
@@ -224,13 +230,16 @@ function InventoryExplorer() {
             })
             .then(() => {
               console.log('Inventory updated');
+              return "Inventory updated";
             })
             .catch(error => {
               console.error('Error adding image: ', error);
+              return "Error adding image: "+error;
             });
         })
         .catch((error) => {
           console.error("Error", error);
+          return "Error: "+error;
         });
 
     }
