@@ -17,6 +17,7 @@
     "chart.js": "^4.4.2",
     "components": "^0.1.0",
     "firebase": "^10.11.1",
+    "html5-qrcode": "^2.3.8",
     "quasar": "^2.8.0",
     "vue": "^3.4.18",
     "vue-chartjs": "^5.3.1",

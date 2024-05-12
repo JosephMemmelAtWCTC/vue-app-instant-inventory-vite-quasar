@@ -14,11 +14,12 @@ import CardsList from "components/CardsList.vue";
 import MainContentPage from "components/pages/MainContentPage.vue";
 import inventoryExplorer from "src/models/InventoryExplorer";
 import InventoryCollectionProper from "src/models/InventoryCollectionProper";
-
+import QrcodeScanner from "components/QRCodeScanner.vue";
 
 export default defineComponent({
   name: "InventoryPage",
   components: {
+    QrcodeScanner,
     MainContentPage,
     CardsList,
     TogglesArray,
@@ -102,6 +103,7 @@ export default defineComponent({
 
     },
     updateFile() {
+      //https://stackoverflow.com/a/69873409 for below and rest of new image display
       this.imageUrl = URL.createObjectURL(this.newItemImage.value);
     },
 
@@ -361,6 +363,15 @@ export default defineComponent({
                         <div class="col-1">
                           <q-btn round dense flat icon="send" />
                         </div>
+                      </div>
+
+                      <div>
+                        <qrcode-scanner
+                          :qrbox="250"
+                          :fps="10"
+                          style="width: 500px;"
+                          @result="console.log('result')"
+                        />
                       </div>
 
                       <q-input filled v-model="this.newItem.product.description"

@@ -1,4 +1,6 @@
 import './assets/main.css';
+import "https://unpkg.com/html5-qrcode.js";
+
 // import 'bootstrap/dist/css/bootstrap.min.css'
 // import * as bootstrap from 'bootstrap/dist/js/bootstrap.js'
 import * as bootstrap from 'bootstrap';
@@ -13,7 +15,6 @@ import "https://www.gstatic.com/firebasejs/8.10.1/firebase.js";
 import firebase from "firebase/app";
 import './models/Firebase.js';
 
-import "https://unpkg.com/html5-qrcode";//TODO: Move someplace else?
 
 import {createApp} from 'vue'
 import App from './App.vue'
