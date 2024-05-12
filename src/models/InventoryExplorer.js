@@ -260,16 +260,28 @@ function InventoryExplorer() {
       notifications.doc(asData.docId).set(
           {
             level: "out_of_stock",
-            docId: "GET_WORKING",
+            // docId: "GET_WORKING",
             title: asData.title,
             numInStock: asData.numInStock,
             reorderLevel: asData.reorderLevel,
             lastUpdated: asData.lastUpdated,
+            image: asData.imageSrc,
           }
         )
         .then((docRef) => {
-
+          return docRef;
         })
+    }else{
+      notifications.doc(asData.docId).delete()
+        .then(() => {
+          console.log("Notification deleted");
+          return "Notification deleted";
+        })
+        .catch((error) => {
+          console.error("Error deleting notification", error);
+          return "Error"+error;
+        });
+
     }
 
     // return doc;

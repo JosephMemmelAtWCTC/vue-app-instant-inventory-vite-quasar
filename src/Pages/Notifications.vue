@@ -80,6 +80,7 @@ export default defineComponent({
                                     :image="notification.image"
                                     warning-icon="bi-exclamation-triangle-fill"
                                     warning-color="danger"
+                                    warning-text="Out of stock"
                   >
                   </Notification-Item>
                 </q-list>
@@ -101,6 +102,7 @@ export default defineComponent({
                                      :image="notification.image"
                                      warning-icon="bi-exclamation-triangle-fill"
                                      warning-color="warning"
+                                     :warning-text="notification.numInStock+'/'+notification.reorderLevel"
                   >
                   </Notification-Item>
                 </q-list>

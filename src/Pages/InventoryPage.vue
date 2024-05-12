@@ -220,8 +220,8 @@ export default defineComponent({
 
 
 <template>
-  <q-page class="flex">
-      <main-content-page
+  <q-page class="flex flex-center">
+    <main-content-page
     >
 <!--        <p>TESTP{{inventoryExplorer.test}}</p>-->
         <header class="bg-body-tertiary rounded-3">
@@ -256,7 +256,7 @@ export default defineComponent({
           empty-text="It looks like there are no results that fit your search criteria, try loosing your requirements or adding more items."
         >
         </results-possibly-empty>
-        <div class="row g-2 m-1 row-cols-1 row-cols-sm-2 row-cols-md-4 g-1">
+        <div class="row g-2 m-1 row-cols-1 row-cols-sm-2 row-cols-md-4 row-cols-lg-6 g-1">
 <!--          <cards-list :items="filteredLibrary"-->
 <!--                      @save-it="saveItem"-->
 <!--                      @remove-it="this.library.delete($event)"-->

@@ -177,7 +177,7 @@ export default defineComponent({
         </navigate-icon-item>
         <navigate-icon-item router-link-to="/records" tooltip-info="Records" li-extra-classes="p-2 mb-2" icon-class="bi-arrow-left-right" :badge-text="library.length">
         </navigate-icon-item>
-        <navigate-icon-item router-link-to="/notifications" tooltip-info="Notifications" li-extra-classes="p-2 mb-2" icon-class="bi-bell" :badge-text="notificationsList.length+''">
+        <navigate-icon-item router-link-to="/notifications" tooltip-info="Notifications" li-extra-classes="p-2 mb-2" icon-class="bi-bell" :badge-text="notificationsList.length!==0?notificationsList.length:''">
         </navigate-icon-item>
         <navigate-icon-item router-link-to="/stats" tooltip-info="Statistics" li-extra-classes="p-2 mb-2" icon-class="bi-clipboard2-data" v-if="authUserIsAdmin">
         </navigate-icon-item>
@@ -237,7 +237,7 @@ export default defineComponent({
           <div class="row bg-body-secondary h-100">
             <div class="col-12 h-50">
               <div class="row q-gutter-none " :class="('row-cols-'+(authUserIsAdmin?'3':'2'))">
-                <navigate-icon-item disable-hover router-link-to="/records" li-extra-classes="p-2 mb-2" icon-class="bi-arrow-left-right" :badge-text="library.length"></navigate-icon-item>
+                <navigate-icon-item disable-hover router-link-to="/records" li-extra-classes="p-2 mb-2" icon-class="bi-arrow-left-right" :badge-text="notificationsList.length!==0?notificationsList.length:''"></navigate-icon-item>
                 <navigate-icon-item disable-hover router-link-to="/notifications" li-extra-classes="p-2 mb-2" icon-class="bi-bell" :badge-text="notificationsList.length+''"></navigate-icon-item>
                 <navigate-icon-item disable-hover router-link-to="/admin" li-extra-classes="p-2 mb-2" icon-class="bi-terminal" v-if="authUserIsAdmin"></navigate-icon-item>
               </div>
