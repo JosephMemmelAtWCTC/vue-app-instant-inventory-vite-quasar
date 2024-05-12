@@ -117,10 +117,10 @@ export default defineComponent({
   </q-page>
 </template>
 
-<style>//TODO: Also ask why scoped does not work
-  .q-tabs__content.scroll--mobile.row.no-wrap.items-center.self-stretch.hide-scrollbar.relative-position.q-tabs__content--align-justify{
-    background-color: Red !important;
-    width: auto !important;
-    flex-wrap: nowrap !important;
-  }
-</style>
+<!--<style>//TODO: Also ask why scoped does not work-->
+<!--  .q-tabs__content.scroll&#45;&#45;mobile.row.no-wrap.items-center.self-stretch.hide-scrollbar.relative-position.q-tabs__content&#45;&#45;align-justify{-->
+<!--    background-color: Red !important;-->
+<!--    width: auto !important;-->
+<!--    flex-wrap: nowrap !important;-->
+<!--  }-->
+<!--</style>-->

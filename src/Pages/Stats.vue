@@ -1,5 +1,5 @@
 <script>
-import {defineComponent} from "vue";
+import {defineComponent, ref} from "vue";
 import {STORAGE_TYPES} from "src/models/InventoryItem";
 import StatsSubpage from "components/StatsSubpage.vue";
 
@@ -8,12 +8,16 @@ export default defineComponent({
   components: {StatsSubpage},
   data() {
     return {
-      title: "Inventory by type",
+      tab: ref('by_type')
     }
   },
   props: {
     library: {
       type: Object,
+      required: true,
+    },
+    notificationsList: {
+      type: Array,
       required: true,
     },
   },
@@ -26,22 +30,58 @@ export default defineComponent({
 </script>
 
 <template>
-  <q-page class="flex">
-    <stats-subpage title="Inventory by type"
-                   label="Item Count"
-                   :datasets="[
-                      {
-                        label: 'Item Count',
-                        data: [
-                          this.library.filterByType([STORAGE_TYPES.CATEGORY.toLowerCase()]).length,
-                          this.library.filterByType(['product']).length,
-                        ],
-                      }
-                    ]"
-                   :labels="[ 'Categories', 'Products']"
+  <q-page>
+    <q-tabs
+      v-model="tab"
+      inline-label
+      outside-arrows
+      mobile-arrows
+      class="bg-primary text-white shadow-2"
     >
-    </stats-subpage>
 
+      <q-tab name="by_type" icon="bi-code-square" label="Type">
+      </q-tab>
+      <q-tab name="notifications" icon="bi-exclamation-square" label="Warning Level">
+      </q-tab>
+    </q-tabs>
+    <q-tab-panels v-model="tab" animated>
+
+      <q-tab-panel name="by_type">
+        <stats-subpage class="bg-white"
+                       title="Inventory by type"
+                       label="Item Count"
+                       :labels="[ 'Categories', 'Products']"
+                       :datasets="[
+                            {
+                              label: 'Item Count',
+                              data: [
+                                this.library.filterByType([STORAGE_TYPES.CATEGORY.toLowerCase()]).length,
+                                this.library.filterByType(['product']).length,
+                              ],
+                            }
+                          ]"
+        >
+        </stats-subpage>
+      </q-tab-panel>
+      <q-tab-panel name="notifications">
+        <stats-subpage class="bg-white"
+                       title="Notifications"
+                       label="Type count"
+                       :labels="[ 'Out of stock', 'Reorder level reached']"
+                       :datasets="[
+                            {
+                              label: 'Count',
+                              data: [
+                                this.notificationsList.filter(n => n.level === 'out_of_stock').sort((a, b) => {return a.lastUpdated-b.lastUpdated}).length,
+                                this.notificationsList.filter(n => n.level === 'reorder_level_reached').sort((a, b) => {return a.lastUpdated-b.lastUpdated}).length,
+                              ],
+                            }
+                          ]"
+        >
+        </stats-subpage>
+      </q-tab-panel>
+
+    </q-tab-panels>
   </q-page>
 </template>
 
@@ -49,6 +89,14 @@ export default defineComponent({
   h3{
     font-size: 1em;
   }
+  .row > * {
+    width: auto;
+  }
+
+  /*body div.noflex{
+  //  flex-wrap: nowrap;
+  //}
+
   /*canvas{
   //  height: 50%;
   //  background-color: red;
