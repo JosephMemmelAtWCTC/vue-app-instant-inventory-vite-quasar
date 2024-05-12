@@ -31,6 +31,8 @@ export default defineComponent({
     return {
       newCategory: new Category("","","src/assets/icons/folder.svg"),
       newItem: new StoreItem(new Product("","","https://picsum.photos/200/300",""), 1, undefined),
+      newItemImage: {},
+      imageUrl: "",
 
       filterSettings: {
         toggles: [
@@ -99,6 +101,10 @@ export default defineComponent({
         });
 
     },
+    updateFile() {
+      this.imageUrl = URL.createObjectURL(this.newItemImage.value);
+    },
+
     // onUpdateCardOpenCategory(docId){
     //   console.log("~~~~~~~~B");
     //   this.library.navigateTo(docId, "relative").then(()=>{
@@ -177,13 +183,26 @@ export default defineComponent({
       });
   },
   watch: {
-    library: {
-      handler() {
-        // this.$emit('example', '');
-        console.log("~~~~~~~~A");
-      },
-      deep: true,
-    },
+    // library: {
+    //   handler() {
+    //     // this.$emit('example', '');
+    //     console.log("~~~~~~~~A");
+    //   },
+    //   deep: true,
+    // },
+    // newItemImage: {//.product.imageSrc
+    //   handler() {
+    //     console.log("this.newItem.product.imageSrc",this.newItemImage);
+    //     const reader  = new FileReader();
+    //     // it's onload event and you forgot (parameters)
+    //     reader.onload = function(e)  {
+    //       newItem.product.imageSrc = e.target.result;
+    //     }
+    //     // you have to declare the file loading
+    //     reader.readAsDataURL(this.newItemImage);
+    //   },
+    //   deep: true,
+    // },
   },
 });
 </script>
@@ -321,6 +340,29 @@ export default defineComponent({
                                :rules="[val => !!val || '* Required']"
                                lazy-rules
                       ></q-input>
+                      <div class="row">
+<!--                      <q-file filled v-model="this.newItem.product.imageURL" label="New Account Avatar"-->
+<!--                      >-->
+<!--                      </q-file>-->
+                        <div class="col-1">
+                          <q-img
+                            :src="this.imageUrl"
+                            spinner-size="64px"
+                            spinner-color="secondary"
+                          />
+                        </div>
+
+                        <div class="col-10">
+                          <q-file filled bottom-slots v-model="this.newItemImage" label="Label" @change="updateFile()">
+                          </q-file>
+<!--                          "[object File]"-->
+                        </div>
+
+                        <div class="col-1">
+                          <q-btn round dense flat icon="send" />
+                        </div>
+                      </div>
+
                       <q-input filled v-model="this.newItem.product.description"
                                type="textarea"
                                rows="4"
@@ -396,3 +438,12 @@ export default defineComponent({
       </main-content-page>
   </q-page>
 </template>
+
+
+<style>
+/*
+  .q-field.row.no-wrap.items-start.q-field--filled.q-file.q-field--auto-height.q-field--labeled.q-field--with-bottom{
+    width: 100%
+  }
+*/
+</style>
