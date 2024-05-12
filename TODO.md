@@ -34,3 +34,6 @@ Add pull to refresh and refresh button on notifications
 Hover over folder enter icon?
 
 Permission control over page navigation instead of just hiding
+focus on first in modal
+
+Notifications - make them remove

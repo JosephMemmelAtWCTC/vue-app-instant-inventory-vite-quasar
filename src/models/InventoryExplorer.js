@@ -5,7 +5,7 @@ import {
   storage,
   db,
   DEVELOPMENT_TESTING_INVENTORY_DOC_KEY,
-  notifications
+  notifications, accounts
 } from 'src/models/Firebase.js'
 import Category from "src/models/Category";
 import Product from "src/models/Product";
@@ -173,6 +173,10 @@ function InventoryExplorer() {
       // debugger
       // oldNew = Object.assign(oldNew.constructorSaved, oldNew);
 
+      console.log("newItem = new InventoryItem(oldNew)", newItem);
+      const imgFile = newItem.product.imageURL;
+      newItem.product.imageURL = null;
+
       return m.currentlyIn.currentDoc.collection("categories")
         .add(newItem.getAsData())
         .then((docRef) => {
@@ -185,11 +189,37 @@ function InventoryExplorer() {
             // console.log("checkForNotices Data newItem.getAsData()", "newItem.getAsData()");
             // console.log("checkForNotices Data", newItem.getAsData());
 
-            return checkForNotices(newItem.getAsData());
+            checkForNotices(newItem.getAsData());
           }
 
           return docRef;
         })
+        .then((docRef) => {
+          return docRef.get();
+        })
+        .then((doc) => {
+          console.log("doc.data());", doc.data());
+          storage.child('inventoryItems').child(doc.id)
+
+            .put(imgFile)
+            .then(snapshot => {
+              // Get the image URL
+              return snapshot.ref.getDownloadURL();
+            })
+            .then(url => {
+              // return m.currentlyIn.currentDoc.doc(doc.id).update({imageURL: url});
+              return m.currentlyIn.currentDoc.collection("categories").doc(doc.id).update({imageURL: url});
+            })
+            .then(() => {
+              console.log('Inventory updated');
+            })
+            .catch(error => {
+              console.error('Error adding image: ', error);
+            });
+        })
+        .catch((error) => {
+          console.error("Error", error);
+        });
 
     }
       //   TODO: Notify if failed, etc

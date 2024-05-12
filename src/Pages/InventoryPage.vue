@@ -15,6 +15,8 @@ import MainContentPage from "components/pages/MainContentPage.vue";
 import inventoryExplorer from "src/models/InventoryExplorer";
 import InventoryCollectionProper from "src/models/InventoryCollectionProper";
 import QrcodeScanner from "components/QRCodeScanner.vue";
+import { StreamBarcodeReader } from "vue-barcode-reader";
+
 
 export default defineComponent({
   name: "InventoryPage",
@@ -26,6 +28,7 @@ export default defineComponent({
     ResultsPossiblyEmpty,
     EditModal,
     OptionsFAB,
+    StreamBarcodeReader
   },
   // PageInventoryCardsSearch,
   data() {
@@ -34,6 +37,7 @@ export default defineComponent({
       newItem: new StoreItem(new Product("","","https://picsum.photos/200/300",""), 1, undefined),
       newItemImage: {},
       imageUrl: "",
+      enableBarcodeScanner: false,
 
       filterSettings: {
         toggles: [
@@ -72,7 +76,7 @@ export default defineComponent({
   emits: ["call-filter-settings-refresh"],
   methods: {
     saveItem(item){//TODO: Rename to saveIt
-      // console.log("item:::::::", item);
+      console.log("item:::::::", item);
       // this.library.updateOrAddValue(item);
       this.inventoryExplorer.currentlyIn.addNew(item)
         .then((message)=>{
@@ -103,8 +107,15 @@ export default defineComponent({
 
     },
     updateFile() {
+      if(this.newItemImage.size){
+        console.log("this.newItemImage",this.newItemImage);
+      }
+
+
+
+
       //https://stackoverflow.com/a/69873409 for below and rest of new image display
-      this.imageUrl = URL.createObjectURL(this.newItemImage.value);
+      // this.imageUrl = URL.createObjectURL(this.newItemImage);
     },
 
     // onUpdateCardOpenCategory(docId){
@@ -336,12 +347,30 @@ export default defineComponent({
                                :rules="[val => !!val || '* Required']"
                                lazy-rules
                       ></q-input>
-                      <q-input filled v-model="this.newItem.product.productId"
-                               label="Product ID"
-                               class="full-width"
-                               :rules="[val => !!val || '* Required']"
-                               lazy-rules
-                      ></q-input>
+                      <div class="border-2 border-info">
+                        <q-input filled v-model="this.newItem.product.productId"
+                                 label="Product ID"
+                                 class="full-width pb-0"
+                                 :rules="[val => !!val || '* Required']"
+                                 lazy-rules
+                        ></q-input>
+                        <StreamBarcodeReader
+                          v-if="this.enableBarcodeScanner"
+                          class="barcodeScanner"
+                          @decode="(text) => {
+                            console.log(`DECODED: ${text}`);
+                            this.newItem.product.productId = text;
+                            this.enableBarcodeScanner = false
+                          }"
+                          @loaded="console.log(`LOADED this`);"
+                        ></StreamBarcodeReader>
+                        <div class="pb-3">
+                          <button @click="this.enableBarcodeScanner = !this.enableBarcodeScanner">
+                            <span v-if="this.enableBarcodeScanner">Turn off scanner?</span>
+                            <span v-else>Turn back on scanner?</span>
+                          </button>
+                        </div>
+                      </div>
                       <div class="row">
 <!--                      <q-file filled v-model="this.newItem.product.imageURL" label="New Account Avatar"-->
 <!--                      >-->
@@ -353,26 +382,31 @@ export default defineComponent({
                             spinner-color="secondary"
                           />
                         </div>
+<!--                        <input type="file" accept="image/*" capture="user" />-->
 
-                        <div class="col-10">
-                          <q-file filled bottom-slots v-model="this.newItemImage" label="Label" @change="updateFile()">
+<!--                        <div class="">-->
+<!--                          <q-file filled bottom-slots v-model="this.newItemImage"-->
+                          <q-file filled bottom-slots v-model="this.newItem.product.imageURL"
+                                  label="Select item file"
+                                  @blur="updateFile()">
+<!--                                  @change="updateFile(this.newItemImage)"-->
                           </q-file>
 <!--                          "[object File]"-->
-                        </div>
-
-                        <div class="col-1">
-                          <q-btn round dense flat icon="send" />
-                        </div>
+<!--                        </div>-->
+<!--                        <div class="col-1">-->
+<!--                          <q-btn round dense flat icon="send" />-->
+<!--                        </div>-->
                       </div>
 
-                      <div>
-                        <qrcode-scanner
-                          :qrbox="250"
-                          :fps="10"
-                          style="width: 500px;"
-                          @result="console.log('result')"
-                        />
-                      </div>
+<!--                      <div>-->
+<!--                        <qrcode-scanner-->
+<!--                          :qrbox="250"-->
+<!--                          :fps="10"-->
+<!--                          style="width: 500px;"-->
+<!--                          @result="console.log('result')"-->
+<!--                        />-->
+<!--                      </div>-->
+
 
                       <q-input filled v-model="this.newItem.product.description"
                                type="textarea"
@@ -421,8 +455,8 @@ export default defineComponent({
               </ul>
                     <button type="button"
                             @click="
-                                                  this.$refs.newCategoryModal.openModal();
-                                              "
+                              this.$refs.newCategoryModal.openModal();
+                            "
                             class="btn btn-primary w-100 m-1">
                       <a class="icon-link link-secondary text-decoration-none">
                         <span class="p-2"><i class="bi bi-archive"></i></span>
@@ -433,8 +467,9 @@ export default defineComponent({
                   <li>
                       <button type="button"
                               @click="
-                                                  this.$refs.newItemModal.openModal();
-                                              "
+                                this.$refs.newItemModal.openModal();
+                                this.enableBarcodeScanner = true;
+                              "
                               class="btn btn-primary w-100 m-1">
                         <a class="icon-link link-secondary text-decoration-none">
                           <span class="p-2"><i class="bi bi-box"></i></span>
@@ -452,6 +487,9 @@ export default defineComponent({
 
 
 <style>
+  .barcodeScanner{
+    width: 80%;
+  }
 /*
   .q-field.row.no-wrap.items-start.q-field--filled.q-file.q-field--auto-height.q-field--labeled.q-field--with-bottom{
     width: 100%
