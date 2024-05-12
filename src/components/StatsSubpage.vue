@@ -52,6 +52,9 @@ export default defineComponent({
             }
           }
         },
+        // backgroundColor: [
+        // TODO: Give customize color prop
+        // ],
       }
     }
   },

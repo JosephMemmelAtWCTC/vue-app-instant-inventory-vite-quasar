@@ -75,6 +75,7 @@ export default defineComponent({
                                 this.notificationsList.filter(n => n.level === 'out_of_stock').sort((a, b) => {return a.lastUpdated-b.lastUpdated}).length,
                                 this.notificationsList.filter(n => n.level === 'reorder_level_reached').sort((a, b) => {return a.lastUpdated-b.lastUpdated}).length,
                               ],
+
                             }
                           ]"
         >

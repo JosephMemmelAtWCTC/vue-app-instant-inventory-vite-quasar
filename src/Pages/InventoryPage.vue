@@ -221,7 +221,7 @@ export default defineComponent({
 
 <template>
   <q-page class="flex flex-center">
-    <main-content-page
+    <main-content-page class="w-100"
     >
 <!--        <p>TESTP{{inventoryExplorer.test}}</p>-->
         <header class="bg-body-tertiary rounded-3">

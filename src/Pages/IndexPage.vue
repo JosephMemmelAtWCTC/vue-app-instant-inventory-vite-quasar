@@ -8,10 +8,6 @@ import StoreItem from "src/models/StoreItem";
 export default defineComponent({
   data() {
     return {
-      appInfo: {
-        type: Object,
-        required: true,
-      },
     }
   },
   // TODO: Ask about computed appearing
@@ -29,10 +25,10 @@ export default defineComponent({
       type: Object,
       required: true,
     },
-    // appInfo: {
-    //   type: Object,
-    //   required: true,
-    // },
+    appInfo: {
+      type: Object,
+      required: true,
+    },
   },
   mounted() {
   }
@@ -53,12 +49,10 @@ export default defineComponent({
         ''
       ]"
     >
-<!--        itemsList.filter(item => item.hasLowStock).length-->
-      <template #jumbotronsubtext>
-        <h1 class="w-100">Company Name Here</h1>
-        <p class="w-100">ConnectionInfo</p>
-        <p class="">{{appInfo.appVersion}}</p>
-      </template>
+      <!--        itemsList.filter(item => item.hasLowStock).length-->
+      <h1 class="w-100">Built for {{ this.appInfo.clientCompany }}</h1>
+<!--      <p class="w-100">ConnectionInfo</p>-->
+      <p class="">{{ appInfo.appVersion }}</p>
     </page-title-table>
 
   </q-page>

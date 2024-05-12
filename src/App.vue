@@ -52,8 +52,9 @@ export default defineComponent({
       notificationsList: [],
 
       appInfo: {
-        appTitle: "Instant Inventory",
-        appVersion: "Vue App v4.0 (Demo)",
+        appTitle: "Example Company's Instant Inventory",
+        appVersion: "Vue App 5.0 (Demo)",
+        clientCompany: "Example Company",
         sideBarWidth: 180,
       },
 

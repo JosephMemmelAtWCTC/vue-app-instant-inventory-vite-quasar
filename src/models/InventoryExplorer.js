@@ -271,6 +271,21 @@ function InventoryExplorer() {
         .then((docRef) => {
           return docRef;
         })
+    }else if(asData.numInStock <= asData.reorderLevel){
+      notifications.doc(asData.docId).set(
+        {
+          level: "reorder_level_reached",
+          // docId: "GET_WORKING",
+          title: asData.title,
+          numInStock: asData.numInStock,
+          reorderLevel: asData.reorderLevel,
+          lastUpdated: asData.lastUpdated,
+          image: asData.imageSrc,
+        }
+      )
+      .then((docRef) => {
+        return docRef;
+      })
     }else{
       notifications.doc(asData.docId).delete()
         .then(() => {

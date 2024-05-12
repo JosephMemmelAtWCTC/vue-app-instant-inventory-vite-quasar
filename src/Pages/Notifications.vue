@@ -58,8 +58,8 @@ export default defineComponent({
             align="justify"
             narrow-indicator
           >
-            <q-tab name="out_of_stock" label="Out of Stock" />
-            <q-tab name="reorder_level_reached" label="Reorder Level Reached" />
+            <q-tab name="out_of_stock" :label="'Out of stock ('+allOutOfStock.length+')'" />
+            <q-tab name="reorder_level_reached" :label="'Reorder Level Reached ('+allReorderLevelReached.length+')'" />
           </q-tabs>
 
           <q-separator />

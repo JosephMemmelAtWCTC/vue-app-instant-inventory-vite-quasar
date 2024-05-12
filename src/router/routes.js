@@ -10,7 +10,7 @@ const routes = [
       {
         path: '/',
         component: () => import('src/Pages/IndexPage.vue'),
-        // props: true,
+        props: true,
         // props: { appNavigation, appInfo, library }
       },
       {
@@ -25,7 +25,7 @@ const routes = [
         // props: { appNavigation, userInfo,
         //   locationKioskName: appLocationConfig.customLocationName,
         // }
-        // props: true,
+        props: true,
       },
       {
         path: '/records',
