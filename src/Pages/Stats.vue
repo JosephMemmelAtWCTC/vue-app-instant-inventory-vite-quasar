@@ -1,17 +1,14 @@
 <script>
 import {defineComponent} from "vue";
-import { Bar } from 'vue-chartjs'
-import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
 import {STORAGE_TYPES} from "src/models/InventoryItem";
-
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
+import StatsSubpage from "components/StatsSubpage.vue";
 
 export default defineComponent({
   name: 'Stats',
-  components: { Bar },
+  components: {StatsSubpage},
   data() {
     return {
-      title: "Inventory by type"
+      title: "Inventory by type",
     }
   },
   props: {
@@ -21,58 +18,30 @@ export default defineComponent({
     },
   },
   computed: {
-    chartData() {
-      return {
-        labels: [ 'Categories', 'Products' ],
-        datasets: [
-          {
-            label: 'Item Count',
-            data: [
-              this.library.filterByType([STORAGE_TYPES.CATEGORY.toLowerCase()]).length,
-              this.library.filterByType(["product"]).length,
-            ],
-            // backgroundColor: [
-            // TODO: Give each own header and color
-            // ],
-          }
-        ]
-      };
-    },
-    chartOptions() {
-      return {
-        title: {
-          display: true,
-          text: 'Custom Chart Title'
-        },
-        responsive: true,
-        // https://stackoverflow.com/a/43724904 for scales
-        scales: {
-          y: {
-            ticks: {
-              stepSize: 1
-            }
-          }
-        },
-      }
+    STORAGE_TYPES() {
+      return STORAGE_TYPES
     }
-  },
-  mounted() {
   },
 });
 </script>
 
 <template>
   <q-page class="flex">
-    <h3 class="mx-auto">{{ title }}</h3>
-    <Bar
-      id="my-chart-id"
-      :options="chartOptions"
-      :data="chartData"
-      :title="title"
-
+    <stats-subpage title="Inventory by type"
+                   label="Item Count"
+                   :datasets="[
+                      {
+                        label: 'Item Count',
+                        data: [
+                          this.library.filterByType([STORAGE_TYPES.CATEGORY.toLowerCase()]).length,
+                          this.library.filterByType(['product']).length,
+                        ],
+                      }
+                    ]"
+                   :labels="[ 'Categories', 'Products']"
     >
-      Error: Could not be loaded
-    </Bar>
+    </stats-subpage>
+
   </q-page>
 </template>
 
