@@ -155,6 +155,7 @@ export default defineComponent({
 
         this.recordsList.push(record.getAsData());
       });
+      console.log("records.onSnapshot recordsList: ", this.recordsList);
     });
 
   },

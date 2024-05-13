@@ -56,8 +56,13 @@ export default defineComponent({
       </div>
       <div class="relative-position">
         <q-item-section class="absolute-center">
-          <q-item-label>{{ title }}</q-item-label>
+          <q-item-label>{{ forName }}</q-item-label>
           <q-item-label caption lines="2">{{  }}</q-item-label>
+        </q-item-section>
+      </div>
+      <div class="relative-position">
+        <q-item-section side top class="absolute-center">
+          <q-item-label caption>{{ 'e' }}</q-item-label>
         </q-item-section>
       </div>
       <div class="relative-position">
@@ -65,13 +70,7 @@ export default defineComponent({
           <q-item-label caption>{{ calculatedTimeAgo }}</q-item-label>
         </q-item-section>
       </div>
-      <div class="relative-position">
-        <q-item-section side top class="absolute-center">
-          <q-icon :name="warningIcon" :color="warningColor">
-            <span class="ms-2">{{ warningText }}</span>
-          </q-icon>
-        </q-item-section>
-      </div>
+
     </div>
   </q-item>
 <!--  <q-separator spaced inset="item" />-->

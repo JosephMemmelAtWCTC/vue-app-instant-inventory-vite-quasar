@@ -187,6 +187,7 @@ function InventoryExplorer() {
           if(oldVersion.constructorSaved.type === STORAGE_TYPES.PRODUCT_GENERIC){
             checkForNotices(newVersion);
           }
+          logRecord(RECORD_TYPES.UPDATE, RECORD_ONS.INVENTORY, oldVersion.docId, newVersion.title, {changedStockLevel: newVersion.numInStock - oldVersion.numInStock});
           return "Ready for update completed"
         })
     }else{
@@ -244,6 +245,7 @@ function InventoryExplorer() {
                     .then((updatedDoc => {
                       console.log("updatedDoc", updatedDoc.data());
                       const updatedData = updatedDoc.data();
+                      // Fire and forget, TODO: Make not forget
                       logRecord(RECORD_TYPES.NEW, RECORD_ONS.INVENTORY, updatedData.id, updatedData.title, {added: updatedData.numInStock});
                       return "";
                   }))
