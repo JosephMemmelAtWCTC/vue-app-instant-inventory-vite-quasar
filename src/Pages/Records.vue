@@ -1,6 +1,7 @@
 <script>
 import {defineComponent, ref} from "vue";
-import NotificationItem from "components/NotificationItem.vue";
+import RecordItem from "components/RecordItem.vue";
+import {RECORD_TYPES} from "src/models/Record";
 
 export default defineComponent({
   name: "Records",
@@ -8,7 +9,7 @@ export default defineComponent({
     return {
     };
   },
-  components: {NotificationItem},
+  components: {RecordItem},
   props: {
     recordsList: {
       type: Array,
@@ -16,6 +17,9 @@ export default defineComponent({
     },
   },
   computed: {
+    RECORD_TYPES() {
+      return RECORD_TYPES
+    },
     allRecords(){
       return this.recordsList.sort((a, b) => {return a.loggedOn-b.loggedOn});
     },
@@ -24,26 +28,25 @@ export default defineComponent({
 </script>
 
 <template>
-  <q-page class="flex flex-center">
+  <q-page class="">
     <div class="q-pa-md">
-      TEST4689
-
-
 
       <q-list bordered padding>
-        <Notification-Item v-for="(notification, i) in allRecords" :key="i"
-                           :level="notification.level"
-                           :docId="notification.docId"
-                           :title="notification.title"
-                           :numInStock="notification.numInStock"
-                           :reorderLevel="notification.reorderLevel"
-                           :lastUpdated="notification.lastUpdated"
-                           :image="notification.image"
-                           warning-icon="bi-exclamation-triangle-fill"
-                           warning-color="danger"
-                           warning-text="Out of stock"
+        <Record-Item v-for="(record, i) in allRecords" :key="i"
+                           :recordOn="record.recordOn"
+                           :forName="record.forName"
+                           :byName="record.byName"
+                           :record="record.record"
+                           :loggedOn="record.loggedOn"
         >
-        </Notification-Item>
+          <div v-if="record.recordType === RECORD_TYPES.NEW">
+            <q-item-section class="absolute-center">
+              <q-icon name="warning" color="warning" size="4rem" />
+              <q-item-label caption lines="2">{{  }}</q-item-label>
+            </q-item-section>
+
+          </div>
+        </Record-Item>
       </q-list>
 
     </div>

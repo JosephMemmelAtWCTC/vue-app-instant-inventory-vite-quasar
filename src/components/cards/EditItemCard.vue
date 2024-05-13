@@ -83,7 +83,7 @@
                      label="Reorder Level"
                      placeholder="Leave blank to ignore reorder"
                      class="full-width"
-                     :rules="[val => val === null || val === '' || val >= 0 || 'Count cannot be less than 0']"
+                     :rules="[val => val === null ||  val === undefined || val === '' || val >= 0 || 'Count cannot be less than 0']"
                      lazy-rules
             ></q-input>
 <!--          clearable, w/class-->
