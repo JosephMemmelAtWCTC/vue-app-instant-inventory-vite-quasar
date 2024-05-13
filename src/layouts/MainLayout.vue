@@ -49,6 +49,10 @@ export default defineComponent({
     notificationsList: {
       type: Array,
       required: true,
+    },
+    recordsList: {
+      type: Array,
+      required: true,
     }
   },
   methods: {
@@ -200,6 +204,8 @@ export default defineComponent({
         :app-info="this.appInfo"
         :filter-settings="this.filterSettings"
         :notifications-list="this.notificationsList"
+        :records-list="this.recordsList"
+
         :left-drawer-open="leftDrawerOpen"
       />
 

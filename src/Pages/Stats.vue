@@ -20,6 +20,10 @@ export default defineComponent({
       type: Array,
       required: true,
     },
+    recordsList: {
+      type: Array,
+      required: true,
+    },
   },
   computed: {
     STORAGE_TYPES() {

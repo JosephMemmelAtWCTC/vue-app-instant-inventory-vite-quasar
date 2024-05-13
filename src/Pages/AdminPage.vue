@@ -244,7 +244,6 @@ export default defineComponent({
   mounted: function () {
     // accounts = storage.child('accounts');
 
-    // display logged in/out messages
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         // User is signed in.

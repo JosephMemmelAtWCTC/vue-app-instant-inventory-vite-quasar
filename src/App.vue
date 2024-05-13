@@ -5,6 +5,7 @@
     :inventory-explorer="this.inventoryExplorer"
     :app-info="this.appInfo"
     :notifications-list="this.notificationsList"
+    :records-list="this.recordsList"
   />
 <!--  @call-filter-settings-refresh="console.log('{{{{{{{')"-->
 
@@ -21,7 +22,7 @@ import "https://www.gstatic.com/firebasejs/8.10.1/firebase.js";//TODO: Ask about
 import User from "/src/models/FullUserDetails.js"
 import FullUserDetails from "/src/models/FullUserDetails.js";
 
-import {accounts, auth, db, inventory, notifications, storage} from "src/models/Firebase.js";
+import {accounts, auth, db, inventory, notifications, storage, records} from "src/models/Firebase.js";
 
 
 
@@ -39,6 +40,7 @@ import StoreItem from "./models/StoreItem.js"
 import Product from "./models/Product.js"
 import InventoryExplorer from "src/models/InventoryExplorer";
 import Notification from "src/models/Notification";
+import {Record} from "src/models/Record";
 
 export default defineComponent({
 
@@ -50,6 +52,7 @@ export default defineComponent({
       inventoryExplorer: new InventoryExplorer(),
 
       notificationsList: [],
+      recordsList: [],
 
       appInfo: {
         appTitle: "Example Company's Instant Inventory",
@@ -85,7 +88,7 @@ export default defineComponent({
   created() {
     // this.inventoryExplorer = new InventoryExplorer();
 
-    // TODO: check for logged in user
+    // TODO: check for signed in user
     auth.onAuthStateChanged(user => {
       if (user) {
         // User is signed in.
@@ -98,7 +101,7 @@ export default defineComponent({
           })
         console.log('Signed in as: ', user);
         this.inventoryExplorer.setUser(this.authUser);
-        // TODO: Check if first time logged in and make data
+        // TODO: Check if first time signed in and make data
         // document.getElementById('message').innerHTML = 'Signed in as: ' + displayName + ' (' + email + ')';
 
       } else {
@@ -140,7 +143,19 @@ export default defineComponent({
           }
         );
       });
-    })
+    });
+
+    records.onSnapshot(snapshot => {
+      this.recordsList = [];
+      snapshot.forEach(doc => {
+        const dataPush = doc.data();
+        dataPush.docId = doc.id;
+
+        const record = new Record(dataPush);
+
+        this.recordsList.push(record.getAsData());
+      });
+    });
 
   },
 
