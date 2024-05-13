@@ -438,9 +438,12 @@ export default defineComponent({
 </template>
 
 
-<style>
+<style scoped>
   .barcodeScanner{
     width: 80%;
+  }
+  ul {
+    list-style-type: none
   }
 /*
   .q-field.row.no-wrap.items-start.q-field--filled.q-file.q-field--auto-height.q-field--labeled.q-field--with-bottom{

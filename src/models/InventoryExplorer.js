@@ -207,7 +207,11 @@ function InventoryExplorer() {
       // if(newItem.constructorSaved.type === STORAGE_TYPES.PRODUCT_GENERIC){
       if(newItem.product){
 
-          console.log("newItem.inventor2yType", newItem.inventoryType, STORAGE_TYPES.PRODUCT_GENERIC)
+        console.log("newItem.inventor2yType", newItem.inventoryType, STORAGE_TYPES.PRODUCT_GENERIC)
+
+        if(newItem.product.reorderLevel === undefined){
+          newItem.reorderLevel = 0;
+        }
 
         imgFile = newItem.product.imageURL;
         newItem.product.imageURL = null;
