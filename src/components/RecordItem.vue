@@ -62,7 +62,7 @@ export default defineComponent({
       </div>
       <div class="relative-position">
         <q-item-section side top class="absolute-center">
-          <q-item-label caption>{{ 'e' }}</q-item-label>
+          <q-item-label caption> By {{ byName }}</q-item-label>
         </q-item-section>
       </div>
       <div class="relative-position">

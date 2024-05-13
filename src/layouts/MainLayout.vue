@@ -15,7 +15,7 @@ export default defineComponent({
   components: {EditModal, OptionsFAB, NavigateIconItem},
   data(){
     return {
-      locationKioskName: "locationKioskName",
+      locationKioskName: "Company",
       leftDrawerOpen: false,
       newItem: new StoreItem(new Product("","","https://picsum.photos/200/300",""), 1, undefined),
     };
@@ -33,10 +33,6 @@ export default defineComponent({
         appVersion: "Vue App v#.# (...)",
         sideBarWidth: 180,
       }
-    },
-    library: {
-      type: Object,
-      required: true,
     },
     inventoryExplorer: {
       type: Object,
@@ -78,7 +74,7 @@ export default defineComponent({
         <div class="row justify-between q-ma-none-forced q-gutter-none m-0 p-0">
           <div class="q-pa-none-forced"
                :class="leftDrawerOpen?'col-auto':'col-12'">
-            <div class="bg-accent full-height q-pa-sm position-relative"
+            <div class="full-height q-pa-sm position-relative border-1"
                  :style="leftDrawerOpen?'width:'+appInfo.sideBarWidth+'px':''"
                  :class="!leftDrawerOpen?'full-width':''"
             >
@@ -127,11 +123,12 @@ export default defineComponent({
                       </div>
                       <div class="col" v-if="this.leftDrawerOpen">
                         <span>
-                        <q-chip color="colorAdmin" text-color="white">
-                          <span>
+<!--                        <q-chip color="colorAdmin" text-color="white">-->
+                        <q-chip text-color="white" class="bg-primary">
+                          <p class="pb-2">
                           <q-icon name="bi-person-badge" class="chip-icon" />
                           {{ authUser.role }}
-                          </span>
+                          </p>
                         </q-chip>
                         </span>
                       </div>
@@ -179,11 +176,11 @@ export default defineComponent({
       <q-list>
         <navigate-icon-item router-link-to="/" tooltip-info="Home" li-extra-classes="p-2 mb-2" icon-class="bi-house">
         </navigate-icon-item>
-        <navigate-icon-item router-link-to="/inventory" @click="this.library.setFirebaseDoc()" tooltip-info="Inventory" li-extra-classes="p-2 mb-2" icon-class="bi-box-seam"><!--fa-solid fa-boxes-stacked-->
-        </navigate-icon-item>
-        <navigate-icon-item router-link-to="/records" tooltip-info="Records" li-extra-classes="p-2 mb-2" icon-class="bi-arrow-left-right" :badge-text="recordsList.length">
+        <navigate-icon-item router-link-to="/inventory" @click="" tooltip-info="Inventory" li-extra-classes="p-2 mb-2" icon-class="bi-box-seam"><!--fa-solid fa-boxes-stacked-->
         </navigate-icon-item>
         <navigate-icon-item router-link-to="/notifications" tooltip-info="Notifications" li-extra-classes="p-2 mb-2" icon-class="bi-bell" :badge-text="notificationsList.length!==0?notificationsList.length:''">
+        </navigate-icon-item>
+        <navigate-icon-item router-link-to="/records" tooltip-info="Records" li-extra-classes="p-2 mb-2" icon-class="bi-arrow-left-right" :badge-text="recordsList.length">
         </navigate-icon-item>
         <navigate-icon-item router-link-to="/stats" tooltip-info="Statistics" li-extra-classes="p-2 mb-2" icon-class="bi-clipboard2-data" v-if="authUserIsAdmin">
         </navigate-icon-item>
@@ -201,7 +198,6 @@ export default defineComponent({
     <q-page-container class="overflow-hidden">
       <router-view
         :auth-user="this.authUser"
-        :library="this.library"
         :inventory-explorer="this.inventoryExplorer"
         :app-info="this.appInfo"
         :filter-settings="this.filterSettings"
@@ -221,7 +217,7 @@ export default defineComponent({
 
               <div class="row q-gutter-none " :class="('row-cols-'+(authUserIsAdmin?'3':'2'))">
                 <navigate-icon-item disable-hover router-link-to="/" li-extra-classes="p-2 mb-2" class="col" icon-class="bi-house"></navigate-icon-item>
-                <navigate-icon-item disable-hover router-link-to="/inventory" @click="this.library.setFirebaseDoc()" li-extra-classes="p-2 mb-2" class="col" icon-class="bi-box-seam"><!--fa-solid fa-boxes-stacked--></navigate-icon-item>
+                <navigate-icon-item disable-hover router-link-to="/inventory" @click="" li-extra-classes="p-2 mb-2" class="col" icon-class="bi-box-seam"><!--fa-solid fa-boxes-stacked--></navigate-icon-item>
                 <navigate-icon-item disable-hover router-link-to="/stats" li-extra-classes="p-2 mb-2" class="col" icon-class="bi-clipboard2-data" v-if="authUserIsAdmin"></navigate-icon-item>
               </div>
             </div>
@@ -245,8 +241,8 @@ export default defineComponent({
           <div class="row bg-body-secondary h-100">
             <div class="col-12 h-50">
               <div class="row q-gutter-none " :class="('row-cols-'+(authUserIsAdmin?'3':'2'))">
-                <navigate-icon-item disable-hover router-link-to="/records" li-extra-classes="p-2 mb-2" icon-class="bi-arrow-left-right" :badge-text="recordsList.length"></navigate-icon-item>
                 <navigate-icon-item disable-hover router-link-to="/notifications" li-extra-classes="p-2 mb-2" icon-class="bi-bell" :badge-text="notificationsList.length!==0?notificationsList.length:''"></navigate-icon-item>
+                <navigate-icon-item disable-hover router-link-to="/records" li-extra-classes="p-2 mb-2" icon-class="bi-arrow-left-right" :badge-text="recordsList.length"></navigate-icon-item>
                 <navigate-icon-item disable-hover router-link-to="/admin" li-extra-classes="p-2 mb-2" icon-class="bi-terminal" v-if="authUserIsAdmin"></navigate-icon-item>
               </div>
             </div>
@@ -368,4 +364,8 @@ export default defineComponent({
     pointer-events: auto;
   }
 
+
+  .border-1{
+    border-right: #dee2e6 solid 1px;
+  }
 </style>

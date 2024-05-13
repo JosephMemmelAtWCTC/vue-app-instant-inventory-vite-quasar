@@ -1,7 +1,6 @@
 <template>
   <router-view
     :auth-user="this.authUser"
-    :library="this.library"
     :inventory-explorer="this.inventoryExplorer"
     :app-info="this.appInfo"
     :notifications-list="this.notificationsList"
@@ -34,7 +33,7 @@ import OptionsFAB from "components/OptionsFAB.vue";
 import PageTitleTable from "components/pages/PageTitleTable.vue";
 
 
-import InventoryCollection from "./models/InventoryCollection.js"
+import InventoryCollection from "./models/InventoryCollectionProper"
 import Category from "./models/Category.js"
 import StoreItem from "./models/StoreItem.js"
 import Product from "./models/Product.js"
@@ -48,7 +47,6 @@ export default defineComponent({
     return {
       authUser: new FullUserDetails(),
 
-      library: new InventoryCollection(),
       inventoryExplorer: new InventoryExplorer(),
 
       notificationsList: [],
@@ -79,7 +77,7 @@ export default defineComponent({
 
       const newDisplayLibrary = new InventoryCollection();
 
-      newDisplayLibrary.setFirebaseDoc();
+      // newDisplayLibrary.navigateTo("root");
 
       this.library = newDisplayLibrary;
       return "";
@@ -118,7 +116,7 @@ export default defineComponent({
     // .add(new Category('Category 1','Category 1\'s description', 'src/assets/icons/folder.svg'))
 
 
-    this.setLibraryFromDocPath("/");
+    // this.setLibraryFromDocPath("/");
 
     notifications.onSnapshot(snapshot => {
       this.notificationsList = [];
@@ -155,6 +153,8 @@ export default defineComponent({
 
         this.recordsList.push(record.getAsData());
       });
+      this.recordsList = this.recordsList.sort((a, b) => {return a.loggedOn - b.loggedOn});
+
       console.log("records.onSnapshot recordsList: ", this.recordsList);
     });
 
@@ -162,107 +162,6 @@ export default defineComponent({
 
 })
 </script>
-
-<!--<template>-->
-<!--  <quasar-app-layout-->
-<!--    :editable-kiosk-name="appPageConfigSettings.customName"-->
-<!--    @update-kiosk-name="appPageConfigSettings.customName = $event"-->
-<!--    :current-page-title="computedCurrentPageTitle"-->
-<!--  >-->
-
-
-<!--    <template #footer >-->
-<!--      <div class="row q-gutter-none m-0 p-0">-->
-<!--        <div class="col mt-5 bg-body-secondary q-gutter-none">-->
-<!--          <div class="row h-100">-->
-<!--            <div class="col-12 h-50">-->
-<!--              <div class="dropup-center dropup row justify-content-center">-->
-<!--                <div class="w-auto" v-if="appNavigation.currentPage==='inventory'">-->
-<!--                  <button id="addButton" type="button" class="rounded-1 btn btn-primary my-auto btn btn-primary" data-bs-toggle="dropdown" aria-expanded="false">-->
-<!--                    <i class="bi bi-plus text-secondary"></i>-->
-<!--                  </button>-->
-<!--                </div>-->
-<!--                <div>-->
-<!--                  <ul class="dropdown-menu pe-2">-->
-<!--                    <li>-->
-<!--                      <button type="button" class="btn btn-primary w-100 m-1" data-bs-toggle="modal" data-bs-target="#newCategoryModel">-->
-<!--                        <a class="icon-link link-secondary text-decoration-none">-->
-<!--                          <span class="p-2"><i class="bi bi-archive"></i></span>-->
-<!--                          Category-->
-<!--                        </a>-->
-<!--                      </button>-->
-<!--                    </li>-->
-<!--                    <li>-->
-<!--                      <button type="button" class="btn btn-primary w-100 m-1" data-bs-toggle="modal" data-bs-target="#newItemModel">-->
-<!--                        <a class="icon-link link-secondary text-decoration-none">-->
-<!--                          <span class="p-2"><i class="bi bi-box"></i></span>-->
-<!--                          Item-->
-<!--                        </a>-->
-<!--                      </button>-->
-<!--                    </li>-->
-<!--                  </ul>-->
-<!--                </div>-->
-<!--              </div>-->
-
-<!--            </div>-->
-<!--            <div class="col h-50">-->
-<!--              <navigate-icon-item icon-class="bi-house" @click="openNavPage('home')" class="h-100">-->
-<!--              </navigate-icon-item>-->
-<!--            </div>-->
-<!--            <div class="col h-50">-->
-<!--              <navigate-icon-item icon-class="material-symbols-outlined" icon-content="package_2" @click="openNavPage('inventory')" class="h-100">-->
-<!--              </navigate-icon-item>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-
-<!--        <div class="col-4 centerNavTallOption">-->
-<!--          <button id="scanButton" data-navPageTarget="inventory" @click="openNavPage('inventory')" type="button" data-bs-toggle="modal" data-bs-target="#newItemModel" class="link-secondary primaryNavMovePage btn btn-primary w-100 p-3 rounded-0 rounded-top-5">-->
-<!--            <img src="assets/icons/upc-scan.svg" class="w-100" alt="Scan Barcode">-->
-<!--          </button>-->
-<!--        </div>-->
-
-<!--        <div class="col mt-5 bg-body-secondary">-->
-<!--          <div class="row h-100">-->
-<!--            <div class="col-12 h-50">-->
-
-<!--            </div>-->
-<!--            <div class="col h-50">-->
-<!--              <navigate-icon-item @click="openNavPage('recents')" icon-class="bi-arrow-left-right" :badge-text="'recentItemsList.length'+''" class="h-100">-->
-<!--              </navigate-icon-item>-->
-<!--            </div>-->
-<!--            <div class="col h-50">-->
-<!--              <navigate-icon-item @click="openNavPage('account')" icon-class="bi-person" class="h-100">-->
-<!--              </navigate-icon-item>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </template>-->
-
-<!--    <template #content>-->
-<!--      <page-title-table-->
-<!--        v-if="appNavigation.currentPage==='home'"-->
-<!--        :headers="['Categories', 'Items', 'Total Stock', 'Needs Refill']"-->
-<!--        :jumbotron-title="appInfo.appTitle"-->
-<!--        :table-items="[-->
-<!--          this.library.filterByType([Category.type]).length,-->
-<!--          this.library.filterByType([StoreItem.type]).length,-->
-<!--          '#',-->
-<!--          ''-->
-<!--        ]"-->
-<!--      >-->
-<!--&lt;!&ndash;        itemsList.filter(item => item.hasLowStock).length&ndash;&gt;-->
-<!--        <template #jumbotronsubtext>-->
-<!--          <p class="w-100">ConnectionInfo</p>-->
-<!--          <p class="">{{appInfo.appVersion}}</p>-->
-<!--        </template>-->
-<!--      </page-title-table>-->
-
-<!--    </template>-->
-<!--  </quasar-app-layout>-->
-
-<!--</template>-->
 
 <style scoped>
 

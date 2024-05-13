@@ -396,17 +396,17 @@ export default defineComponent({
             </q-input>
           </div>
 
-          <div class="col-auto">
-            <q-input v-model="this.newIdentity.password" filled :type="tempWorkingData.isPwd ? 'password' : 'text'" hint="Password">
-              <template v-slot:append>
-                <q-icon
-                  :name="tempWorkingData.isPwd ? 'visibility_off' : 'visibility'"
-                  class="cursor-pointer"
-                  @click="tempWorkingData.isPwd = !tempWorkingData.isPwd"
-                />
-              </template>
-            </q-input>
-          </div>
+<!--          <div class="col-auto">-->
+<!--            <q-input v-model="this.newIdentity.password" filled :type="tempWorkingData.isPwd ? 'password' : 'text'" hint="Password">-->
+<!--              <template v-slot:append>-->
+<!--                <q-icon-->
+<!--                  :name="tempWorkingData.isPwd ? 'visibility_off' : 'visibility'"-->
+<!--                  class="cursor-pointer"-->
+<!--                  @click="tempWorkingData.isPwd = !tempWorkingData.isPwd"-->
+<!--                />-->
+<!--              </template>-->
+<!--            </q-input>-->
+<!--          </div>-->
 
           <div class="col-4">
             <q-option-group

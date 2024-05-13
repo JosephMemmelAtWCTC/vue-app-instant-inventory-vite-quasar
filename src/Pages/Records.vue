@@ -44,18 +44,28 @@ export default defineComponent({
         >
           <q-item-section class="absolute-center">
             <div v-if="record.recordType === RECORD_TYPES.NEW">
-              <q-icon name="fa-solid fa-file-circle-plus" color="info" size="4rem"></q-icon>
-              <q-item-label caption lines="2">New item & added {{ record.record.added }} to stock</q-item-label>
+              <q-icon name="fa-solid fa-file-circle-plus" color="info" size="4rem">
+                <q-badge color="primary" floating>+ {{ record.record.added }}</q-badge>
+              </q-icon>
+              <q-item-label caption lines="2">New item</q-item-label>
             </div>
 <!--            fa-arrow-left-to-bracket is pro in fontawesome but not the right-->
 
             <div v-else-if="record.recordType === RECORD_TYPES.UPDATE">
               <div v-if="record.record.changedStockLevel"><!--If update changed stock level-->
-                <q-icon :name="'fa-solid fa-arrow-'+(record.record.changedStockLevel > 0? 'right':'left')+''" color="info" size="4rem"></q-icon>
+                <q-icon :name="'fa-solid fa-arrow-'+(record.record.changedStockLevel > 0? 'right':'left')+''" color="info" size="4rem">
+                  <q-badge color="primary" floating>{{ record.record.changedStockLevel > 0?'+':'-' + ' ' + Math.abs(record.record.changedStockLevel) }}</q-badge>
+                </q-icon>
                 <q-item-label caption lines="2">{{ record.record.changedStockLevel > 0?'Added '+Math.abs(record.record.changedStockLevel)+' to':'Removed '+Math.abs(record.record.changedStockLevel)+' from'}} stock</q-item-label>
 
               </div>
 
+            </div>
+
+            <div v-else-if="record.recordType === RECORD_TYPES.DELETE">
+                <q-icon name="fa-solid fa-trash-can" color="info" size="4rem">
+                </q-icon>
+                <q-item-label caption lines="2">Removed {{ record.record.for }}</q-item-label>
             </div>
 
             <!--              <i class=""></i>-->

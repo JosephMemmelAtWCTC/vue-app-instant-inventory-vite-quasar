@@ -151,6 +151,8 @@ function InventoryExplorer() {
     return m.currentlyIn.currentDoc.collection("categories")
       .doc(item.docId).delete().then(() => {
       console.log("Document successfully deleted!");
+      logRecord(RECORD_TYPES.DELETE, RECORD_ONS.INVENTORY, item.docId, item.title, {});
+
       return "Document successfully deleted!"
     }).catch((error) => {
       console.error("Error removing document: ", error);
@@ -246,7 +248,7 @@ function InventoryExplorer() {
                       console.log("updatedDoc", updatedDoc.data());
                       const updatedData = updatedDoc.data();
                       // Fire and forget, TODO: Make not forget
-                      logRecord(RECORD_TYPES.NEW, RECORD_ONS.INVENTORY, updatedData.id, updatedData.title, {added: updatedData.numInStock});
+                      logRecord(RECORD_TYPES.NEW, RECORD_ONS.INVENTORY, updatedData.id, updatedData.title, {changedStockLevel: updatedData.numInStock});
                       return "";
                   }))
                 })})

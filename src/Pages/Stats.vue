@@ -12,10 +12,6 @@ export default defineComponent({
     }
   },
   props: {
-    library: {
-      type: Object,
-      required: true,
-    },
     notificationsList: {
       type: Array,
       required: true,
@@ -59,8 +55,8 @@ export default defineComponent({
                             {
                               label: 'Item Count',
                               data: [
-                                this.library.filterByType([STORAGE_TYPES.CATEGORY.toLowerCase()]).length,
-                                this.library.filterByType(['product']).length,
+                                // this.library.filterByType([STORAGE_TYPES.CATEGORY.toLowerCase()]).length,
+                                // this.library.filterByType(['product']).length,
                               ],
                             }
                           ]"

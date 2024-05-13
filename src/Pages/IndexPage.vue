@@ -21,10 +21,6 @@ export default defineComponent({
   },
   components: {PageTitleTable},
   props: {
-    library: {
-      type: Object,
-      required: true,
-    },
     appInfo: {
       type: Object,
       required: true,
@@ -32,7 +28,11 @@ export default defineComponent({
     notificationsList: {
       type: Array,
       required: true,
-    }
+    },
+    recordsList: {
+      type: Array,
+      required: true,
+    },
   },
   mounted() {
   }
@@ -43,7 +43,7 @@ export default defineComponent({
 <template>
   <q-page class="flex flex-center">
     <page-title-table
-      :headers="['Categories', 'Items', 'Total Stock', 'Completely Out of Stock', 'Total Needing Refill']"
+      :headers="['Categories', 'Items', 'Total Stock', 'Completely Out of Stock', 'Total Needing Refill', 'Records']"
       :jumbotron-title="appInfo.appTitle"
       :table-items="[
         // this.library.filterByType([Category.type]).length,
@@ -54,6 +54,7 @@ export default defineComponent({
         '#',
         this.notificationsList.filter(n => n.level === 'out_of_stock').sort((a, b) => {return a.lastUpdated-b.lastUpdated}).length,
         this.notificationsList.length,
+        this.recordsList.length,
       ]"
     >
       <!--        itemsList.filter(item => item.hasLowStock).length-->

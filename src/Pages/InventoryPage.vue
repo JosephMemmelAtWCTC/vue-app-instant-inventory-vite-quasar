@@ -1,6 +1,5 @@
 <script>
 import {defineComponent} from "vue";
-import InventoryCollection from "src/models/InventoryCollection";
 import StoreItem from "src/models/StoreItem";
 import Category from "src/models/Category";
 import OptionsFAB from "components/OptionsFAB.vue";
@@ -116,41 +115,6 @@ export default defineComponent({
       // this.imageUrl = URL.createObjectURL(this.newItemImage);
     },
 
-    // onUpdateCardOpenCategory(docId){
-    //   console.log("~~~~~~~~B");
-    //   this.library.navigateTo(docId, "relative").then(()=>{
-    //     console.log("~~~~~~~~C");
-    //     this.filteredLibrary = this.filterAsideAsComputedDosntDetect();
-    //     this.filterSettings.toggles[0].state = !this.filterSettings.toggles[0].state
-    //     this.$emit('call-filter-settings-refresh');
-    //     console.log("call-filter-settings-refresh")
-    //   });
-    // },
-
-    filterAsideAsComputedDosntDetect(){
-      let filteredResults = [];
-
-      const filterByConstructors = [];
-      const filterByThreshold = [];
-
-      if(this.filterSettings.toggles[0].state){
-        filterByConstructors.push(Category.type);
-      }
-      if(this.filterSettings.toggles[1].state){
-        // filterByConstructors.push(StoreItem.type);
-        // if(StoreItem.type){
-        //   filterByConstructors.push(STORAGE_TYPES.PRODUCT_GENERIC);
-        filterByConstructors.push("product");
-        // }
-      }
-
-      filteredResults = this.library.filterByType(filterByConstructors);
-
-      // if(this.filterSettings.toggles[2].state){
-      //   filterByThreshold.push(InventoryItem.STOCKED_LEVEL_STATUSES.);
-      // }
-      return filteredResults;
-    }
   },
   computed: {
     StoreItem() {
@@ -161,7 +125,6 @@ export default defineComponent({
     },
     filteredLibrary() {
       this.trigger;//TODO: Find a better way.
-      // return this.filterAsideAsComputedDosntDetect();
       let filteredResults = [];
 
       const filterByConstructors = [];
@@ -221,8 +184,9 @@ export default defineComponent({
 
 <template>
   <q-page class="flex flex-center">
-    <main-content-page class="w-100"
+    <main-content-page class="w-100 me-2"
     >
+<!--      absolute-top-->
 <!--        <p>TESTP{{inventoryExplorer.test}}</p>-->
         <header class="bg-body-tertiary rounded-3">
           <div class="row align-items-center p-2">
