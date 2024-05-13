@@ -42,7 +42,7 @@ export function InventoryItem(item){
     item.getAsData = function(){
 
       const dataItem = {
-        reorderMessageCode: this.reorderMessageWhen,
+        // reorderMessageCode: this.reorderMessageWhen,
         inventoryType: item.product? STORAGE_TYPES.PRODUCT_GENERIC : STORAGE_TYPES.CATEGORY,
       }
       // TODO: IMPORTANT! MOVE INTO INSTANCES INSTEAD OF HERE

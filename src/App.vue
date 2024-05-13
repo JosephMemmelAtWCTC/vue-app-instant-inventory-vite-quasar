@@ -97,6 +97,7 @@ export default defineComponent({
             this.authUser.role =supplementalData.role ?? null;
           })
         console.log('Signed in as: ', user);
+        this.inventoryExplorer.setUser(this.authUser);
         // TODO: Check if first time logged in and make data
         // document.getElementById('message').innerHTML = 'Signed in as: ' + displayName + ' (' + email + ')';
 

@@ -30,6 +30,7 @@ const routes = [
       {
         path: '/records',
         component: () => import('pages/Records.vue'),
+        props: true,
       },
       {
         path: '/notifications',

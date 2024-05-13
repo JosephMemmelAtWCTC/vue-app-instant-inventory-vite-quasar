@@ -29,6 +29,10 @@ export default defineComponent({
       type: Object,
       required: true,
     },
+    notificationsList: {
+      type: Array,
+      required: true,
+    }
   },
   mounted() {
   }
@@ -39,14 +43,17 @@ export default defineComponent({
 <template>
   <q-page class="flex flex-center">
     <page-title-table
-      :headers="['Categories', 'Items', 'Total Stock', 'Needs Refill']"
+      :headers="['Categories', 'Items', 'Total Stock', 'Completely Out of Stock', 'Total Needing Refill']"
       :jumbotron-title="appInfo.appTitle"
       :table-items="[
-        this.library.filterByType([Category.type]).length,
+        // this.library.filterByType([Category.type]).length,
         // this.library.filterByType([StoreItem.type]).length,
-        this.library.filterByType(['product']).length,
+        // this.library.filterByType(['product']).length,
         '#',
-        ''
+        '#',
+        '#',
+        this.notificationsList.filter(n => n.level === 'out_of_stock').sort((a, b) => {return a.lastUpdated-b.lastUpdated}).length,
+        this.notificationsList.length,
       ]"
     >
       <!--        itemsList.filter(item => item.hasLowStock).length-->

@@ -14,11 +14,6 @@ export default defineComponent({
   },
   components: {NotificationItem},
   props: {
-    inventoryExplorer: {
-      // type: InventoryExplorer,
-      type: Object,
-      required: true,
-    },
     notificationsList: {
       type: Array,
       required: true,

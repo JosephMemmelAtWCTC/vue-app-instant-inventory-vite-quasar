@@ -5,12 +5,12 @@ import {
   storage,
   db,
   DEVELOPMENT_TESTING_INVENTORY_DOC_KEY,
-  notifications, accounts
+  notifications, accounts, records
 } from 'src/models/Firebase.js'
 import Category from "src/models/Category";
 import Product from "src/models/Product";
 import InventoryCollectionProper from "src/models/InventoryCollectionProper";
-
+import {Record, RECORD_TYPES, RECORD_ONS} from "src/models/Record";
 
 function InventoryExplorer() {
 
@@ -29,6 +29,7 @@ function InventoryExplorer() {
       addNew: addNew,
       remove: remove,
     },
+    setUser: setUser,
   }
 
 
@@ -36,6 +37,18 @@ function InventoryExplorer() {
       return this.recursiveCounter(inventory);
       // let categoriesCount = 0;//Not including the root library
     }
+
+
+    let fullUserDetails = null;
+    function setUser(fullUserDetailsSet){
+      fullUserDetails = fullUserDetailsSet;
+    }
+
+    function logRecord(recordType, recordOn, forID, forName, changes){
+      const record = new Record(recordType, recordOn, forID, forName, fullUserDetails.email, fullUserDetails.uid, changes)
+      return records.add(record.getAsData());
+    }
+
 
     function navigateTo(docId){
       console.log("navigateTo docId", docId);
@@ -225,13 +238,16 @@ function InventoryExplorer() {
               return snapshot.ref.getDownloadURL();
             })
             .then(url => {
-              // return m.currentlyIn.currentDoc.doc(doc.id).update({imageURL: url});
-              return m.currentlyIn.currentDoc.collection("categories").doc(doc.id).update({imageURL: url});
-            })
-            .then(() => {
-              console.log('Inventory updated');
-              return "Inventory updated";
-            })
+              return m.currentlyIn.currentDoc.collection("categories").doc(doc.id).update({imageURL: url})
+                .then(() => {
+                  return m.currentlyIn.currentDoc.collection("categories").doc(doc.id).get()
+                    .then((updatedDoc => {
+                      console.log("updatedDoc", updatedDoc.data());
+                      const updatedData = updatedDoc.data();
+                      logRecord(RECORD_TYPES.NEW, RECORD_ONS.INVENTORY, updatedData.id, updatedData.title, {added: updatedData.numInStock});
+                      return "";
+                  }))
+                })})
             .catch(error => {
               console.error('Error adding image: ', error);
               return "Error adding image: "+error;
