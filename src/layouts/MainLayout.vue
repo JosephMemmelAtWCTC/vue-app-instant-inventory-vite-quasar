@@ -286,7 +286,7 @@ export default defineComponent({
                clear-icon="bi-x"
                placeholder="Leave blank to ignore reorder"
                class="full-width clearable"
-               :rules="[val => val >= 0 || 'Count cannot be less than 0']"
+               :rules="[val => val === null || val === '' || val >= 0 || 'Count cannot be less than 0']"
                lazy-rules
       ></q-input>
       <div class="input-group mb-3 w-100">

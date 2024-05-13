@@ -75,7 +75,7 @@
 <!--                        clearable-->
 <!--                        clear-icon="bi-x"-->
 <!--                        placeholder="Leave blank to ignore reorder"-->
-<!--                        :rules="[val => val >= 0 || 'Count cannot be less than 0']"-->
+<!--                        :rules="[val => val === null || val === null || val >= 0 || 'Count cannot be less than 0']"-->
 <!--                        lazy-rules-->
 <!--                ></q-input>-->
             <q-input filled v-model="editInventoryItem.reorderLevel"
@@ -83,7 +83,7 @@
                      label="Reorder Level"
                      placeholder="Leave blank to ignore reorder"
                      class="full-width"
-                     :rules="[val => val >= 0 || 'Count cannot be less than 0']"
+                     :rules="[val => val === null || val === '' || val >= 0 || 'Count cannot be less than 0']"
                      lazy-rules
             ></q-input>
 <!--          clearable, w/class-->
@@ -92,27 +92,27 @@
           <!--TODO: Ask about clearable messing up-->
           <div class="input-group mb-3 w-100">
 
-                <div class="col-2 d-block z-2">
-                    <button type="button" @click="editInventoryItem.numInStock -= (editInventoryItem.numInStock > 0? 1:0)" class="h-100 d-block rounded-0 rounded-start-3 form-control focus-ring-primary">
-                        <i class="bi bi-dash"></i>
-                    </button>
-                </div>
-                <div class="col-8 form-control m-0 p-0">
-
-                    <q-input filled v-model.number="editInventoryItem.numInStock"
-                             type="number"
-                             label="# in stock"
-                             class="full-width w-100"
-                             :rules="[val => val !== null || 'You need to have a quantity', val => val >= 0 || 'Count cannot be less than 0']"
-                             lazy-rules
-                    ></q-input>
-                </div>
-                <div class="col-2 d-block z-2">
-                    <button type="button" @click="editInventoryItem.numInStock++" class="h-100 rounded-0 rounded-end-3 form-control focus-ring-primary">
-                        <i class="bi bi-plus"></i>
-                    </button>
-                </div>
+            <div class="col-2 d-block z-2">
+                <button type="button" @click="editInventoryItem.numInStock -= (editInventoryItem.numInStock > 0? 1:0)" class="h-100 d-block rounded-0 rounded-start-3 form-control focus-ring-primary">
+                    <i class="bi bi-dash"></i>
+                </button>
             </div>
-        </template>
-    </edit-card>
+            <div class="col-8 form-control m-0 p-0">
+
+                <q-input filled v-model.number="editInventoryItem.numInStock"
+                         type="number"
+                         label="# in stock"
+                         class="full-width w-100"
+                         :rules="[val => val !== null || 'You need to have a quantity', val => val >= 0 || 'Count cannot be less than 0']"
+                         lazy-rules
+                ></q-input>
+            </div>
+            <div class="col-2 d-block z-2">
+                <button type="button" @click="editInventoryItem.numInStock++" class="h-100 rounded-0 rounded-end-3 form-control focus-ring-primary">
+                    <i class="bi bi-plus"></i>
+                </button>
+            </div>
+          </div>
+      </template>
+  </edit-card>
 </template>

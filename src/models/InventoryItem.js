@@ -4,23 +4,23 @@ export const STORAGE_TYPES = {
 };
 export function InventoryItem(item){
 
-    const STOCKED_LEVEL_STATUSES = {
-        UNSET       : 'Unset',
-        IN_STOCK    : 'Stocked',
-        LOW_STOCK   : 'Under refill level',
-        OUT_OF_STOCK: '0 items remaining'
-        //Overstocked?
-    };
-
-    const REORDER_MESSAGE_THRESHOLD = {
-        LOW_STOCK   : 'Under refill level',
-        OUT_OF_STOCK: '0 items remaining',
-        NONE        : 'No warning',
-        //Overstocked?InventoryItem.js
-    };
-
-    // set the default status
-    item.reorderMessageWhen = REORDER_MESSAGE_THRESHOLD.LOW_STOCK;
+    // const STOCKED_LEVEL_STATUSES = {
+    //     UNSET       : 'Unset',
+    //     IN_STOCK    : 'Stocked',
+    //     LOW_STOCK   : 'Under refill level',
+    //     OUT_OF_STOCK: '0 items remaining'
+    //     //Overstocked?
+    // };
+    //
+    // const REORDER_MESSAGE_THRESHOLD = {
+    //     LOW_STOCK   : 'Under refill level',
+    //     OUT_OF_STOCK: '0 items remaining',
+    //     NONE        : 'No warning',
+    //     //Overstocked?InventoryItem.js
+    // };
+    //
+    // // set the default status
+    // item.reorderMessageWhen = REORDER_MESSAGE_THRESHOLD.LOW_STOCK;
 
     // methods
 
@@ -57,11 +57,12 @@ export function InventoryItem(item){
         // dataItem.description = item.product.description;
         // dataItem.imageURL    = item.product.imageSrc;
         // dataItem.title       = item.product.title;
-        dataItem.description = item.product.description;
-        dataItem.imageURL    = item.product.imageSrc;
-        dataItem.title       = item.product.title;
-        dataItem.productId   = item.product.productId;
-        dataItem.numInStock  = item.numInStock;
+        dataItem.description  = item.product.description;
+        dataItem.imageURL     = item.product.imageSrc;
+        dataItem.title        = item.product.title;
+        dataItem.productId    = item.product.productId;
+        dataItem.numInStock   = item.numInStock;
+        dataItem.reorderLevel = item.reorderLevel;
       }
 
       return dataItem;
