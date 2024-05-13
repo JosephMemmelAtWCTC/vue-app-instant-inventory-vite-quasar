@@ -93,7 +93,12 @@ module.exports = configure(function (/* ctx */) {
           textColor: 'secondary',
           bgColor: 'primary',
         },
-        iconSet: 'fontawesome-v6'
+        iconSet: 'fontawesome-v6',
+      },
+      brand: {
+        customColors: {
+          adminColor: '#3089f4',
+        },
       },
 
       // iconSet: 'material-icons', // Quasar icon set

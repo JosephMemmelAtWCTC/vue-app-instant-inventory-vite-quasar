@@ -36,4 +36,6 @@ Hover over folder enter icon?
 Permission control over page navigation instead of just hiding
 focus on first in modal
 
-Notifications - make them remove
+
+
+Better controls on roles permissions, not just not showing buttons

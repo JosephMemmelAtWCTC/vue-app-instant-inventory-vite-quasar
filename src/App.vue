@@ -56,7 +56,7 @@ export default defineComponent({
 
       appInfo: {
         appTitle: "Example Company's Instant Inventory",
-        appVersion: "Vue App 5.0 (Demo)",
+        appVersion: "Vue App 5.0 (Beta-Testing)",
         clientCompany: "Example Company",
         sideBarWidth: 180,
       },

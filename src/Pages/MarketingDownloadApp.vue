@@ -37,14 +37,18 @@ export default defineComponent({
         </div>
         <div class="column">
           <ul class="text-center">
-            <li>Get updates on the go.</li>
+            <li>Get updates on the go</li>
+            <li>Available for tablets</li>
             <li>Scan Barcodes Directly Into the System</li>
           </ul>
         </div>
-        <div class="q-mt-lg">
-          <a href="src/assets/images/clearPlaceholderPhoneImage.png" download>
-            APK
-          </a>
+        <div class="q-mt-lg position-relative">
+          <q-btn color="primary py-3 px-4 absolute-center mt-5" rounded @click="this.$q.notify('APK is not avaiable') ">
+            <a href="" download class="text-secondary">
+                <q-icon name="bi-download" /> <span class="mx-3">Download APK</span> <q-icon name="bi-android2" />
+            </a>
+          </q-btn>
+
         </div>
       </div>
       <div class="col-auto">
@@ -55,29 +59,37 @@ export default defineComponent({
 </template>
 
 <style scoped>
-img{
-  transform: rotate(10deg);
-  height: 75vh;
-  width: auto;
-}
-p.content{
-  width: 40vw;
-}
+  img{
+    transform: rotate(10deg);
+    height: 75vh;
+    width: auto;
+  }
+  p.content{
+    width: 40vw;
+  }
+
+  /*q-btn >*/
+  a {
+    text-decoration: none;
+  }
+  a > span {
+    font-size: 1.5em;
+  }
 
 
-/*https://stackoverflow.com/a/46803014 for bullet formatting base*/
-ul {
-  list-style-type: none;
-}
-li {
-  display: grid;
-  grid-template-columns: 20px auto;
-  justify-content: start;
-  align-items: center;
-}
-li::before {
-  content: ">";
-  font-size: 1em;
-  //color: #999;
-}
+  /*https://stackoverflow.com/a/46803014 for bullet formatting base*/
+  ul {
+    list-style-type: none;
+  }
+  li {
+    display: grid;
+    grid-template-columns: 20px auto;
+    justify-content: start;
+    align-items: center;
+  }
+  li::before {
+    content: ">";
+    font-size: 1em;
+    //color: #999;
+  }
 </style>

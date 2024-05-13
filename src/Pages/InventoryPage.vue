@@ -242,15 +242,15 @@ export default defineComponent({
 
             <div class="col-12 ps-3 mb-0 pb-0">
               <nav aria-label="Inventory Explorer Breadcrumbs">
-                <ol class="breadcrumb">
+                <ol class="breadcrumb m-2">
                   <li class="breadcrumb-item" v-for="(breadcrumb, i1) in inventoryExplorer.currentlyIn.breadcrumbs" :key="i1">{{ breadcrumb }}</li>
 <!--                  <li class="breadcrumb-item active" aria-current="page">{{'test'}}</li>-->
                 </ol>
-                <q-breadcrumbs gutter="xs">
-                  <q-breadcrumbs-el v-for="(breadcrumb, i) in inventoryExplorer.currentlyIn.breadcrumbs" :key="i" :label="breadcrumb">
-<!--                    {{ breadcrumb }}-->
-                  </q-breadcrumbs-el>
-                </q-breadcrumbs>
+<!--                <q-breadcrumbs gutter="xs">-->
+<!--                  <q-breadcrumbs-el v-for="(breadcrumb, i) in inventoryExplorer.currentlyIn.breadcrumbs" :key="i" :label="breadcrumb">-->
+<!--&lt;!&ndash;                    {{ breadcrumb }}&ndash;&gt;-->
+<!--                  </q-breadcrumbs-el>-->
+<!--                </q-breadcrumbs>-->
 
               </nav>
             </div>

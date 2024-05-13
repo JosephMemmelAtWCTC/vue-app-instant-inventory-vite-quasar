@@ -30,7 +30,7 @@ export default defineComponent({
       type: Object,
       default: {
         appTitle: "Instant Inventory",
-        appVersion: "Vue App v4.0 (Demo)",
+        appVersion: "Vue App v#.# (...)",
         sideBarWidth: 180,
       }
     },
@@ -74,8 +74,8 @@ export default defineComponent({
 <template>
   <q-layout view="hHh Lpr lFf">
     <q-header elevated class="q-ma-none-forced full-width">
-      <q-toolbar class="">
-        <div class="row justify-between q-ma-none-forced q-gutter-none">
+      <q-toolbar class="g-0 p-0 m-0">
+        <div class="row justify-between q-ma-none-forced q-gutter-none m-0 p-0">
           <div class="q-pa-none-forced"
                :class="leftDrawerOpen?'col-auto':'col-12'">
             <div class="bg-accent full-height q-pa-sm position-relative"
@@ -105,13 +105,14 @@ export default defineComponent({
             </q-toolbar-title>
 
           </div>
-          <div class="col-auto bg-amber">
+          <div class="col-auto bg-secondary px-4">
             <Router-Link to="account" v-if="authUser.uid !== ''">
               <div class="full-height q-py-sm">
                 <div class="row">
                   <div class="col" v-if="!this.leftDrawerOpen">
                     <span>
-                    <q-chip color="colorAdmin" text-color="white">
+<!--                    <q-chip :color="authUser.role+'Color'" text-color="white">-->
+                    <q-chip :color="'adminColor'" text-color="white">
                       <span>
                       <q-icon name="bi-person-badge" class="chip-icon" />
                       {{ authUser.role }}
@@ -173,6 +174,7 @@ export default defineComponent({
       show-if-above
       bordered
       :width="appInfo.sideBarWidth"
+      class="overflow-x-hidden"
     >
       <q-list>
         <navigate-icon-item router-link-to="/" tooltip-info="Home" li-extra-classes="p-2 mb-2" icon-class="bi-house">
