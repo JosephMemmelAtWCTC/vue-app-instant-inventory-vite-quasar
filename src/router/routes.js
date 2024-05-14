@@ -5,18 +5,18 @@ const routes = [
     // props: { appNavigation, appInfo, userInfo, authUser,
     //   locationKioskName: appLocationConfig.customLocationName,
     // },
-    props: true,
+    // props: true,
     children: [
       {
         path: '/',
         component: () => import('src/Pages/IndexPage.vue'),
-        props: true,
+        // props: true,
         // props: { appNavigation, appInfo, library }
       },
       {
         path: '/inventory',
         component: () => import('src/Pages/InventoryPage.vue'),
-        props: true,
+        // props: true,
         // props: { appNavigation, filterSettings, library }
       },
       {
@@ -25,12 +25,12 @@ const routes = [
         // props: { appNavigation, userInfo,
         //   locationKioskName: appLocationConfig.customLocationName,
         // }
-        props: true,
+        // props: true,
       },
       {
         path: '/records',
         component: () => import('pages/Records.vue'),
-        props: true,
+        // props: true,
       },
       {
         path: '/notifications',

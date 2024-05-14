@@ -30,8 +30,10 @@ export default defineComponent({
   },
   data() {
     return {
-      newCategory: new Category("","","src/assets/icons/folder.svg"),
-      newItem: new StoreItem(new Product("","","https://picsum.photos/200/300",""), 1, undefined),
+      // newCategory: new Category("","","public/assets/logo.svg"),
+      // newCategory: new Category("","","src/assets/icons/folder.svg"),
+      newCategory: new Category("","","./assets/icons/folder.svg"),
+      newItem: new StoreItem(new Product("","","icons/image-solid.svg",""), 1, undefined),
       newItemImage: {},
       imageUrl: "",
       enableBarcodeScanner: false,
@@ -137,7 +139,7 @@ export default defineComponent({
         // filterByConstructors.push(StoreItem.type);
         // if(StoreItem.type){
         //   filterByConstructors.push(STORAGE_TYPES.PRODUCT_GENERIC);
-        filterByConstructors.push("product");
+        filterByConstructors.push(Product.type);
         // }
       }
 

@@ -59,7 +59,7 @@ export default defineComponent({
       <div class="col-12 justify-center items-center bg-amber">
         <q-avatar size="140px">
           <q-img
-            src="/src/assets/icons/person-circle.svg"
+            src="./assets/icons/person-circle.svg"
             spinner-size="64px"
             spinner-color="secondary"
             class="profile-avatar"

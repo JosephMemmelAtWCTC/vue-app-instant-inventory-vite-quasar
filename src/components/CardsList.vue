@@ -30,6 +30,7 @@ export default defineComponent({
 </script>
 
 <template>
+  found {{items.length}}
   <component v-for="(item, i) in items" :key="i"
              :is="item.constructor.cardDetailsComponent"
              :item="item"

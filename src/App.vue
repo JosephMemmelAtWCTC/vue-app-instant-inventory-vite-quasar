@@ -153,7 +153,7 @@ export default defineComponent({
 
         this.recordsList.push(record.getAsData());
       });
-      this.recordsList = this.recordsList.sort((a, b) => {return a.loggedOn - b.loggedOn});
+      this.recordsList.sort((a, b) => {console.log("a.loggedOn - b.loggedOn",a.loggedOn - b.loggedOn);return a.loggedOn - b.loggedOn});
 
       console.log("records.onSnapshot recordsList: ", this.recordsList);
     });

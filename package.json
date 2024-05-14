@@ -8,7 +8,8 @@
   "scripts": {
     "test": "echo \"No test specified\" && exit 0",
     "dev": "quasar dev",
-    "build": "quasar build"
+    "build": "quasar build",
+    "deploy": "quasar build && firebase deploy"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
@@ -28,6 +29,7 @@
     "@quasar/app-vite": "^1.8.0",
     "autoprefixer": "^10.4.19",
     "css-loader": "^7.1.0",
+    "firebase-tools": "^13.8.3",
     "postcss": "^8.4.14",
     "postcss-loader": "^8.1.1",
     "sass": "^1.74.1",

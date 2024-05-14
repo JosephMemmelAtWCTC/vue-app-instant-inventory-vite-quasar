@@ -59,7 +59,7 @@ export default defineComponent({
 <!--        />-->
 <!--        <transition transition-show="jump-down">-->
 
-          <img src="src/assets/images/clearPlaceholderPhoneImage.png" alt="Placeholder phone image"/>
+          <img src="./assets/images/clearPlaceholderPhoneImage.png" alt="Placeholder phone image"/>
 <!--        </transition>-->
 <!--        <q-img-->
 <!--          src="/assets/images/clearPlaceholderPhoneImage.png"-->

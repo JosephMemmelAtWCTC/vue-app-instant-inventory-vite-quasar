@@ -94,7 +94,7 @@ export default defineComponent({
         // }
         return this.authUser.image;
       }else{
-        return "/src/assets/icons/person-circle.svg"
+        return "./assets/icons/person-circle.svg"
       }
     },
   },
