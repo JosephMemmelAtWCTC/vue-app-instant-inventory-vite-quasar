@@ -4,7 +4,7 @@ import {
   auth,
   storage,
   db,
-  DEVELOPMENT_TESTING_INVENTORY_DOC_KEY,
+  SUBMISSION_INVENTORY_DOC_KEY,
   notifications, accounts, records
 } from 'src/models/Firebase.js'
 import Category from "src/models/Category";
@@ -66,7 +66,7 @@ function InventoryExplorer() {
       }else{
         return m.currentlyIn.currentDoc.get().then(snapshot =>{
           if(docId === "root"){
-            docId = DEVELOPMENT_TESTING_INVENTORY_DOC_KEY;
+            docId = SUBMISSION_INVENTORY_DOC_KEY;
           }else{
             m.currentlyIn.currentDoc = m.currentlyIn.currentDoc.collection("categories").doc(docId);
             console.log("QQQQQQQQQQ", m.currentlyIn.currentDoc.path);

@@ -23,12 +23,13 @@ const accounts = db.collection('accounts');
 const notifications = db.collection('notifications');
 const records = db.collection('records')
 
-const DEVELOPMENT_TESTING_INVENTORY_DOC_KEY = "4GpErCnogbGLrHeZu26K";
-const inventory = db.collection('inventory').doc(DEVELOPMENT_TESTING_INVENTORY_DOC_KEY); //TODO: Rename to inventoryRoot?
+// const DEVELOPMENT_TESTING_INVENTORY_DOC_KEY = "";
+const SUBMISSION_INVENTORY_DOC_KEY = "4GpErCnogbGLrHeZu26K";
+const inventory = db.collection('inventory').doc(SUBMISSION_INVENTORY_DOC_KEY);
 
 
 // firebase
 export {db, auth, storage,
   accounts, inventory, notifications, records,
-  DEVELOPMENT_TESTING_INVENTORY_DOC_KEY
+  SUBMISSION_INVENTORY_DOC_KEY
 }

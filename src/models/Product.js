@@ -5,16 +5,17 @@ export default class Product {
   static type = STORAGE_TYPES.PRODUCT_GENERIC;
   static cardDetailsComponent = "EditItemCard";
 
-  constructor(title, description, imageURL, productId, numInStock, docId) {
+  constructor(title, description, imageURL, productId, numInStock, docId, reorderLevel = 0) {
     this.constructorSaved = this.constructor;
 
 
     if(typeof title === "object"){//Check if sending via data
-      docId       = title.docId;
-      description = title.description;
-      imageURL    = title.imageURL;
-      productId   = title.productId;
-      numInStock  = title.numInStock;
+      docId        = title.docId;
+      description  = title.description;
+      imageURL     = title.imageURL;
+      productId    = title.productId;
+      numInStock   = title.numInStock;
+      reorderLevel = title.reorderLevel;
       // REMEMBER, ALWAYS NEEDS TO BE LAST
       title       = title.title;
       console.log("title.numInStock",title);
@@ -26,6 +27,7 @@ export default class Product {
     this.productId    = productId;
     this.numInStock   = numInStock;
     this.docId        = docId;
+    this.reorderLevel = reorderLevel;
   }
 
 }

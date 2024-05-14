@@ -77,7 +77,7 @@ export default defineComponent({
           <p class="card-text">{{ descriptionText }}</p>
         </slot>
       </div>
-      <div class="card-footer bg-transparent">
+      <div class="card-footer">
         <slot :item="item">
           {{ footerText }} <!-- Display the footerText directly -->
         </slot>

@@ -53,9 +53,14 @@ export default defineComponent({
     v-slot="slotProps"
   >
     <slot :item="slotProps.item">
-      <div :class="{'text-warning-emphasis': slotProps.item.hasLowStock}">
+      <div :class="{
+        'text-warning': slotProps.item.numInStock <= slotProps.item.reorderLevel,
+        'text-danger': slotProps.item.numInStock === 0
+      }">
         {{ slotProps.item.numInStock }}{{ slotProps.item.reorderLevel === -1 || slotProps.item.reorderLevel === undefined || slotProps.item.reorderLevel === null ? "" : "/"+slotProps.item.reorderLevel }} item{{ slotProps.item.numInStock === 1 ? "" : "s" }} in stock
-        <i v-if="slotProps.item.hasLowStock" class="bi bi-exclamation-diamond-fill"></i>
+
+        <q-icon v-if="slotProps.item.numInStock === 0" name="bi-exclamation-diamond-fill"></q-icon>
+        <q-icon v-else-if="slotProps.item.numInStock <= slotProps.item.reorderLevel" name="bi-exclamation-diamond"></q-icon>
       </div>
     </slot>
     <slot name="extra" :item="slotProps.item">
@@ -63,3 +68,9 @@ export default defineComponent({
     </slot>
   </image-card>
 </template>
+
+<style scoped>
+  .color-warning-emphasis{
+    color: var(--primary);
+  }
+</style>

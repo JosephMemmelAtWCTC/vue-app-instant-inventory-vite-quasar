@@ -135,7 +135,14 @@ export default defineComponent({
                  lazy-rules
         ></q-input>
 
-        <q-file filled v-model="newAuthImage" label="New Account Avatar" />
+        <q-file filled v-model="newAuthImage" label="New Account Avatar" class="full-width file-input">
+<!--          <template v-slot:prepend>-->
+<!--            <q-icon name="attach_file" style="width:20px !important;"/>-->
+<!--          </template>-->
+          <template v-slot:before>
+            <q-icon name="attachment" />
+          </template>
+        </q-file>
 
         <q-input filled
                  label="Password"
@@ -176,5 +183,13 @@ export default defineComponent({
   }
   .fields > label:not(:first-child){
     padding-top: 10px; /*TODO: Make use scss variables to q-sm size */
+  }
+</style>
+<style>
+  .file-input .q-field__before.q-field__marginal.row.no-wrap.items-center{
+    width: 65px;
+  }
+  .file-input.q-field__inner.relative-position.col.self-stretch{
+    margin-left: 40px;
   }
 </style>
