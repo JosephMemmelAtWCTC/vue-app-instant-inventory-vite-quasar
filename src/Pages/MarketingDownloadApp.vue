@@ -59,15 +59,16 @@ export default defineComponent({
 <!--        />-->
 <!--        <transition transition-show="jump-down">-->
 
-          <img src="./assets/images/clearPlaceholderPhoneImage.png" alt="Placeholder phone image"/>
-<!--        </transition>-->
+          <img src="images/clearPlaceholderPhoneImage.png" alt="Placeholder phone image"/>
+      </div>
+
+      <!--        </transition>-->
 <!--        <q-img-->
 <!--          src="/assets/images/clearPlaceholderPhoneImage.png"-->
 <!--          alt="Placeholder phone image"-->
 <!--        />-->
 <!--        transition-show="fade"-->
 <!--        transition-duration="300"-->
-      </div>
     </div>
   </q-page>
 </template>

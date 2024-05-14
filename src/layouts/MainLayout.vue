@@ -233,7 +233,7 @@ export default defineComponent({
                     this.$refs.newItemModal.openModal();
                   }"
           >
-            <img src="./assets/icons/upc-scan.svg" class="scan-qr-code" alt="Scan Barcode">
+            <img src="src/assets/icons/upc-scan.svg" class="scan-qr-code" alt="Scan Barcode">
           </button>
         </div>
 
