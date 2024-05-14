@@ -2,14 +2,36 @@
 import {defineComponent, ref} from "vue";
 import RecordItem from "components/RecordItem.vue";
 import {RECORD_ONS, RECORD_TYPES} from "src/models/Record";
+import TogglesArray from "components/TogglesArray.vue";
 
 export default defineComponent({
   name: "Records",
   data() {
     return {
+      filterSettings: {
+        toggles: [
+          {
+            label: "Inventory",
+            state: true
+          },{
+            label: "Accounts",
+            state: true
+          },{
+            label: "Add",
+            state: true
+          },{
+            label: "Update",
+            state: true
+          },{
+            label: "Remove",
+            state: true
+          },
+        ],
+        searchString: "",
+      },
     };
   },
-  components: {RecordItem},
+  components: {TogglesArray, RecordItem},
   props: {
     recordsList: {
       type: Array,
@@ -24,7 +46,12 @@ export default defineComponent({
       return RECORD_TYPES
     },
     allRecords(){
-      return this.recordsList.sort((a, b) => {return a.loggedOn-b.loggedOn});
+      // this.recordsList.sort((a, b) => {console.log("a.loggedOn - b.loggedOn",a.loggedOn - b.loggedOn);return a.loggedOn - b.loggedOn});
+      this.recordsList.sort((a, b) => {console.log("a.loggedOn - b.loggedOn",a.loggedOn - b.loggedOn);return 1});
+      console.log("sorted AllRecords", this.recordsList)
+
+      return this.recordsList;//this.recordsList.sort((a, b) => {return a.loggedOn-b.loggedOn});
+
     },
   }
 });
@@ -33,9 +60,10 @@ export default defineComponent({
 <template>
   <q-page class="">
     <div class="q-pa-md">
-
+      <toggles-array :options="filterSettings.toggles">
+      </toggles-array>
       <q-list bordered padding>
-        <Record-Item v-for="(record, i) in allRecords" :key="i"
+        <Record-Item v-for="(record, i) in allRecords"
                            :recordOn="record.recordOn"
                            :forName="record.forName"
                            :byName="record.byName"

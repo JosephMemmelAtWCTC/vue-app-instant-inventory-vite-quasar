@@ -39,3 +39,6 @@ focus on first in modal
 
 
 Better controls on roles permissions, not just not showing buttons
+
+Clear fab add item on submit
+sort categories first

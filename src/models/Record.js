@@ -13,7 +13,7 @@ export function Record(recordType, recordOn, forID, forName, byName, byID, recor
     byName: '',
     byID: '',
     record: {},
-    getAsData: function (){},
+    getAsData: getAsData,
     loggedOn: '',
   }
 
@@ -39,7 +39,8 @@ export function Record(recordType, recordOn, forID, forName, byName, byID, recor
   m.loggedOn = loggedOn ? loggedOn : Date.now();
 
 
-  m.getAsData = function(){
+  // m.getAsData = function(){
+  function getAsData(){
     const dataItem = {
       recordType: m.recordType,
       recordOn: m.recordOn,

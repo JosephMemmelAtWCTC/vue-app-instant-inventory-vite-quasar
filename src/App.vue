@@ -143,7 +143,7 @@ export default defineComponent({
       });
     });
 
-    records.onSnapshot(snapshot => {
+    records.orderBy("loggedOn").onSnapshot(snapshot => {
       this.recordsList = [];
       snapshot.forEach(doc => {
         const dataPush = doc.data();
@@ -153,7 +153,6 @@ export default defineComponent({
 
         this.recordsList.push(record.getAsData());
       });
-      this.recordsList.sort((a, b) => {console.log("a.loggedOn - b.loggedOn",a.loggedOn - b.loggedOn);return a.loggedOn - b.loggedOn});
 
       console.log("records.onSnapshot recordsList: ", this.recordsList);
     });

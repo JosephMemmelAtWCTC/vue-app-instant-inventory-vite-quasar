@@ -252,7 +252,7 @@ function InventoryExplorer() {
                       console.log("updatedDoc", updatedDoc.data());
                       const updatedData = updatedDoc.data();
                       // Fire and forget, TODO: Make not forget
-                      logRecord(RECORD_TYPES.NEW, RECORD_ONS.INVENTORY, updatedData.id, updatedData.title, {changedStockLevel: updatedData.numInStock});
+                      logRecord(RECORD_TYPES.NEW, RECORD_ONS.INVENTORY, updatedData.id, updatedData.title, {added: updatedData.numInStock});
                       return "";
                   }))
                 })})
