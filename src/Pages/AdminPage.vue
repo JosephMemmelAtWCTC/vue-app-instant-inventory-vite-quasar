@@ -10,7 +10,7 @@ import 'src/models/Firebase.js'
 import { db, auth, storage, accounts } from 'src/models/Firebase.js'
 // import {useQuasar} from "quasar";
 
-const SubmitButtonStatus = { ALLOWED: 'primary', MISSING_DATA: 'warning', INVALID_DATA: 'error'};
+const SubmitButtonStatus = { ALLOWED: 'primary', MISSING_DATA: 'warning', INVALID_DATA: 'danger'};
 
 export default defineComponent({
   data(){
@@ -304,7 +304,7 @@ export default defineComponent({
       if(this.noSuffixEmail.length === 0 || this.newIdentity.password.length === 0){
         return SubmitButtonStatus.MISSING_DATA
       }
-      if(this.newIdentity.password.length < 6){
+      if(this.newIdentity.password.length < 10){
         return SubmitButtonStatus.INVALID_DATA
       }
       return SubmitButtonStatus.ALLOWED;
@@ -318,109 +318,61 @@ export default defineComponent({
     },
   },
 
-
-  //
-  // // login
-  // document.getElementById('login').onclick = function(e){
-  //   firebase.auth()
-  //     .signInWithEmailAndPassword(email, password)
-  //     .then(() => {
-  //       //     Nickname, photourl
-  //     })
-  //     .catch(function(error) {
-  //       // Handle Errors here.
-  //       let errorCode = error.code;
-  //       let errorMessage = error.message;
-  //
-  //       document.getElementById('message').innerHTML =  'Error: ' + errorMessage;
-  //     });
-  //   //     YOU CAN INCLUDE A .then!
-  // };
-  //
-  // // update profile
-  // document.getElementById('update').onclick = function(e){
-  //   firebase.auth()
-  //     .currentUser
-  //     .updateProfile({
-  //       displayName: "Joe Schmo",
-  //       photoURL: '',
-  //       // isVerified
-  //       // ...
-  //     }).then(function() {
-  //     // Update successful.
-  //
-  //     document.getElementById('message').innerHTML =  'Account updated!';
-  //   }).catch(function(error) {
-  //     // An error happened.
-  //
-  //     document.getElementById('message').innerHTML =  'Error: ' + error.message;
-  //   });
-  // };
-  //
-  // // delete user
-  // document.getElementById('delete').onclick = function(e){
-  //   firebase.auth()
-  //     .currentUser
-  //     .delete()
-  //     .then(function() {
-  //       // User deleted.
-  //     }).catch(function(error) {
-  //     // An error happened.
-  //   });
-  // };
-  //
-  // // logout
-  // document.getElementById('logout').onclick = function(e){
-  //   firebase.auth().signOut();
-  // };
-
 });
 </script>
 
 <template>
   <div class="q-pa-md">
 
-    <div class="q-pa-lg bg-amber">
-      <button @click="testLoading">Load storage</button>
+    <div class="q-pa-lg bg-secondary rounded-top">
       <q-form
         @submit.prevent="createNewAccount"
         class="q-gutter-md"
       >
+        <h3 class="full-width mb-3">Account Creator</h3>
         <div class="row q-gutter-md items-start">
           <div class="col-auto">
             <!--            type="email" removed as suffix-->
-            <q-input filled v-model="this.noSuffixEmail" :suffix="this.accountCreationStandards.accountEmailSuffix" input-class="text-right" hint="Email" autocomplete="off">
+            <q-input filled v-model="this.noSuffixEmail" :suffix="this.accountCreationStandards.accountEmailSuffix" input-class="text-right" hint="Email" autocomplete="off"
+                     :rules="[val => !!val || '* Required']"
+                     no-error-icon>
               <template v-slot:before>
                 <q-icon name="mail" />
               </template>
             </q-input>
           </div>
 
-<!--          <div class="col-auto">-->
-<!--            <q-input v-model="this.newIdentity.password" filled :type="tempWorkingData.isPwd ? 'password' : 'text'" hint="Password">-->
-<!--              <template v-slot:append>-->
-<!--                <q-icon-->
-<!--                  :name="tempWorkingData.isPwd ? 'visibility_off' : 'visibility'"-->
-<!--                  class="cursor-pointer"-->
-<!--                  @click="tempWorkingData.isPwd = !tempWorkingData.isPwd"-->
-<!--                />-->
+          <div class="col-auto">
+            <q-input v-model="this.newIdentity.password" filled :type="tempWorkingData.isPwd ? 'password' : 'text'" hint="Password"
+                     :rules="[val => !!val && val.length >= 10 || '* Password must be at least 10 characters long ('+val.length+'/10)']"
+                     no-error-icon
+                     bottom-slots
+            >
+<!--              <template v-slot:counter>-->
+<!--                ({{this.newIdentity.password.length}}/10)-->
 <!--              </template>-->
-<!--            </q-input>-->
-<!--          </div>-->
 
-          <div class="col-4">
+              <template v-slot:append>
+                <q-icon
+                  :name="tempWorkingData.isPwd ? 'visibility_off' : 'visibility'"
+                  class="cursor-pointer"
+                  @click="tempWorkingData.isPwd = !tempWorkingData.isPwd"
+                />
+              </template>
+            </q-input>
+          </div>
+
+          <div class="col-auto center-options">
             <q-option-group
               v-model="this.group"
               :options="this.options"
               color="primary"
               inline
-              dense
             />
           </div>
 
           <div class="col-auto">
-            <!--            TODO: Keep as push?-->
-            <q-btn type="submit" push icon="bi-plus"
+            <q-btn type="submit" icon="bi-plus"
                    :color="submitButtonStatus"
                    :disable="submitButtonStatus !== 'primary'"
             /><!--label="Create New Profile"-->
@@ -518,7 +470,7 @@ export default defineComponent({
   <div id="message"></div>
 </template>
 
-<style>/*scoped TODO: ASK WHY IT DOES NOT WORK WITH SCOPED*/
+<style>/*scoped DOES NOT WORK WITH SCOPED*/
   .q-field__before.q-field__marginal.row.no-wrap.items-center{
     width: 20px;
   }
@@ -537,5 +489,15 @@ export default defineComponent({
 
   .admin-rows-avatar-image{
     width: 4em;
+  }
+
+  .center-options .q-radio__label.q-anchor--skip{
+    text-align: center;
+  }
+</style>
+
+<style scoped>
+  h3{
+    text-align: center;
   }
 </style>

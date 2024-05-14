@@ -67,7 +67,7 @@ export default defineComponent({
       </div>
       <div class="relative-position">
         <q-item-section side top class="absolute-center">
-          <q-item-label caption>{{ calculatedTimeAgo }}</q-item-label>
+          <q-item-label caption>{{ new Date(loggedOn).toTimeString() }} <br> ({{ calculatedTimeAgo }})</q-item-label>
         </q-item-section>
       </div>
 

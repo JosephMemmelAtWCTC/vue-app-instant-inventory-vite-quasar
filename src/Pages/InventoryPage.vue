@@ -37,6 +37,7 @@ export default defineComponent({
       newItemImage: {},
       imageUrl: "",
       enableBarcodeScanner: false,
+      scannerIsLoaded: false,
 
       filterSettings: {
         toggles: [
@@ -185,7 +186,7 @@ export default defineComponent({
 
 
 <template>
-  <q-page class="flex flex-center">
+  <q-page class="flex">
     <main-content-page class="w-100 me-2"
     >
 <!--      absolute-top-->
@@ -209,8 +210,10 @@ export default defineComponent({
             <div class="col-12 ps-3 mb-0 pb-0">
               <nav aria-label="Inventory Explorer Breadcrumbs">
                 <ol class="breadcrumb m-2">
+                  <li><q-icon name="bi-house" class="me-1"></q-icon></li>
                   <li class="breadcrumb-item" v-for="(breadcrumb, i1) in inventoryExplorer.currentlyIn.breadcrumbs" :key="i1">{{ breadcrumb }}</li>
 <!--                  <li class="breadcrumb-item active" aria-current="page">{{'test'}}</li>-->
+                  <li class="ms-1">/</li>
                 </ol>
 <!--                <q-breadcrumbs gutter="xs">-->
 <!--                  <q-breadcrumbs-el v-for="(breadcrumb, i) in inventoryExplorer.currentlyIn.breadcrumbs" :key="i" :label="breadcrumb">-->
@@ -258,7 +261,7 @@ export default defineComponent({
                          :fab-button-size="this.leftDrawerOpen? 84:30"
                          :rounded="this.leftDrawerOpen">
             <template #open v-slot="slotProps">
-              <ul>
+              <ol>
                 <li>
                   <!--                                        :item-constructor-type="this.newCategory.constructor"-->
                   <edit-modal :item="this.newCategory"
@@ -316,52 +319,37 @@ export default defineComponent({
                             this.newItem.product.productId = text;
                             this.enableBarcodeScanner = false
                           }"
-                          @loaded="console.log(`LOADED this`);"
+                          @loaded="console.log(`LOADED scanner`); scannerIsLoaded = true"
                         ></StreamBarcodeReader>
                         <div class="pb-3">
                           <button @click="this.enableBarcodeScanner = !this.enableBarcodeScanner">
-                            <span v-if="this.enableBarcodeScanner">Turn off scanner?</span>
+                            <span v-if="this.enableBarcodeScanner && this.scannerIsLoaded">Turn off scanner?</span>
                             <span v-else>Turn back on scanner?</span>
                           </button>
                         </div>
                       </div>
-                      <div class="row">
-<!--                      <q-file filled v-model="this.newItem.product.imageURL" label="New Account Avatar"-->
-<!--                      >-->
+<!--                      <div class="row">-->
 <!--                      </q-file>-->
-                        <div class="col-1">
-                          <q-img
-                            :src="this.imageUrl"
-                            spinner-size="64px"
-                            spinner-color="secondary"
-                          />
-                        </div>
+<!--                        <div class="col-1">-->
+<!--                          <q-img-->
+<!--                            :src="this.imageUrl"-->
+<!--                            spinner-size="64px"-->
+<!--                            spinner-color="secondary"-->
+<!--                          />-->
+<!--                        </div>-->
 <!--                        <input type="file" accept="image/*" capture="user" />-->
 
 <!--                        <div class="">-->
 <!--                          <q-file filled bottom-slots v-model="this.newItemImage"-->
-                          <q-file filled bottom-slots v-model="this.newItem.product.imageURL"
-                                  label="Select item file"
-                                  @blur="updateFile()">
+                      <q-file filled bottom-slots v-model="this.newItem.product.imageURL"
+                              label="Select item file"
+                              class="full-width"
+                              @blur="updateFile()"
+                              :rules="[val => !!val || '* Required']"
+                              lazy-rules
+                      >
 <!--                                  @change="updateFile(this.newItemImage)"-->
-                          </q-file>
-<!--                          "[object File]"-->
-<!--                        </div>-->
-<!--                        <div class="col-1">-->
-<!--                          <q-btn round dense flat icon="send" />-->
-<!--                        </div>-->
-                      </div>
-
-<!--                      <div>-->
-<!--                        <qrcode-scanner-->
-<!--                          :qrbox="250"-->
-<!--                          :fps="10"-->
-<!--                          style="width: 500px;"-->
-<!--                          @result="console.log('result')"-->
-<!--                        />-->
-<!--                      </div>-->
-
-
+                      </q-file>
                       <q-input filled v-model="this.newItem.product.description"
                                type="textarea"
                                rows="4"
@@ -406,7 +394,7 @@ export default defineComponent({
                     </template>
                   </edit-modal>
                 </li>
-              </ul>
+              </ol>
                     <button type="button"
                             @click="
                               this.$refs.newCategoryModal.openModal();
@@ -442,14 +430,19 @@ export default defineComponent({
 
 <style scoped>
   .barcodeScanner{
-    width: 80%;
+    width: 95%;
   }
-  ul {
-    list-style-type: none
+  ol {
+    list-style-type: none;
   }
 /*
   .q-field.row.no-wrap.items-start.q-field--filled.q-file.q-field--auto-height.q-field--labeled.q-field--with-bottom{
     width: 100%
   }
 */
+</style>
+<style>
+  .q-field__append.q-field__marginal.row.no-wrap{
+    width: auto;
+  }
 </style>
