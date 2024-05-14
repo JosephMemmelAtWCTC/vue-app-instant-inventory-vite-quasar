@@ -35,14 +35,6 @@ export default defineComponent({
   watch: {
   },
   computed: {
-    calculatedTimeAgo(){
-      let remainingSecondsAgo = Math.floor((new Date() - new Date(this.lastUpdated)) / 1000);
-      const hoursAgo = Math.floor(remainingSecondsAgo / (60 * 60));
-      remainingSecondsAgo -= hoursAgo * 60 * 60;
-      const minutesAgo = Math.floor(remainingSecondsAgo / 60);
-      // remainingSecondsAgo -= minutesAgo * 60;
-      return `${hoursAgo}h ${minutesAgo}m ago`;// ${remainingSecondsAgo}s`;
-    }
   },
 });
 </script>
@@ -67,7 +59,7 @@ export default defineComponent({
       </div>
       <div class="relative-position">
         <q-item-section side top class="absolute-center">
-          <q-item-label caption>{{ new Date(loggedOn).toTimeString() }} <br> ({{ calculatedTimeAgo }})</q-item-label>
+          <q-item-label caption>{{ new Date(loggedOn).toTimeString() }})</q-item-label>
         </q-item-section>
       </div>
 

@@ -140,7 +140,7 @@ export default defineComponent({
                         :src="authUser.image"
                         :spinner-size="(imgSize/2)+'px'"
                         spinner-color="secondary"
-                        class="profile-avatar"
+                        class="profile-avatar bg-secondary-subtle"
                       />
                     </q-avatar>
                   </div>

@@ -107,64 +107,71 @@ export default defineComponent({
 <template>
   <q-page class="flex flex-center">
     <div class="row">
-      <div class="col-12 justify-center items-center bg-amber">
-        <q-avatar size="140px">
-          <q-img
-            :src="profileAvatarSrc"
-            spinner-size="64px"
-            spinner-color="secondary"
-            class="profile-avatar"
-          />
-          <!--      TODO: Ask about error slot -->
-          <!--      <template v-slot:error>-->
-          <!--        <div class="absolute-full flex flex-center bg-negative text-white">-->
-          <!--          Cannot load image-->
-          <!--        </div>-->
-          <!--      </template>-->
-        </q-avatar>
+      <div class="col-12 bg-secondary rounded-top-4"><!--justify-center items-center -->
+        <div class="row my-3">
+          <div class="col-auto mx-auto">
+            <q-avatar size="140px">
+              <q-img
+                :src="profileAvatarSrc"
+                spinner-size="64px"
+                spinner-color="secondary"
+                class="profile-avatar bg-secondary-subtle"
+              />
+              <!--      <template v-slot:error>-->
+              <!--        <div class="absolute-full flex flex-center bg-negative text-white">-->
+              <!--          Cannot load image-->
+              <!--        </div>-->
+              <!--      </template>-->
+            </q-avatar>
+          </div>
+        </div>
       </div>
-      <div class="col-6 bg-primary q-pa-md fields">
-        <q-input filled v-model="this.authUser.email"
-                 label="Account Name"
-                 class="full-width"
-                 lazy-rules
-        ></q-input>
-        <q-input filled v-model="this.locationKioskName"
-                 label="Kiosk Name"
-                 class="full-width"
-                 lazy-rules
-        ></q-input>
+      <div class="col-12 row row-cols-2">
+        <div class="col bg-primary q-pa-md fields">
+          <q-input filled v-model="this.authUser.email"
+                   label="Account Name"
+                   class="full-width"
+                   lazy-rules
+          ></q-input>
+          <q-input filled v-model="this.locationKioskName"
+                   label="Kiosk Name"
+                   class="full-width"
+                   lazy-rules
+          ></q-input>
 
-        <q-file filled v-model="newAuthImage" label="New Account Avatar" class="full-width file-input">
-<!--          <template v-slot:prepend>-->
-<!--            <q-icon name="attach_file" style="width:20px !important;"/>-->
-<!--          </template>-->
-          <template v-slot:before>
-            <q-icon name="attachment" />
-          </template>
-        </q-file>
+          <q-file filled v-model="newAuthImage" label="New Account Avatar" class="full-width file-input">
+  <!--          <template v-slot:prepend>-->
+  <!--            <q-icon name="attach_file" style="width:20px !important;"/>-->
+  <!--          </template>-->
+            <template v-slot:before>
+              <q-icon name="attachment" />
+            </template>
+          </q-file>
 
-        <q-input filled
-                 label="Password"
-                 :type="this.isPwd ? 'password' : 'text'"
-                 hint="Password with toggle">
-<!--          <template v-slot:append>-->
-<!--            <q-icon-->
-<!--              :name="this.isPwd ? 'visibility_off' : 'visibility'"-->
-<!--              class="cursor-pointer"-->
-<!--              @click="this.isPwd = !this.isPwd"-->
-<!--            />-->
-<!--          </template>-->
-        </q-input>
+          <q-btn @click="addImage(this.authUser.uid)" class="full-width">
+            Upload Image
+          </q-btn>
+        </div>
 
-        <button @click="addImage(this.authUser.uid)">
-          Upload Image
-        </button>
-    </div>
+        <div class="col">
+          <button @click="this.signOut">Sign Out</button>
+        </div>
+        </div>
 
-      <div class="col-6">
-        <button @click="this.signOut">Sign Out</button>
-      </div>
+<!--      <q-input filled-->
+<!--               label="Password"-->
+<!--               :type="this.isPwd ? 'password' : 'text'"-->
+<!--               hint="Password with toggle"-->
+<!--               class="full-width">-->
+<!--        &lt;!&ndash;          <template v-slot:append>&ndash;&gt;-->
+<!--        &lt;!&ndash;            <q-icon&ndash;&gt;-->
+<!--        &lt;!&ndash;              :name="this.isPwd ? 'visibility_off' : 'visibility'"&ndash;&gt;-->
+<!--        &lt;!&ndash;              class="cursor-pointer"&ndash;&gt;-->
+<!--        &lt;!&ndash;              @click="this.isPwd = !this.isPwd"&ndash;&gt;-->
+<!--        &lt;!&ndash;            />&ndash;&gt;-->
+<!--        &lt;!&ndash;          </template>&ndash;&gt;-->
+<!--      </q-input>-->
+
 
     </div>
   </q-page>
@@ -182,7 +189,7 @@ export default defineComponent({
     height: 100%;
   }
   .fields > label:not(:first-child){
-    padding-top: 10px; /*TODO: Make use scss variables to q-sm size */
+    padding-top: 10px;
   }
 </style>
 <style>

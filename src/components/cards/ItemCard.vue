@@ -70,7 +70,4 @@ export default defineComponent({
 </template>
 
 <style scoped>
-  .color-warning-emphasis{
-    color: var(--primary);
-  }
 </style>
