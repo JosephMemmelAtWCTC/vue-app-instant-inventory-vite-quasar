@@ -107,7 +107,7 @@ export default defineComponent({
             </q-toolbar-title>
 
           </div>
-          <div class="col-auto bg-secondary px-4 me-1">
+          <div class="col-auto bg-secondary px-4" :class="authUser.uid === ''? 'me-1' : ''">
             <Router-Link to="account" v-if="authUser.uid !== ''">
               <div class="full-height q-py-sm">
                 <div class="row">

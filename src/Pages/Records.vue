@@ -3,32 +3,33 @@ import {defineComponent, ref} from "vue";
 import RecordItem from "components/RecordItem.vue";
 import {RECORD_ONS, RECORD_TYPES} from "src/models/Record";
 import TogglesArray from "components/TogglesArray.vue";
+import Product from "src/models/Product";
 
 export default defineComponent({
   name: "Records",
   data() {
     return {
-      filterSettings: {
-        toggles: [
-          {
-            label: "Inventory",
-            state: true
-          },{
-            label: "Accounts",
-            state: true
-          },{
-            label: "Add",
-            state: true
-          },{
-            label: "Update",
-            state: true
-          },{
-            label: "Remove",
-            state: true
-          },
-        ],
-        searchString: "",
-      },
+      filterToggles: [
+        {
+          label: "Inventory",
+          state: true
+        },{
+          label: "Accounts",
+          state: true
+        },
+      ],
+      filterTogglesTypes: [
+        {
+          label: "Add",
+          state: true
+        },{
+          label: "Update",
+          state: true
+        },{
+          label: "Remove",
+          state: true
+        },
+      ]
     };
   },
   components: {TogglesArray, RecordItem},
@@ -45,12 +46,50 @@ export default defineComponent({
     RECORD_TYPES() {
       return RECORD_TYPES
     },
-    allRecords(){
-      // this.recordsList.sort((a, b) => {console.log("a.loggedOn - b.loggedOn",a.loggedOn - b.loggedOn);return a.loggedOn - b.loggedOn});
-      this.recordsList.sort((a, b) => {console.log("a.loggedOn - b.loggedOn",a.loggedOn - b.loggedOn);return b.loggedOn - a.loggedOn});
-      console.log("sorted AllRecords", this.recordsList)
+    filteredRecords(){
+      let filteredRecordsList = [];
+      let filteredRecordsListAnd = [];
 
-      return this.recordsList;//this.recordsList.sort((a, b) => {return a.loggedOn-b.loggedOn});
+      for(const filteredRecord of this.recordsList) {
+        if(this.filterToggles[0].state){ //Inventory
+          if(filteredRecord.recordOn === RECORD_ONS.INVENTORY){
+            filteredRecordsList.push(filteredRecord);
+            console.log("Pushed", filteredRecord);
+
+            continue;
+          }
+        }
+        if(this.filterToggles[1].state){ //Accounts
+          if(filteredRecord.recordOn === RECORD_ONS.PROFILE){
+            filteredRecordsList.push(filteredRecord);
+            continue;
+          }
+        }
+      }
+
+
+      for(const filteredRecord of filteredRecordsList) {
+        if(this.filterTogglesTypes[0].state){ //Add
+          if(filteredRecord.recordType === RECORD_TYPES.NEW){
+            filteredRecordsListAnd.push(filteredRecord);
+            continue;
+          }
+        }
+        if(this.filterTogglesTypes[1].state){ //Update
+          if(filteredRecord.recordType === RECORD_TYPES.UPDATE){
+            filteredRecordsListAnd.push(filteredRecord);
+            continue;
+          }
+        }
+        if(this.filterTogglesTypes[2].state){ //Remove
+          if(filteredRecord.recordType === RECORD_TYPES.DELETE){
+            filteredRecordsListAnd.push(filteredRecord);
+            continue;
+          }
+        }
+      }
+      filteredRecordsList.sort((a, b) => {console.log("a.loggedOn - b.loggedOn",a.loggedOn - b.loggedOn);return b.loggedOn - a.loggedOn});
+      return filteredRecordsListAnd;
 
     },
   }
@@ -60,9 +99,16 @@ export default defineComponent({
 <template>
   <q-page class="">
     <div class="q-pa-md">
-      <toggles-array :options="filterSettings.toggles">
-      </toggles-array>
-
+      <div class="column items-center mb-2">
+        <div class="col">
+          <div class="full-width text-center">Filter by Type and Kind</div>
+          <toggles-array :options="filterToggles">
+          </toggles-array>
+          &
+          <toggles-array :options="filterTogglesTypes">
+          </toggles-array>
+        </div>
+      </div>
       <q-list bordered padding class="rounded-top-4">
         <!-- HEADER ITEM-->
         <q-item class="m-1 notification-row border-bottom border-2 border-primary">
@@ -96,7 +142,7 @@ export default defineComponent({
           </div>
         </q-item>
 
-        <Record-Item v-for="(record, i) in allRecords"
+        <Record-Item v-for="(record, i) in filteredRecords"
                            :record-on="record.recordOn"
                            :for-name="record.forName"
                            :by-name="record.byName"
