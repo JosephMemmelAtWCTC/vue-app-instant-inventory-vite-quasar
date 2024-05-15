@@ -28,12 +28,22 @@ export default defineComponent({
             const warningJson = JSON.parse(error.message);
 
             if(warningJson.error.message==="INVALID_LOGIN_CREDENTIALS"){
-              this.$q.notify(`Invalid Login Credentials. TODO: Make shake`)
+              // this.$q.notify(`Invalid Login Credentials. `)//TODO: Make shake
+              this.$q.notify({
+                type: 'warning',
+                message: 'Invalid Login Credentials'
+              })
             }else{
-              this.$q.notify(`Error signing in "${error.message}".`)
+              this.$q.notify({
+                type: 'warning',
+                message: `Error signing in "${error.message}".`,
+              })
             }
           }catch(catchError){
-            this.$q.notify(`Error signing in "${error.message}".`)
+            this.$q.notify({
+              type: 'danger',
+              message: `Error signing in "${error.message}".`,
+            })
           }
         });
     },
@@ -68,7 +78,7 @@ export default defineComponent({
           </div>
         </div>
       </div>
-      <div class="col-12 bg-primary q-pa-md fields">
+      <div class="col-12 bg-primary q-pa-md fields rounded-bottom-4">
         <q-form
           @submit.prevent="attemptLoginAccount"
           class="q-gutter-md ms-3 mt-2"

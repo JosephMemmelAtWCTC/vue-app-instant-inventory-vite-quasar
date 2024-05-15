@@ -8,10 +8,12 @@ export default class Category { //Rename to Group?
         description = "";
         imageSrc = "";
 
-        items = [];
+        items = [];//TODO: Store titles of all children products when added
+
+        createdOn = -1;
 
 
-        constructor(title, description, imageURL, docId, items = []) {
+        constructor(title, description, imageURL, docId, items = [], createdOn) {
             this.constructorSaved = this.constructor;
 
             if(typeof title === "object"){//Check if sending via data
@@ -19,6 +21,7 @@ export default class Category { //Rename to Group?
               imageURL    = title.imageURL;
               items       = [];
               docId       = title.docId;
+              createdOn   = title.createdOn;
               // REMEMBER, ALWAYS NEEDS TO BE LAST
               title       = title.title;
             }
@@ -28,30 +31,6 @@ export default class Category { //Rename to Group?
             this.imageSrc    = imageURL;
             this.items       = this.items.concat(items);
             this.docId       = docId;
+            this.createdOn   = createdOn;
         }
-
-        // get hasLowStock(){
-        //     for(let i = 0; i < this.items.length; i++) {
-        //         if(this.items[i].hasLowStock){
-        //             return true;
-        //         }
-        //     //     TODO: Make it store just a copy and have a different way to update
-        //     }
-        //     return false;
-        // }
-        //
-        // get itemCount(){
-        //     let count = 0;
-        //     for(const item in this.items) {
-        //         count += item.itemCount;
-        //     }
-        //     return count;
-        // }
-        // get uniqueItemCount(){
-        //     let count = 0;
-        //     for(const item in this.items) {
-        //         count += item.uniqueItemCount;
-        //     }
-        //     return count;
-        // }
 }

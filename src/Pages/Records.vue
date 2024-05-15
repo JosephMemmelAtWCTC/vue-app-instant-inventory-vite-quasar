@@ -47,7 +47,7 @@ export default defineComponent({
     },
     allRecords(){
       // this.recordsList.sort((a, b) => {console.log("a.loggedOn - b.loggedOn",a.loggedOn - b.loggedOn);return a.loggedOn - b.loggedOn});
-      this.recordsList.sort((a, b) => {console.log("a.loggedOn - b.loggedOn",a.loggedOn - b.loggedOn);return 1});
+      this.recordsList.sort((a, b) => {console.log("a.loggedOn - b.loggedOn",a.loggedOn - b.loggedOn);return b.loggedOn - a.loggedOn});
       console.log("sorted AllRecords", this.recordsList)
 
       return this.recordsList;//this.recordsList.sort((a, b) => {return a.loggedOn-b.loggedOn});
@@ -62,18 +62,56 @@ export default defineComponent({
     <div class="q-pa-md">
       <toggles-array :options="filterSettings.toggles">
       </toggles-array>
-      <q-list bordered padding>
+
+      <q-list bordered padding class="rounded-top-4">
+        <!-- HEADER ITEM-->
+        <q-item class="m-1 notification-row border-bottom border-2 border-primary">
+          <div class="row">
+            <div class="col relative-position">
+              <q-item-section class="absolute-center">
+                <q-item-label>Action</q-item-label>
+              </q-item-section>
+            </div>
+            <div class="col relative-position">
+              <q-item-section side top class="absolute-center">
+                <q-item-label>Name</q-item-label>
+              </q-item-section>
+            </div>
+            <div class="col relative-position">
+              <q-item-section side top class="absolute-center">
+                <q-item-label>By</q-item-label>
+              </q-item-section>
+            </div>
+            <div class="col relative-position">
+              <q-item-section side top class="absolute-center">
+                <q-item-label>At</q-item-label>
+              </q-item-section>
+            </div>
+            <div class="col relative-position">
+              <q-item-section side top class="absolute-center">
+                <q-item-label>Record Log</q-item-label>
+              </q-item-section>
+            </div>
+
+          </div>
+        </q-item>
+
         <Record-Item v-for="(record, i) in allRecords"
-                           :recordOn="record.recordOn"
-                           :forName="record.forName"
-                           :byName="record.byName"
+                           :record-on="record.recordOn"
+                           :for-name="record.forName"
+                           :by-name="record.byName"
                            :record="record.record"
-                           :loggedOn="record.loggedOn"
+                           :logged-on="record.loggedOn"
+                           :change-record="record.record"
+                            date-format="M-D-Y at h:m"
         >
           <q-item-section class="absolute-center">
             <div v-if="record.recordType === RECORD_TYPES.NEW">
-              <q-icon name="fa-solid fa-file-circle-plus" color="info" size="4rem">
-                <q-badge color="primary" floating>+ {{ record.record.added }}</q-badge>
+              <q-icon color="info" size="4rem"
+                      :name="'fa-solid '+(record.recordOn===RECORD_ONS.PROFILE?'fa-user-plus':'fa-file-circle-plus')"
+              >
+                <q-badge color="primary" v-if="record.record.added" floating>+ {{ record.record.added }}</q-badge>
+                <q-badge color="primary" v-if="record.record.setRole" floating>{{ record.record.setRole }}</q-badge>
               </q-icon>
               <q-item-label caption lines="2">New item</q-item-label>
             </div>

@@ -37,6 +37,17 @@
         this.$emit('card-navigate', docId);
       }
     },
+    computed:{
+      createdOnDate(){
+        const createdOn = new Date(this.item.createdOn);
+
+        // Formatting idea by https://stackoverflow.com/a/29323931
+        return 'm-d-Y'
+          .replace('Y', createdOn.getFullYear())
+          .replace('m', createdOn.getMonth()+1)
+          .replace('d', createdOn.getDate());
+      }
+    }
   });
 </script>
 
@@ -53,8 +64,9 @@
     card-height="450px"
     v-slot="slotProps"
   >
-    <slot :item="slotProps.item">
-      {{ slotProps.item.items.length }} unique item{{ slotProps.item.items.length === 1? "":"s" }}
+    <slot :item="slotProps.item" class="text-body-secondary">
+<!--      {{ slotProps.item.items.length }} unique item{{ slotProps.item.items.length === 1? "":"s" }}-->
+      Created {{ createdOnDate }}
     </slot>
     <slot name="extra" :item="slotProps.item">
 

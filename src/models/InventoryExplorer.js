@@ -30,6 +30,7 @@ function InventoryExplorer() {
       remove: remove,
     },
     setUser: setUser,
+    logRecord: logRecord,
   }
 
 
@@ -199,6 +200,8 @@ function InventoryExplorer() {
 
       console.log("newItem = new InventoryItem(oldNew)", newItem);
 
+      newItem.createdOn = Date.now();
+
 
       let imgFile = null;
       console.log("newItem.inventoryType", newItem.inventoryType, STORAGE_TYPES.PRODUCT_GENERIC)
@@ -222,8 +225,6 @@ function InventoryExplorer() {
         .then((docRef) => {
 
           if(newItem.inventoryType === STORAGE_TYPES.PRODUCT_GENERIC){
-          // if(imgFile){@@@
-
             return checkForNotices(newItem.getAsData());
           }
 

@@ -8,6 +8,7 @@ import "https://www.gstatic.com/firebasejs/8.10.1/firebase.js"
 import Account from 'src/models/Account.js'
 import 'src/models/Firebase.js'
 import { db, auth, storage, accounts } from 'src/models/Firebase.js'
+import {Record, RECORD_TYPES, RECORD_ONS} from "src/models/Record";
 // import {useQuasar} from "quasar";
 
 const SubmitButtonStatus = { ALLOWED: 'primary', MISSING_DATA: 'warning', INVALID_DATA: 'danger'};
@@ -51,9 +52,13 @@ export default defineComponent({
         accountEmailSuffix: "@company.com",
       }
     },
+    inventoryExplorer: {
+      type: Object,
+      required: true,
+    },
   },
   methods: {
-    testLoading(){
+    loadAccounts(){
       accounts.get()
         .catch(error => {
           console.log("ERROR1");
@@ -147,35 +152,16 @@ export default defineComponent({
 
           accounts
             .doc(createdAuthAccount.user.uid).set(newAccount)
-            .then(docRef => {
-              console.log('Document Written', docRef);
-              // alert('Added!');
-            })
             .catch(error => {
               console.error('Error adding document', error);
               alert('Error!');
+            })
+            .then(docRef => {
+              this.inventoryExplorer.logRecord(RECORD_TYPES.NEW, RECORD_ONS.PROFILE, createdAuthAccount.user.uid, newAccount.email, {setRole: newAccount.role});
             });
 
-          // .child(docId)
-          //   .put(theRecipe.image)
-          //   .then(snapshot => {
-          //     // Clear the form
-          //     this.newRecipe.image = null;
-          //
-          //     // Get the image URL
-          //     return snapshot.ref.getDownloadURL(); //Returns a promise
-          //   })
-          //   .then(url => {
-          //     return db.collection('recipes').doc(docId).update({image: url});
-          //   })
-          //   .then(docRef => {
-          //     console.log('Recipe updated');
-          //   })
-          //   .catch(error => {
-          //     console.error('Error adding image: ', error);
-          //   });
         }).then(() => {
-          this.testLoading();
+          this.loadAccounts();
         });
     },
 
@@ -190,21 +176,9 @@ export default defineComponent({
         .catch(error => {
           // TODO: Let the user know
         }).then(() => {
-          this.testLoading();
+          this.loadAccounts();
         });
     },
-
-    // firebase.auth().getUser(uid)
-      // firebase.auth().getUserByEmail(uid)
-      //   .then((userRecord) => {
-      //     return firebase.auth().deleteUser(userRecord.uid);
-      //   })
-      //   .delete()
-      //   .then(function() {
-      //     this.$q.notify(`Account "${""}" removed successfully`)
-      //   }).catch(function(error) {
-      //     alert(error);
-      // });
 
     updateRole(uid, newRole){
       console.log("updateRole(docID, newRole)", uid, newRole);
@@ -221,80 +195,10 @@ export default defineComponent({
           this.$q.notify(`Warning, unable to update role. ${error.id}: "${error.message}" `)
         });
 
-      // .child(docId)
-      //   .put(theRecipe.image)
-      //   .then(snapshot => {
-      //     // Clear the form
-      //     this.newRecipe.image = null;
-      //
-      //     // Get the image URL
-      //     return snapshot.ref.getDownloadURL(); //Returns a promise
-      //   })
-      //   .then(url => {
-      //     return db.collection('recipes').doc(docId).update({image: url});
-      //   })
-      //   .then(docRef => {
-      //     console.log('Recipe updated');
-      //   })
-      //   .catch(error => {
-      //     console.error('Error adding image: ', error);
-      //   });
     }
   },
-  mounted: function () {
-    // accounts = storage.child('accounts');
-
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        // User is signed in.
-        let displayName = user.displayName;
-        let email = user.email;
-        let emailVerified = user.emailVerified;
-        let photoURL = user.photoURL;
-        let isAnonymous = user.isAnonymous;
-        let uid = user.uid;
-        let providerData = user.providerData;
-
-        console.log('Signed in as: ', user);
-
-        // TODO: Ask how to query
-        // firebase.firestore().collection('accounts').ref()
-        // const db = firebase.firestore();
-        // const accountsRef = collection(db, "accounts");
-        // console.log("db", db);
-        // const accountsCollection = collection(db, "accounts");
-        // const q = query(accountsCollection, where("authenticationUID", "==", user.uid))
-        // firebase.firestore().collection('accounts').get()
-
-        // const q = query(
-        //   firebase.firestore().collection('accounts'),
-        //   where("authenticationUID", "==", user.uid)
-        // );
-
-        // const q = query(firebase.firestore().collection('accounts'), where("authenticationUID", "==", user.uid))
-          // .get()
-          // .then(querySnapshot => {
-          //   console.log("query", querySnapshot);
-          // });
-
-        // if(){
-        //   testLoading();
-        // }
-
-        // document.getElementById('message').innerHTML = 'Signed in as: ' + displayName + ' (' + email + ')';
-
-      } else {
-        this.authUser = null;
-        // User is signed out.
-        console.log('Not signed in.');
-
-        // document.getElementById('message').innerHTML = 'Signed out.';
-      }
-    });
-
-  },
   created: function () {
-    this.testLoading();
+    this.loadAccounts();
   },
   computed: {
     submitButtonStatus() {

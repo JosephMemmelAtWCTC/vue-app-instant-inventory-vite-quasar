@@ -51,6 +51,7 @@ export function InventoryItem(item){
         dataItem.description = item.description;
         dataItem.imageURL    = item.imageSrc;
         dataItem.items       = [];
+        dataItem.createdOn   = item.createdOn;
         dataItem.title       = item.title;
       }else if(dataItem.inventoryType === STORAGE_TYPES.PRODUCT_GENERIC){
         console.log("dataItem (PRODUCT_GENERIC) = ",item);
