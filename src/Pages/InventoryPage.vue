@@ -14,11 +14,13 @@ import inventoryExplorer from "src/models/InventoryExplorer";
 import InventoryCollectionProper from "src/models/InventoryCollectionProper";
 import QrcodeScanner from "components/QRCodeScanner.vue";
 import { StreamBarcodeReader } from "vue-barcode-reader";
+import ImageCard from "components/cards/ImageCard.vue";
 
 
 export default defineComponent({
   name: "InventoryPage",
   components: {
+    ImageCard,
     QrcodeScanner,
     MainContentPage,
     CardsList,
@@ -36,6 +38,7 @@ export default defineComponent({
       imageUrl: "",
       enableBarcodeScanner: false,
       scannerIsLoaded: false,
+      cardsNotYetLoaded: true,
 
       filterSettings: {
         toggles: [
@@ -107,12 +110,11 @@ export default defineComponent({
       if(this.newItemImage.size){
         console.log("this.newItemImage",this.newItemImage);
       }
-
-
-
-
       //https://stackoverflow.com/a/69873409 for below and rest of new image display
       // this.imageUrl = URL.createObjectURL(this.newItemImage);
+    },
+    goToRoot(){
+      this.inventoryExplorer.navigateTo('root','direct').then(message => {this.trigger++;});
     },
 
   },
@@ -127,7 +129,7 @@ export default defineComponent({
       return Category
     },
     filteredLibrary() {
-      this.trigger;//TODO: Find a better way.
+      this.trigger;
       let filteredResults = [];
 
       const filterByConstructors = [];
@@ -211,8 +213,12 @@ export default defineComponent({
               <nav aria-label="Inventory Explorer Breadcrumbs">
                 <ol class="breadcrumb m-2">
 <!--                  @click="//this.inventoryExplorer.navigateTo('root');"-->
-                  <li><q-icon name="bi-house" class="me-1"></q-icon></li>
-                  <li class="breadcrumb-item" v-for="(breadcrumb, i1) in inventoryExplorer.currentlyIn.breadcrumbs" :key="i1">{{ breadcrumb }}</li>
+                  <li><q-icon name="bi-house-fill" color="primary" class="cursor-pointer me-1 rounded-2 pe-2 py-1 me-0" @click="goToRoot()"></q-icon></li>
+                  <li class="breadcrumb-item" :class="i1 === 0? 'cursor-pointer ms-0 bg-secondary rounded-2 pe-2':''" v-for="(breadcrumb, i1) in inventoryExplorer.currentlyIn.breadcrumbs" :key="i1" @click="()=>{
+                    if(i1 === 0){
+                      goToRoot();
+                    }
+                  }">{{ breadcrumb }}</li>
 <!--                  <li class="breadcrumb-item active" aria-current="page">{{'test'}}</li>-->
                   <li class="ms-1">/</li>
                 </ol>
@@ -228,11 +234,39 @@ export default defineComponent({
         </header>
         <results-possibly-empty
           :display-is-empty="filteredLibrary.length === 0"
-          empty-title="Whoops"
-          empty-text="It looks like there are no results that fit your search criteria, try loosing your requirements or adding more items."
+          empty-title="Nothing here..."
+          empty-text="It looks like there is nothing in this category or nothing matches your filter criteria, try loosing your requirements or adding more items."
         >
         </results-possibly-empty>
+
         <div class="row g-2 m-1 row-cols-1 row-cols-sm-2 row-cols-md-4 row-cols-lg-6 g-1">
+          <div class="q-pa-md skeleton-card" v-if="this.library">
+            <div class="q-pa-md">
+              <q-card card-height="450px">
+                <q-item>
+
+
+                  <q-item-section>
+                    <q-item-label>
+                      <div class="row justify-content-between">
+                        <q-skeleton type="text" class="col-8" />
+                        <q-skeleton class="col-2" />
+                      </div>
+                    </q-item-label>
+<!--                    <q-item-label caption>-->
+<!--                      <q-skeleton type="text" />-->
+<!--                    </q-item-label>-->
+                  </q-item-section>
+                </q-item>
+
+                <q-skeleton height="200px" square class="my-2"/>
+                <q-skeleton type="QText" height="100px" />
+                <q-item-section text class="mt-2">
+                  <q-skeleton type="QText" />
+                </q-item-section>
+              </q-card>
+            </div>
+          </div>
           <cards-list :items="filteredLibrary.sort((a, b) => {
                         if(a.productId === null && b.productId === null){//BOth categories
                             return a.title > b.title;
@@ -432,11 +466,14 @@ export default defineComponent({
 
 
 <style scoped>
-  .barcodeScanner{
+  .barcodeScanner {
     width: 95%;
   }
   ol {
     list-style-type: none;
+  }
+  .skeleton-card {
+    width: 250px;
   }
 /*
   .q-field.row.no-wrap.items-start.q-field--filled.q-file.q-field--auto-height.q-field--labeled.q-field--with-bottom{

@@ -133,37 +133,39 @@ export default defineComponent({
           </div>
         </div>
       </div>
-      <div class="col-12 row row-cols-2 w-100">
-        <div class="col-6 bg-primary q-pa-md fields">
-          <q-input filled v-model="this.authUser.email"
-                   label="Account Name"
-                   class="full-width"
-                   readonly="readonly"
-          ></q-input>
-          <q-input filled v-model="this.locationKioskNameLocal"
-                   label="New Kiosk Name"
-                   class="full-width"
-                   @change="this.$emit('update-kiosk-name', this.locationKioskNameLocal)"
-          ></q-input>
+      <div class="col-12 w-100">
+        <div class="row row-cols-2">
+          <div class="col-6 bg-primary q-pa-md fields">
+            <q-input filled v-model="this.authUser.email"
+                     label="Account Name"
+                     class="full-width"
+                     readonly="readonly"
+            ></q-input>
+            <q-input filled v-model="this.locationKioskNameLocal"
+                     label="New Kiosk Name"
+                     class="full-width"
+                     @change="this.$emit('update-kiosk-name', this.locationKioskNameLocal)"
+            ></q-input>
 
-          <q-file filled v-model="newAuthImage" label="New Account Avatar" class="full-width file-input">
-  <!--          <template v-slot:prepend>-->
-  <!--            <q-icon name="attach_file" style="width:20px !important;"/>-->
-  <!--          </template>-->
-            <template v-slot:before>
-              <q-icon name="attachment" />
-            </template>
-          </q-file>
+            <q-file filled v-model="newAuthImage" label="New Account Avatar" class="full-width file-input">
+    <!--          <template v-slot:prepend>-->
+    <!--            <q-icon name="attach_file" style="width:20px !important;"/>-->
+    <!--          </template>-->
+              <template v-slot:before>
+                <q-icon name="attachment" />
+              </template>
+            </q-file>
 
-          <q-btn @click="addImage(this.authUser.uid)" class="full-width">
-            Upload Image
-          </q-btn>
-        </div>
+            <q-btn @click="addImage(this.authUser.uid)" class="full-width">
+              Upload Image
+            </q-btn>
+          </div>
 
-        <div class="col-6 bg-primary border-5 border-primary-subtle border-start position-relative">
-          <q-btn @click="this.signOut" class="absolute-center p-3 p-x-5" color="danger">Sign Out</q-btn>
+          <div class="col-6 bg-primary border-5 border-primary-subtle border-start position-relative">
+            <q-btn @click="this.signOut" class="absolute-center p-3 p-x-5" color="danger">Sign Out</q-btn>
+          </div>
         </div>
-        </div>
+      </div>
 
     </div>
   </q-page>
@@ -185,7 +187,13 @@ export default defineComponent({
   }
 </style>
 <style>
-  .file-input .q-field__before.q-field__marginal.row.no-wrap.items-center{
+.col-12 .col-6:nth-child(1){
+  border-radius: 0 0 0 15px;
+}
+.col-12 .col-6:nth-child(2){
+  border-radius: 0 0 15px 0;
+}
+.file-input .q-field__before.q-field__marginal.row.no-wrap.items-center{
     width: 65px;
   }
   .file-input.q-field__inner.relative-position.col.self-stretch{

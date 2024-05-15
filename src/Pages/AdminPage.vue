@@ -372,7 +372,6 @@ export default defineComponent({
         </q-td>
       </template>
     </q-table>
-
   </div>
   <div id="message"></div>
 </template>
