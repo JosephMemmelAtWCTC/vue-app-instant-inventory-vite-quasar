@@ -10,14 +10,17 @@ import EditModal from "components/EditModal.vue";
 import StoreItem from "src/models/StoreItem";
 import Product from "src/models/Product";
 import * as bootstrap from "bootstrap";
+import {StreamBarcodeReader} from "vue-barcode-reader";
 
 export default defineComponent({
   name: 'MainLayout',
-  components: {EditModal, OptionsFAB, NavigateIconItem},
+  components: {StreamBarcodeReader, EditModal, OptionsFAB, NavigateIconItem},
   data(){
     return {
       leftDrawerOpen: false,
       newItem: new StoreItem(new Product("","","https://picsum.photos/200/300",""), 1, undefined),
+      enableBarcodeScanner: false,
+      scannerIsLoaded: false,
     };
   },
   props: {
@@ -282,6 +285,62 @@ export default defineComponent({
               ref="newItemModal"
               @save-it="inventoryExplorer.currentlyIn.addNew(this.newItem)"
   >
+<!--    <template v-slot="slotProps">-->
+<!--      <q-input filled v-model="this.newItem.product.title"-->
+<!--               label="Name"-->
+<!--               class="full-width"-->
+<!--               autofocus-->
+<!--               :rules="[val => !!val || '* Required']"-->
+<!--               lazy-rules-->
+<!--      ></q-input>-->
+<!--      <q-input filled v-model="this.newItem.product.productId"-->
+<!--               label="Product ID"-->
+<!--               class="full-width"-->
+<!--               :rules="[val => !!val || '* Required']"-->
+<!--               lazy-rules-->
+<!--      ></q-input>-->
+<!--      <q-input filled v-model="this.newItem.product.description"-->
+<!--               type="textarea"-->
+<!--               rows="4"-->
+<!--               label="Description"-->
+<!--               class="full-width"-->
+<!--               :rules="[val => !!val || '* Required']"-->
+<!--               lazy-rules-->
+<!--      ></q-input>-->
+<!--      <q-input filled v-model.number="this.newItem.reorderLevel"-->
+<!--               type="number"-->
+<!--               label="Reorder Level"-->
+<!--               clearable-->
+<!--               clear-icon="bi-x"-->
+<!--               placeholder="Leave blank to ignore reorder"-->
+<!--               class="full-width clearable"-->
+<!--               :rules="[val => val === null ||  val === undefined || val === '' || val >= 0 || 'Count cannot be less than 0']"-->
+<!--               lazy-rules-->
+<!--      ></q-input>-->
+<!--      <div class="input-group mb-3 w-100">-->
+
+<!--        <div class="col-2 d-block z-2">-->
+<!--          <button type="button" @click="this.newItem.numInStock -= (slotProps.editItem.numInStock > 0? 1:0)" class="h-100 d-block rounded-0 rounded-start-3 form-control focus-ring-primary">-->
+<!--            <i class="bi bi-dash"></i>-->
+<!--          </button>-->
+<!--        </div>-->
+<!--        <div class="col-8 form-control m-0 p-0">-->
+
+<!--          <q-input filled v-model.number="this.newItem.numInStock"-->
+<!--                   type="number"-->
+<!--                   label="# in stock"-->
+<!--                   class="full-width w-100"-->
+<!--                   :rules="[val => val !== null || 'You need to have a quantity', val => val >= 0 || 'Count cannot be less than 0']"-->
+<!--                   lazy-rules-->
+<!--          ></q-input>-->
+<!--        </div>-->
+<!--        <div class="col-2 d-block z-2">-->
+<!--          <button type="button" @click="this.newItem.numInStock++" class="h-100 rounded-0 rounded-end-3 form-control focus-ring-primary">-->
+<!--            <i class="bi bi-plus"></i>-->
+<!--          </button>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </template>-->
     <template v-slot="slotProps">
       <q-input filled v-model="this.newItem.product.title"
                label="Name"
@@ -290,12 +349,39 @@ export default defineComponent({
                :rules="[val => !!val || '* Required']"
                lazy-rules
       ></q-input>
-      <q-input filled v-model="this.newItem.product.productId"
-               label="Product ID"
-               class="full-width"
-               :rules="[val => !!val || '* Required']"
-               lazy-rules
-      ></q-input>
+      <div class="border-2 border-info">
+        <q-input filled v-model="this.newItem.product.productId"
+                 label="Product ID"
+                 class="full-width pb-0"
+                 :rules="[val => !!val || '* Required']"
+                 lazy-rules
+        ></q-input>
+        <StreamBarcodeReader
+          v-if="this.enableBarcodeScanner"
+          class="barcodeScanner"
+          @decode="(text) => {
+                            console.log(`DECODED: ${text}`);
+                            this.newItem.product.productId = text;
+                            this.enableBarcodeScanner = false
+                          }"
+          @loaded="console.log(`LOADED scanner`); scannerIsLoaded = true"
+        ></StreamBarcodeReader>
+        <div class="pb-3">
+          <button @click="this.enableBarcodeScanner = !this.enableBarcodeScanner">
+            <span v-if="this.enableBarcodeScanner && this.scannerIsLoaded">Turn off scanner?</span>
+            <span v-else>Turn back on scanner?</span>
+          </button>
+        </div>
+      </div>
+      <q-file filled bottom-slots v-model="this.newItem.product.imageURL"
+              label="Select item file"
+              class="full-width"
+              @blur="updateFile()"
+              :rules="[val => !!val || '* Required']"
+              lazy-rules
+      >
+        <!--                                  @change="updateFile(this.newItemImage)"-->
+      </q-file>
       <q-input filled v-model="this.newItem.product.description"
                type="textarea"
                rows="4"
