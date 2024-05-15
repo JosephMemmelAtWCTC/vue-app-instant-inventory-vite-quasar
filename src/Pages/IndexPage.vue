@@ -6,6 +6,7 @@ import Category from "src/models/Category";
 import StoreItem from "src/models/StoreItem";
 import {inventory} from "src/models/Firebase";
 import {RECORD_ONS, RECORD_TYPES} from "src/models/Record";
+import {STORAGE_TYPES} from "src/models/InventoryItem";
 
 export default defineComponent({
   methods: {inventory},
@@ -15,6 +16,9 @@ export default defineComponent({
   },
   // TODO: Ask about computed appearing
   computed: {
+    STORAGE_TYPES() {
+      return STORAGE_TYPES
+    },
     RECORD_ONS() {
       return RECORD_ONS
     },
@@ -52,13 +56,19 @@ export default defineComponent({
 <template>
   <q-page class="flex flex-center">
     <page-title-table
-      :headers="['Total Paths', 'Completely Out of Stock', 'Total Needing Refill', 'Records']"
+      :headers="['Categories', 'Products', 'Completely Out of Stock', 'Total Needing Refill', 'Records']"
       :jumbotron-title="appInfo.appTitle"
       :table-items="[
         // this.library.filterByType([Category.type]).length,
         // this.library.filterByType([StoreItem.type]).length,
         // this.library.filterByType(['product']).length,
-        this.recordsList.filter(r => r.recordOn === RECORD_ONS.INVENTORY).filter(r => r.recordType === RECORD_TYPES.NEW).length - this.recordsList.filter(r => r.recordOn === RECORD_ONS.INVENTORY).filter(r => r.recordType === RECORD_TYPES.DELETE).length+(3),//The manually added number at the end is just to sync it with the database number. There was manual removing of things in firebase as well as some things only having their delete logged but not their create as they were made before that was implemented
+        this.recordsList.filter(
+          r => r.recordOn === RECORD_ONS.INVENTORY && r.recordType === RECORD_TYPES.NEW && r.record.kind === STORAGE_TYPES.CATEGORY).length
+           - this.recordsList.filter(r => r.recordOn === RECORD_ONS.INVENTORY && r.record.kind === STORAGE_TYPES.CATEGORY && r.recordType === RECORD_TYPES.DELETE).length+4,//The manually added number at the end is just to sync it with the database number. There was manual removing of things in firebase as well as some things only having their delete logged but not their create as they were made before that was implemented
+        this.recordsList.filter(
+          r => r.recordOn === RECORD_ONS.INVENTORY && r.recordType === RECORD_TYPES.NEW && r.record.kind === STORAGE_TYPES.PRODUCT_GENERIC).length
+           - this.recordsList.filter(r => r.recordOn === RECORD_ONS.INVENTORY && r.record.kind === STORAGE_TYPES.PRODUCT_GENERIC && r.recordType === RECORD_TYPES.DELETE).length+11,//The manually added number at the end is just to sync it with the database number. There was manual removing of things in firebase as well as some things only having their delete logged but not their create as they were made before that was implemented
+
         this.notificationsList.filter(n => n.level === 'out_of_stock').sort((a, b) => {return a.lastUpdated-b.lastUpdated}).length,
         this.notificationsList.length,
         this.recordsList.length,

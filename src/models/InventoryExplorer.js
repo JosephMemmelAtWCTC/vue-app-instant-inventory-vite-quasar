@@ -146,7 +146,9 @@ function InventoryExplorer() {
     return m.currentlyIn.currentDoc.collection("categories")
       .doc(item.docId).delete().then(() => {
       console.log("Document successfully deleted!");
-      logRecord(RECORD_TYPES.DELETE, RECORD_ONS.INVENTORY, item.docId, item.title, {});
+      logRecord(RECORD_TYPES.DELETE, RECORD_ONS.INVENTORY, item.docId, item.title, {
+        kind: item.hasOwnProperty('items')? STORAGE_TYPES.CATEGORY : STORAGE_TYPES.PRODUCT_GENERIC,
+      });
 
       return "Document successfully deleted!"
     }).catch((error) => {
@@ -184,7 +186,9 @@ function InventoryExplorer() {
           if(oldVersion.constructorSaved.type === STORAGE_TYPES.PRODUCT_GENERIC){
             checkForNotices(newVersion);
           }
-          logRecord(RECORD_TYPES.UPDATE, RECORD_ONS.INVENTORY, oldVersion.docId, newVersion.title, {changedStockLevel: newVersion.numInStock - oldVersion.numInStock});
+          logRecord(RECORD_TYPES.UPDATE, RECORD_ONS.INVENTORY, oldVersion.docId, newVersion.title, {
+            changedStockLevel: newVersion.numInStock - oldVersion.numInStock,
+          });
           return "Ready for update completed"
         })
     }else{
@@ -247,7 +251,10 @@ function InventoryExplorer() {
                       console.log("updatedDoc", updatedDoc.data());
                       const updatedData = updatedDoc.data();
                       // Fire and forget, TODO: Make not forget
-                      logRecord(RECORD_TYPES.NEW, RECORD_ONS.INVENTORY, updatedData.id, updatedData.title, {added: updatedData.numInStock});
+                      logRecord(RECORD_TYPES.NEW, RECORD_ONS.INVENTORY, updatedData.id, updatedData.forName, {
+                        added: updatedData.numInStock,
+                        kind: imgFile === null? STORAGE_TYPES.CATEGORY : STORAGE_TYPES.PRODUCT_GENERIC,
+                      });
                       return "";
                   }))
                 })})
