@@ -83,7 +83,7 @@ export default defineComponent({
                 accountEmail: account.email,
                 id: account.docId,
                 uid: account.docId,
-                lastLogin: "###",
+                createdOn: new Date(account.createdOn).toLocaleDateString(),
                 role: account.role,
                 avatar: account.image,
                 remove: {
@@ -149,6 +149,8 @@ export default defineComponent({
           newAccount.email = createdAuthAccount.user.email;
           newAccount.image = "https://picsum.photos/200";
           newAccount.role = supplementalCreateWithStorage.type;
+          newAccount.createdOn = Date.now();
+          // newAccount.createdBy =
 
           accounts
             .doc(createdAuthAccount.user.uid).set(newAccount)
@@ -316,7 +318,7 @@ export default defineComponent({
           },
           { name: 'id', label: 'Firestore ID', field: 'id', align: 'left', sortable: true },
           { name: 'uid', label: 'UID', field: 'uid', align: 'left', sortable: true },
-          { name: 'last login', label: 'Last Login', field: 'lastLogin', align: 'left' },
+          { name: 'created', label: 'Created', field: 'createdOn', align: 'left' },
           { name: 'role', label: 'Role', field: 'role', align: 'left', sortable: true },
           { name: 'avatar', label: 'Avatar', field: 'avatar', align: 'left' },
           { name: 'remove', label: 'Remove', field: 'remove', align: 'center' },

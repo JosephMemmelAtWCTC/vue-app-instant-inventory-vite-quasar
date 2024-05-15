@@ -182,7 +182,7 @@ export default defineComponent({
       <q-list>
         <navigate-icon-item router-link-to="/" tooltip-info="Home" li-extra-classes="p-2 mb-2" icon-class="bi-house">
         </navigate-icon-item>
-        <navigate-icon-item router-link-to="/inventory" @click="" tooltip-info="Inventory" li-extra-classes="p-2 mb-2" icon-class="bi-box-seam"><!--fa-solid fa-boxes-stacked-->
+        <navigate-icon-item router-link-to="/inventory" @click="this.inventoryExplorer.navigateTo('root')" tooltip-info="Inventory" li-extra-classes="p-2 mb-2" icon-class="bi-box-seam"><!--fa-solid fa-boxes-stacked-->
         </navigate-icon-item>
         <navigate-icon-item router-link-to="/notifications" tooltip-info="Notifications" li-extra-classes="p-2 mb-2" icon-class="bi-bell" :badge-text="notificationsList.length!==0?notificationsList.length:''">
         </navigate-icon-item>

@@ -18,8 +18,6 @@ function InventoryExplorer() {
     // getAllNumOfCategories: async function () {
     //   return await getAllNumOfCategories;
     // },
-    getAllNumOfCategories: getAllNumOfCategories,
-    recursiveCounter: recursiveCounter,
     navigateTo: navigateTo,
     currentlyIn: {
       currentDocId: null,
@@ -32,12 +30,6 @@ function InventoryExplorer() {
     setUser: setUser,
     logRecord: logRecord,
   }
-
-
-    function getAllNumOfCategories(){
-      return this.recursiveCounter(inventory);
-      // let categoriesCount = 0;//Not including the root library
-    }
 
 
     let fullUserDetails = null;
@@ -53,10 +45,12 @@ function InventoryExplorer() {
 
     function navigateTo(docId){
       console.log("navigateTo docId", docId);
+      console.log("navigateTo docId2_"+docId+"_");
         // navigateTo
 
 
       if(docId === "root"){
+        console.log('root call is working at least to get to here');
         m.currentlyIn.currentDoc = inventory;
         m.currentlyIn.breadcrumbs = [];
       }
@@ -328,60 +322,6 @@ function InventoryExplorer() {
     return asData;
   }
 
-
-
-
-
-  async function recursiveCounter(collectionRef) {
-      const inventoryCounter = {
-        categoriesCount: 0,
-        productsCount: 0,
-      }
-
-      const awaitedSnapshot = await collectionRef
-        .get()
-        .then(doc => {
-          const dataPush = doc.data();
-          dataPush.docId = doc.id;
-          console.log("doc snapshot", dataPush);
-          return doc;
-        })
-        .then(doc => {
-          return doc.ref.collection('categories')
-            .get()
-            // .then(snapshot => {
-            //   snapshot.forEach(doc => {
-            //     console.log("docdata:", doc.data());
-            //     inventoryCounter.categoriesCount++;
-            //   });
-            // })
-        })
-
-        // .then(doc => {
-        //   doc.ref.collection('categories')
-        //     .get()
-        //     .then(snapshot => {
-        //       snapshot.forEach(doc => {
-        //         console.log("docdata:", doc.data());
-        //         inventoryCounter.categoriesCount++;
-        //       });
-        //     })
-        // })
-
-        .catch(error => {
-          console.error("error", error);
-        });
-
-
-      for (const doc of awaitedSnapshot.docs) {
-          console.log("docdata:", doc.data());
-          inventoryCounter.categoriesCount++;
-      }
-
-
-      // m.catNumTest = inventoryCounter;
-      return inventoryCounter;
-    }
 
   return m;
 }

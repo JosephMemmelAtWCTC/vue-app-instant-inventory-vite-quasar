@@ -117,7 +117,6 @@ export default defineComponent({
         this.authUser = new FullUserDetails();
 
       }
-      this.$router.push({ path: '/' });
 
       const kioskName = localStorage.getItem("KIOSK_LOCATION_KEY");
       if(kioskName){

@@ -30,8 +30,6 @@ export default defineComponent({
   },
   data() {
     return {
-      // newCategory: new Category("","","public/assets/logo.svg"),
-      // newCategory: new Category("","","src/assets/icons/folder.svg"),
       newCategory: new Category("","","./assets/icons/folder.svg"),
       newItem: new StoreItem(new Product("","","icons/image-solid.svg",""), 1, undefined),
       newItemImage: {},
@@ -76,7 +74,6 @@ export default defineComponent({
   emits: ["call-filter-settings-refresh"],
   methods: {
     saveItem(item){//TODO: Rename to saveIt
-      console.log("item:::::::", item);
       // this.library.updateOrAddValue(item);
       this.inventoryExplorer.currentlyIn.addNew(item)
         .then((message)=>{
@@ -120,6 +117,9 @@ export default defineComponent({
 
   },
   computed: {
+    Product() {
+      return Product
+    },
     StoreItem() {
       return StoreItem
     },
@@ -210,7 +210,7 @@ export default defineComponent({
             <div class="col-12 ps-3 mb-0 pb-0">
               <nav aria-label="Inventory Explorer Breadcrumbs">
                 <ol class="breadcrumb m-2">
-                  <li><q-icon name="bi-house" class="me-1"></q-icon></li>
+                  <li><q-icon name="bi-house" @click="this.inventoryExplorer.navigateTo('root');" class="me-1"></q-icon></li>
                   <li class="breadcrumb-item" v-for="(breadcrumb, i1) in inventoryExplorer.currentlyIn.breadcrumbs" :key="i1">{{ breadcrumb }}</li>
 <!--                  <li class="breadcrumb-item active" aria-current="page">{{'test'}}</li>-->
                   <li class="ms-1">/</li>
@@ -232,15 +232,6 @@ export default defineComponent({
         >
         </results-possibly-empty>
         <div class="row g-2 m-1 row-cols-1 row-cols-sm-2 row-cols-md-4 row-cols-lg-6 g-1">
-<!--          <cards-list :items="filteredLibrary"-->
-<!--                      @save-it="saveItem"-->
-<!--                      @remove-it="this.library.delete($event)"-->
-<!--                      @card-navigate="sendUpdateCardOpenCategory"-->
-<!--          >-->
-<!--&lt;!&ndash;            @card-navigate="onUpdateCardOpenCategory"&ndash;&gt;-->
-<!--            &lt;!&ndash;                      @card-navigate="removeItem"&ndash;&gt;-->
-<!--          </cards-list>-->
-<!--          <cards-list :items="inventoryExplorer.currentlyIn.libraryCollection"-->
           <cards-list :items="filteredLibrary"
                       @save-it="saveItem"
                       @remove-it="removeItem"
@@ -268,7 +259,7 @@ export default defineComponent({
                               title="New Category"
                               submit-button-text="Create Category"
                               ref="newCategoryModal"
-                              @save-it="saveItem(this.newCategory)"
+                              @save-it='saveItem(this.newCategory); newCategory = new Category("","","./assets/icons/folder.svg");'
                   >
                     <template v-slot="slotProps">
                       <q-input filled v-model="this.newCategory.title"
@@ -294,8 +285,9 @@ export default defineComponent({
                               title="New Item"
                               submit-button-text="Create Item"
                               ref="newItemModal"
-                              @save-it="saveItem(this.newItem)"
+                              @save-it='saveItem(this.newItem); newItem = new StoreItem(new Product("","","icons/image-solid.svg",""), 1, undefined)'
                   >
+                  <!--TODO: Make it wait until it is in the database to clear out data & inform user-->
                     <template v-slot="slotProps">
                       <q-input filled v-model="this.newItem.product.title"
                                label="Name"
