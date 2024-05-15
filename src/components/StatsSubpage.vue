@@ -65,7 +65,6 @@ export default defineComponent({
   <q-page class="flex">
     <h3 class="mx-auto">{{ title }}</h3>
     <Bar
-      id="my-chart-id"
       :options="chartOptions"
       :data="chartData"
       :title="title"

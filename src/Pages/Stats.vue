@@ -2,13 +2,14 @@
 import {defineComponent, ref} from "vue";
 import {STORAGE_TYPES} from "src/models/InventoryItem";
 import StatsSubpage from "components/StatsSubpage.vue";
+import {RECORD_TYPES} from "src/models/Record";
 
 export default defineComponent({
   name: 'Stats',
   components: {StatsSubpage},
   data() {
     return {
-      tab: ref('by_type')
+      tab: ref('records')
     }
   },
   props: {
@@ -22,6 +23,9 @@ export default defineComponent({
     },
   },
   computed: {
+    RECORD_TYPES() {
+      return RECORD_TYPES
+    },
     STORAGE_TYPES() {
       return STORAGE_TYPES
     }
@@ -36,13 +40,13 @@ export default defineComponent({
       inline-label
       outside-arrows
       mobile-arrows
-      class="bg-primary text-white shadow-2"
+      class="bg-primary text-white shadow-2 pt-3"
     >
 
-      <q-tab name="by_type" icon="bi-code-square" label="Type">
-      </q-tab>
-      <q-tab name="notifications" icon="bi-exclamation-square" label="Warning Level">
-      </q-tab>
+<!--      <q-tab name="by_type" icon="bi-code-square" label="Type">-->
+<!--      </q-tab>-->
+      <q-tab name="records" icon="bi-list-columns" label="Records"></q-tab>
+      <q-tab name="notifications" icon="bi-exclamation-square" label="Warning Level"></q-tab>
     </q-tabs>
     <q-tab-panels v-model="tab" animated>
 
@@ -72,8 +76,27 @@ export default defineComponent({
                             {
                               label: 'Count',
                               data: [
-                                this.notificationsList.filter(n => n.level === 'out_of_stock').sort((a, b) => {return a.lastUpdated-b.lastUpdated}).length,
-                                this.notificationsList.filter(n => n.level === 'reorder_level_reached').sort((a, b) => {return a.lastUpdated-b.lastUpdated}).length,
+                                this.notificationsList.filter(n => n.level === 'out_of_stock').length,
+                                this.notificationsList.filter(n => n.level === 'reorder_level_reached').length,
+                              ],
+
+                            }
+                          ]"
+        >
+        </stats-subpage>
+      </q-tab-panel>
+      <q-tab-panel name="records">
+        <stats-subpage class="bg-white"
+                       title="Records"
+                       label="Record count"
+                       :labels="[ 'New', 'Update', 'Remove']"
+                       :datasets="[
+                            {
+                              label: 'Count',
+                              data: [
+                                this.recordsList.filter(r => r.recordType === RECORD_TYPES.NEW).length,
+                                this.recordsList.filter(r => r.recordType === RECORD_TYPES.UPDATE).length,
+                                this.recordsList.filter(r => r.recordType === RECORD_TYPES.DELETE).length,
                               ],
 
                             }

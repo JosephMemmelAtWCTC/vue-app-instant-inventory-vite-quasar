@@ -52,21 +52,13 @@ export default defineComponent({
         </div>
       </div>
       <div class="col-auto">
-<!--        <q-img-->
-<!--          :src="'/src/assets/images/clearPlaceholderPhoneImage.png'"-->
-<!--          spinner-size="64px"-->
-<!--          spinner-color="secondary"-->
-<!--        />-->
 <!--        <transition transition-show="jump-down">-->
 
-          <img src="images/clearPlaceholderPhoneImage.png" alt="Placeholder phone image"/>
+<!--          <img src="images/clearPlaceholderPhoneImage.png" alt="Placeholder phone image"/>-->
+          <img src="images/signal-2024-05-15-031201-portrait.png" alt="App demo login screenshot"/>
       </div>
 
       <!--        </transition>-->
-<!--        <q-img-->
-<!--          src="/assets/images/clearPlaceholderPhoneImage.png"-->
-<!--          alt="Placeholder phone image"-->
-<!--        />-->
 <!--        transition-show="fade"-->
 <!--        transition-duration="300"-->
     </div>

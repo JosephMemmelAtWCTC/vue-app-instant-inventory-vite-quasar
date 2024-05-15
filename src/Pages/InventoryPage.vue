@@ -232,7 +232,17 @@ export default defineComponent({
         >
         </results-possibly-empty>
         <div class="row g-2 m-1 row-cols-1 row-cols-sm-2 row-cols-md-4 row-cols-lg-6 g-1">
-          <cards-list :items="filteredLibrary"
+          <cards-list :items="filteredLibrary.sort((a, b) => {
+                        if(a.productId === null && b.productId === null){//BOth categories
+                            return a.title > b.title;
+                        }else if(a.productId === null && b.productId !== null){//One of each, a is category
+                            return -1;
+                        }else if(a.productId !== null && b.productId === null){//One of each, b is category
+                            return +1;
+                        }else{//Both products
+                            return a.title > b.title;
+                        }
+                      })"
                       @save-it="saveItem"
                       @remove-it="removeItem"
                       @card-navigate="sendUpdateCardOpenCategory"

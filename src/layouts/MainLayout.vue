@@ -101,7 +101,7 @@ export default defineComponent({
 <!--              @click="toggleLeftDrawer"-->
 <!--            />-->
 
-            <q-toolbar-title>
+            <q-toolbar-title class="mt-2">
 <!--              {{ appNavigation.currentPageLabel }}-->
               {{ appInfo.appTitle }}
             </q-toolbar-title>
@@ -217,7 +217,7 @@ export default defineComponent({
       />
 
     </q-page-container>
-    <q-footer class="fixed-bottom transparent navigation-footer container-fluid m-0 p-0" v-if="!leftDrawerOpen">
+    <q-footer class="fixed-bottom transparent navigation-footer container-fluid m-0 p-0" v-if="!leftDrawerOpen && authUser.uid.length!==0">
 
       <div class="row q-gutter-none m-0 p-0 overflow-x-hidden transparent">
         <div class="col-4 spacer-from-top q-gutter-none bg-red h-100">

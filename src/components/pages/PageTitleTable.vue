@@ -48,7 +48,7 @@ import {defineComponent} from "vue";
       </div>
 
     </div>
-    <div class="w-100 justify-content-center bg-secondary my-auto mb-0">
+    <div class="w-100 justify-content-center bg-secondary my-auto mb-0 rounded-2">
       <div class="mt-5 mx-auto m-4 p-2">
         <table class="table">
           <thead>
@@ -61,7 +61,7 @@ import {defineComponent} from "vue";
         <tbody>
         <tr>
           <!--                        <th scope="row"></th>-->
-          <td v-for="(item, i) in tableItems" :key="i">
+          <td v-for="(item, i) in tableItems" :key="i" class="text-center">
           {{ item }}
         </td>
         </tr>
