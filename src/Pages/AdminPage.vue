@@ -310,7 +310,7 @@ export default defineComponent({
       return SubmitButtonStatus.ALLOWED;
     }
   },
-  watch: {//TODO: Ask if should be put in computed?
+  watch: {
     noSuffixEmail: {
       handler() {
         this.newIdentity.email = this.noSuffixEmail + this.accountCreationStandards.accountEmailSuffix;

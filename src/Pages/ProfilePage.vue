@@ -5,13 +5,14 @@ import "https://www.gstatic.com/firebasejs/8.10.1/firebase.js";
 import {accounts, auth, storage} from "src/models/Firebase.js";
 import FullUserDetails from "src/models/FullUserDetails";
 
+export const KIOSK_LOCATION_KEY = 'KIOSK_LOCATION_KEY';
+
 export default defineComponent({
   name: "ProfilePage",
   components: {MainContentPage},
   data() {
     return {
       isPwd: true,
-      locationKioskName: "Changed, TODO",
       newAuthImage: null,
     };
   },
@@ -21,6 +22,10 @@ export default defineComponent({
       type: Object,
       required: true,
       // default: new Pages(),
+    },
+    locationKioskName: {
+      type: String,
+      required: true,
     },
   },
   methods: {

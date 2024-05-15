@@ -2,9 +2,6 @@ const routes = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
-    // props: { appNavigation, appInfo, userInfo, authUser,
-    //   locationKioskName: appLocationConfig.customLocationName,
-    // },
     // props: true,
     children: [
       {
@@ -22,9 +19,6 @@ const routes = [
       {
         path: '/account',
         component: () => import('src/Pages/ProfilePage.vue'),
-        // props: { appNavigation, userInfo,
-        //   locationKioskName: appLocationConfig.customLocationName,
-        // }
         // props: true,
       },
       {

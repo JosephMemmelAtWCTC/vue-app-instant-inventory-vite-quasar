@@ -9,13 +9,13 @@ import OptionsFAB from "components/OptionsFAB.vue";
 import EditModal from "components/EditModal.vue";
 import StoreItem from "src/models/StoreItem";
 import Product from "src/models/Product";
+import * as bootstrap from "bootstrap";
 
 export default defineComponent({
   name: 'MainLayout',
   components: {EditModal, OptionsFAB, NavigateIconItem},
   data(){
     return {
-      locationKioskName: "Company",
       leftDrawerOpen: false,
       newItem: new StoreItem(new Product("","","https://picsum.photos/200/300",""), 1, undefined),
     };
@@ -49,7 +49,12 @@ export default defineComponent({
     recordsList: {
       type: Array,
       required: true,
-    }
+    },
+    locationKioskName: {
+      type: String,
+      required: true,
+      default: "Kiosk",
+    },
   },
   methods: {
     toggleLeftDrawer(){
@@ -203,6 +208,7 @@ export default defineComponent({
         :filter-settings="this.filterSettings"
         :notifications-list="this.notificationsList"
         :records-list="this.recordsList"
+        :location-kiosk-name="this.locationKioskName"
 
         :left-drawer-open="leftDrawerOpen"
       />

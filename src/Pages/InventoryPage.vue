@@ -193,16 +193,16 @@ export default defineComponent({
 <!--        <p>TESTP{{inventoryExplorer.test}}</p>-->
         <header class="bg-body-tertiary rounded-3">
           <div class="row align-items-center p-2">
-            <div class="col-auto d-flex text-center align-items-center">
-              <p class="ms-4">{{searchLabel}}</p>
-            </div>
+<!--            <div class="col-auto d-flex text-center align-items-center">-->
+<!--              <p class="ms-4">{{searchLabel}}</p>-->
+<!--            </div>-->
 
-            <div class="col end-0">
-              <div class="input-group mb-3">
-                <span class="input-group-text" id="searchTextDescribe"><i class="bi ms-1 bi-search"></i></span>
-                <input type="text" v-model="filterSettings.searchString" class="form-control focus-ring-primary" placeholder="" aria-label="Search" aria-describedby="searchTextDescribe">
-              </div>
-            </div>
+<!--            <div class="col end-0">-->
+<!--              <div class="input-group mb-3">-->
+<!--                <span class="input-group-text" id="searchTextDescribe"><i class="bi ms-1 bi-search"></i></span>-->
+<!--                <input type="text" v-model="filterSettings.searchString" class="form-control focus-ring-primary" placeholder="" aria-label="Search" aria-describedby="searchTextDescribe">-->
+<!--              </div>-->
+<!--            </div>-->
 
             <toggles-array :options="filterSettings.toggles">
             </toggles-array>

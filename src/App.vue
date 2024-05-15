@@ -5,18 +5,15 @@
     :app-info="this.appInfo"
     :notifications-list="this.notificationsList"
     :records-list="this.recordsList"
+    :location-kiosk-name="this.locationKioskName"
   />
-<!--  @call-filter-settings-refresh="console.log('{{{{{{{')"-->
 
 </template>
-<!--    :library="library"-->
-<!--    :appNavigation="appNavigation"-->
-<!--    :appNavigation="{currentPage: 'home'}"-->
 
 <script>
 import {defineComponent} from "vue";
 
-import "https://www.gstatic.com/firebasejs/8.10.1/firebase.js";//TODO: Ask about repeating imports
+import "https://www.gstatic.com/firebasejs/8.10.1/firebase.js";
 
 import User from "/src/models/FullUserDetails.js"
 import FullUserDetails from "/src/models/FullUserDetails.js";
@@ -40,6 +37,7 @@ import Product from "./models/Product.js"
 import InventoryExplorer from "src/models/InventoryExplorer";
 import Notification from "src/models/Notification";
 import {Record} from "src/models/Record";
+import KIOSK_LOCATION_KEY from "pages/ProfilePage.vue";
 
 export default defineComponent({
 
@@ -53,27 +51,18 @@ export default defineComponent({
       recordsList: [],
 
       appInfo: {
-        appTitle: "Example Company's Instant Inventory",
+        appTitle: "Company's Instant Inventory",
         appVersion: "Vue App (Submission Candidate)",
-        clientCompany: "Example Company",
+        clientCompany: "Company",
         sideBarWidth: 180,
       },
-
+      locationKioskName: null,
     }
   },
 
   methods: {
-    handleFilterSettingsRefresh() {
-      console.log('Received call-filter-settings-refresh event');
-      // Handle the event here
-    },
     setLibraryFromDocPath(categoryPath){
       console.log("setLibraryFromDocPath starting...");
-
-    /*   Structure will be category holding other categories and lists of item references
-    // TODO: ASK ABOUT BEST STRUCTURE !!!
-    Should include list of unique words to aid in searching, store in 2 places?
-    */
 
       const newDisplayLibrary = new InventoryCollection();
 
@@ -82,11 +71,14 @@ export default defineComponent({
       this.library = newDisplayLibrary;
       return "";
     },
+    manuallyCallWatchedKioskName(newValue){
+      localStorage.setItem("KIOSK_LOCATION_KEY", newValue);
+    }
   },
   created() {
     // this.inventoryExplorer = new InventoryExplorer();
 
-    // TODO: check for signed in user
+    // Check for signed in user
     auth.onAuthStateChanged(user => {
       if (user) {
         // User is signed in.
@@ -99,8 +91,6 @@ export default defineComponent({
           })
         console.log('Signed in as: ', user);
         this.inventoryExplorer.setUser(this.authUser);
-        // TODO: Check if first time signed in and make data
-        // document.getElementById('message').innerHTML = 'Signed in as: ' + displayName + ' (' + email + ')';
 
       } else {
         // User is signed out.
@@ -109,12 +99,17 @@ export default defineComponent({
         this.authUser = new FullUserDetails();
         this.$router.push({ path: '/login' });
 
-        // document.getElementById('message').innerHTML = 'Signed out.';
       }
+
+      const kioskName = localStorage.getItem("KIOSK_LOCATION_KEY");
+      if(kioskName){
+        this.locationKioskName = kioskName;
+      }else{
+        this.locationKioskName = "Kiosk";
+      }
+      console.log('localStorage.getItem("KIOSK_LOCATION_KEY")',this.locationKioskName);
+      this.manuallyCallWatchedKioskName(this.locationKioskName);
     });
-
-    // .add(new Category('Category 1','Category 1\'s description', 'src/assets/icons/folder.svg'))
-
 
     // this.setLibraryFromDocPath("/");
 
@@ -157,6 +152,14 @@ export default defineComponent({
       console.log("records.onSnapshot recordsList: ", this.recordsList);
     });
 
+  },
+  watch: {
+    locationKioskName: {
+      handler() {
+        console.log("kioskName CHANGED")
+        localStorage.setItem("KIOSK_LOCATION_KEY", this.locationKioskName);
+      },
+    },
   },
 
 })

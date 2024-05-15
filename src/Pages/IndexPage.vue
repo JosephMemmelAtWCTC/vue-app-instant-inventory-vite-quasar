@@ -4,8 +4,10 @@ import {defineComponent} from "vue";
 import PageTitleTable from "components/pages/PageTitleTable.vue"
 import Category from "src/models/Category";
 import StoreItem from "src/models/StoreItem";
+import {inventory} from "src/models/Firebase";
 
 export default defineComponent({
+  methods: {inventory},
   data() {
     return {
     }
