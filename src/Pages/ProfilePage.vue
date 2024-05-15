@@ -133,8 +133,8 @@ export default defineComponent({
           </div>
         </div>
       </div>
-      <div class="col-12 row row-cols-2">
-        <div class="col bg-primary q-pa-md fields">
+      <div class="col-12 row row-cols-2 w-100">
+        <div class="col-6 bg-primary q-pa-md fields">
           <q-input filled v-model="this.authUser.email"
                    label="Account Name"
                    class="full-width"
@@ -160,25 +160,10 @@ export default defineComponent({
           </q-btn>
         </div>
 
-        <div class="col">
-          <button @click="this.signOut">Sign Out</button>
+        <div class="col-6 bg-primary border-5 border-primary-subtle border-start position-relative">
+          <q-btn @click="this.signOut" class="absolute-center p-3 p-x-5" color="danger">Sign Out</q-btn>
         </div>
         </div>
-
-<!--      <q-input filled-->
-<!--               label="Password"-->
-<!--               :type="this.isPwd ? 'password' : 'text'"-->
-<!--               hint="Password with toggle"-->
-<!--               class="full-width">-->
-<!--        &lt;!&ndash;          <template v-slot:append>&ndash;&gt;-->
-<!--        &lt;!&ndash;            <q-icon&ndash;&gt;-->
-<!--        &lt;!&ndash;              :name="this.isPwd ? 'visibility_off' : 'visibility'"&ndash;&gt;-->
-<!--        &lt;!&ndash;              class="cursor-pointer"&ndash;&gt;-->
-<!--        &lt;!&ndash;              @click="this.isPwd = !this.isPwd"&ndash;&gt;-->
-<!--        &lt;!&ndash;            />&ndash;&gt;-->
-<!--        &lt;!&ndash;          </template>&ndash;&gt;-->
-<!--      </q-input>-->
-
 
     </div>
   </q-page>

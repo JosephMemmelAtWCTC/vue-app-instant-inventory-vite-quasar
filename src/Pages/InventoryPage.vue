@@ -210,7 +210,8 @@ export default defineComponent({
             <div class="col-12 ps-3 mb-0 pb-0">
               <nav aria-label="Inventory Explorer Breadcrumbs">
                 <ol class="breadcrumb m-2">
-                  <li><q-icon name="bi-house" @click="this.inventoryExplorer.navigateTo('root');" class="me-1"></q-icon></li>
+<!--                  @click="//this.inventoryExplorer.navigateTo('root');"-->
+                  <li><q-icon name="bi-house" class="me-1"></q-icon></li>
                   <li class="breadcrumb-item" v-for="(breadcrumb, i1) in inventoryExplorer.currentlyIn.breadcrumbs" :key="i1">{{ breadcrumb }}</li>
 <!--                  <li class="breadcrumb-item active" aria-current="page">{{'test'}}</li>-->
                   <li class="ms-1">/</li>

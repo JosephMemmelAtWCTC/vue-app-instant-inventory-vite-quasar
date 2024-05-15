@@ -58,7 +58,7 @@ export default defineComponent({
         // this.library.filterByType([Category.type]).length,
         // this.library.filterByType([StoreItem.type]).length,
         // this.library.filterByType(['product']).length,
-        this.recordsList.filter(r => r.recordOn === RECORD_ONS.INVENTORY).filter(r => r.recordType === RECORD_TYPES.NEW).length - this.recordsList.filter(r => r.recordOn === RECORD_ONS.INVENTORY).filter(r => r.recordType === RECORD_TYPES.DELETE).length,
+        this.recordsList.filter(r => r.recordOn === RECORD_ONS.INVENTORY).filter(r => r.recordType === RECORD_TYPES.NEW).length - this.recordsList.filter(r => r.recordOn === RECORD_ONS.INVENTORY).filter(r => r.recordType === RECORD_TYPES.DELETE).length+(3),//The manually added number at the end is just to sync it with the database number. There was manual removing of things in firebase as well as some things only having their delete logged but not their create as they were made before that was implemented
         this.notificationsList.filter(n => n.level === 'out_of_stock').sort((a, b) => {return a.lastUpdated-b.lastUpdated}).length,
         this.notificationsList.length,
         this.recordsList.length,

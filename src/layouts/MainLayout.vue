@@ -91,7 +91,7 @@ export default defineComponent({
           </div>
 
 
-          <div class="col-6">
+          <div class="col-6" :class="(!this.leftDrawerOpen? 'full-width':'')">
 <!--            <q-btn-->
 <!--              flat-->
 <!--              dense-->
@@ -101,20 +101,21 @@ export default defineComponent({
 <!--              @click="toggleLeftDrawer"-->
 <!--            />-->
 
-            <q-toolbar-title class="mt-2">
+            <q-toolbar-title class="mt-4">
 <!--              {{ appNavigation.currentPageLabel }}-->
               {{ appInfo.appTitle }}
             </q-toolbar-title>
 
           </div>
-          <div class="col-auto bg-secondary px-4" :class="authUser.uid === ''? 'me-1' : ''">
+          <div class="bg-secondary px-4" :class="[(authUser.uid === ''? 'me-1' : ''), (!this.leftDrawerOpen? 'width-auto':'col-auto')]">
             <Router-Link to="account" v-if="authUser.uid !== ''">
               <div class="full-height q-py-sm">
                 <div class="row">
                   <div class="col" v-if="!this.leftDrawerOpen">
                     <span>
 <!--                    <q-chip :color="authUser.role+'Color'" text-color="white">-->
-                    <q-chip :color="'adminColor'" text-color="white">
+<!--                      :color='adminColor'-->
+                    <q-chip color='primary' text-color="white">
                       <span>
                       <q-icon name="bi-person-badge" class="chip-icon" />
                       {{ authUser.role }}
@@ -130,6 +131,7 @@ export default defineComponent({
                       <div class="col" v-if="this.leftDrawerOpen">
                         <span>
 <!--                        <q-chip color="colorAdmin" text-color="white">-->
+<!--                          color="primary"-->
                         <q-chip text-color="white" class="bg-primary">
                           <p class="pb-2">
                           <q-icon name="bi-person-badge" class="chip-icon" />
@@ -182,7 +184,8 @@ export default defineComponent({
       <q-list>
         <navigate-icon-item router-link-to="/" tooltip-info="Home" li-extra-classes="p-2 mb-2" icon-class="bi-house">
         </navigate-icon-item>
-        <navigate-icon-item router-link-to="/inventory" @click="this.inventoryExplorer.navigateTo('root')" tooltip-info="Inventory" li-extra-classes="p-2 mb-2" icon-class="bi-box-seam"><!--fa-solid fa-boxes-stacked-->
+<!--        @click="//this.inventoryExplorer.navigateTo('root')"-->
+        <navigate-icon-item router-link-to="/inventory" tooltip-info="Inventory" li-extra-classes="p-2 mb-2" icon-class="bi-box-seam"><!--fa-solid fa-boxes-stacked-->
         </navigate-icon-item>
         <navigate-icon-item router-link-to="/notifications" tooltip-info="Notifications" li-extra-classes="p-2 mb-2" icon-class="bi-bell" :badge-text="notificationsList.length!==0?notificationsList.length:''">
         </navigate-icon-item>
@@ -242,7 +245,7 @@ export default defineComponent({
                     this.$refs.newItemModal.openModal();
                   }"
           >
-            <img src="src/assets/icons/upc-scan.svg" class="scan-qr-code" alt="Scan Barcode">
+            <img src="icons/upc-scan.svg" class="scan-qr-code" alt="Scan Barcode">
           </button>
         </div>
 
