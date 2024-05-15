@@ -355,11 +355,12 @@ export default defineComponent({
                   :options="options"
                   style="width: 250px"
                 />
+                <q-icon name="bi-pencil-square" size="1.5em" />
               </q-popup-edit>
             </div>
-            <div class="col-auto">
-              <q-icon name="bi-pencil-square" size="1.5em" />
-            </div>
+<!--            <div class="col-auto">-->
+<!--              <q-icon name="bi-pencil-square" size="1.5em" />-->
+<!--            </div>-->
           </div>
         </q-td>
       </template>

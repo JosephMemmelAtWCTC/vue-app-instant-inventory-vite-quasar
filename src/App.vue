@@ -76,7 +76,7 @@ export default defineComponent({
     },
     manuallyCallWatchedKioskName(newValue){
       localStorage.setItem("KIOSK_LOCATION_KEY", newValue);
-    }
+    },
   },
   created() {
     // this.inventoryExplorer = new InventoryExplorer();
@@ -90,9 +90,24 @@ export default defineComponent({
           .then((supplementalAccountDoc) => {
             const supplementalData = supplementalAccountDoc.data();
             this.authUser.image = supplementalData.image ?? null;
-            this.authUser.role =supplementalData.role ?? null;
-          })
+            this.authUser.role = supplementalData.role ?? null;
+
+            if(this.authUser.role === 'DISABLED'){
+              console.log("disabled@company.com");
+              this.$router.push({ path: '/login' });
+              auth.signOut().then(()=>{
+                console.log('Signed Out');
+                // this.$q.notify(`You have been signed out, to reach the login screen again, refresh the page.`)
+              }, function(error) {
+                console.error('Sign Out Error', error);
+              });
+            }else if(this.authUser.role !== "ADMIN" && this.$route.path === 'admin'){
+                this.$router.push({ path: '/' });
+            }
+          });
         console.log('Signed in as: ', user);
+
+
         this.inventoryExplorer.setUser(this.authUser);
 
       } else {
@@ -100,9 +115,9 @@ export default defineComponent({
         console.log('Not signed in.');
 
         this.authUser = new FullUserDetails();
-        this.$router.push({ path: '/login' });
 
       }
+      this.$router.push({ path: '/' });
 
       const kioskName = localStorage.getItem("KIOSK_LOCATION_KEY");
       if(kioskName){

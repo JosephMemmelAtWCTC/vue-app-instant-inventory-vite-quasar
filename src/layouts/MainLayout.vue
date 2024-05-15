@@ -203,6 +203,7 @@ export default defineComponent({
 
     <q-page-container class="overflow-hidden">
       <router-view
+        v-if="!(authUser.role === 'DISABLED' || authUser.role === '') || this.$route.path==='/login' || this.$route.path==='/app'"
         :auth-user="this.authUser"
         :inventory-explorer="this.inventoryExplorer"
         :app-info="this.appInfo"

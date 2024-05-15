@@ -37,7 +37,7 @@ import {defineComponent} from "vue";
       <h1 class="display-2 d-md-none d-col-block p-3 text-secondary fw-bold w-100 pb-0">{{jumbotronTitle}}</h1>
     </div>
     <div class="d-flex align-items-center text-center justify-content-center mt-5 px-4 pb-0">
-      <div class="jumbotron m-2 bg-primary">
+      <div class="jumbotron m-2 bg-primary rounded-3 border-primary border-5 border">
         <h1 class="display-6 d-none d-md-block p-3 text-secondary fw-bold w-100 px-4">{{jumbotronTitle}}</h1>
         <br>
           <div class="bg-secondary-subtle p-0 m-0">
