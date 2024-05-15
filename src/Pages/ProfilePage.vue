@@ -14,6 +14,7 @@ export default defineComponent({
     return {
       isPwd: true,
       newAuthImage: null,
+      locationKioskNameLocal: null,
     };
   },
   props: {
@@ -28,6 +29,7 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ["update-kiosk-name"],
   methods: {
     signOut(){
       auth.signOut()
@@ -136,12 +138,12 @@ export default defineComponent({
           <q-input filled v-model="this.authUser.email"
                    label="Account Name"
                    class="full-width"
-                   lazy-rules
+                   readonly="readonly"
           ></q-input>
-          <q-input filled v-model="this.locationKioskName"
-                   label="Kiosk Name"
+          <q-input filled v-model="this.locationKioskNameLocal"
+                   label="New Kiosk Name"
                    class="full-width"
-                   lazy-rules
+                   @change="this.$emit('update-kiosk-name', this.locationKioskNameLocal)"
           ></q-input>
 
           <q-file filled v-model="newAuthImage" label="New Account Avatar" class="full-width file-input">

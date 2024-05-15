@@ -56,6 +56,7 @@ export default defineComponent({
       default: "Kiosk",
     },
   },
+  emits: ["update-kiosk-name"],
   methods: {
     toggleLeftDrawer(){
       this.leftDrawerOpen = !this.leftDrawerOpen;
@@ -211,6 +212,7 @@ export default defineComponent({
         :location-kiosk-name="this.locationKioskName"
 
         :left-drawer-open="leftDrawerOpen"
+        @update-kiosk-name="this.$emit('update-kiosk-name',$event)"
       />
 
     </q-page-container>

@@ -6,7 +6,10 @@
     :notifications-list="this.notificationsList"
     :records-list="this.recordsList"
     :location-kiosk-name="this.locationKioskName"
+    @update-kiosk-name="console.log('$event ',$event);this.locationKioskName = $event"
   />
+<!--  @update-kiosk-name="console.log('$event', $event)"-->
+
 
 </template>
 
