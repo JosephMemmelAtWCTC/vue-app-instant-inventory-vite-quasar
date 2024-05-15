@@ -223,19 +223,28 @@ export default defineComponent({
     <q-footer class="fixed-bottom transparent navigation-footer container-fluid m-0 p-0" v-if="!leftDrawerOpen && authUser.uid.length!==0">
 
       <div class="row q-gutter-none m-0 p-0 overflow-x-hidden transparent">
+<!--        <div class="col-4 spacer-from-top q-gutter-none bg-red h-100">-->
+<!--          <div class="row bg-body-secondary h-100">-->
+<!--            <div class="col-12 h-50">-->
+<!--              <div class="row q-gutter-none " :class="('row-cols-'+(authUserIsAdmin?'3':'2'))">-->
+<!--                <navigate-icon-item disable-hover router-link-to="/" li-extra-classes="p-2 mb-2" class="col m-0 p-0" icon-class="bi-house"></navigate-icon-item>-->
+<!--                <navigate-icon-item disable-hover router-link-to="/inventory" @click="" li-extra-classes="p-2 mb-2 m-0 p-0" class="col" icon-class="bi-box-seam">&lt;!&ndash;fa-solid fa-boxes-stacked&ndash;&gt;</navigate-icon-item>-->
+<!--                <navigate-icon-item disable-hover router-link-to="/stats" li-extra-classes="p-2 mb-2" class="col m-0 p-0" icon-class="bi-clipboard2-data" v-if="authUserIsAdmin"></navigate-icon-item>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
         <div class="col-4 spacer-from-top q-gutter-none bg-red h-100">
           <div class="row bg-body-secondary h-100">
             <div class="col-12 h-50">
-
               <div class="row q-gutter-none " :class="('row-cols-'+(authUserIsAdmin?'3':'2'))">
-                <navigate-icon-item disable-hover router-link-to="/" li-extra-classes="p-2 mb-2" class="col" icon-class="bi-house"></navigate-icon-item>
-                <navigate-icon-item disable-hover router-link-to="/inventory" @click="" li-extra-classes="p-2 mb-2" class="col" icon-class="bi-box-seam"><!--fa-solid fa-boxes-stacked--></navigate-icon-item>
-                <navigate-icon-item disable-hover router-link-to="/stats" li-extra-classes="p-2 mb-2" class="col" icon-class="bi-clipboard2-data" v-if="authUserIsAdmin"></navigate-icon-item>
+                <navigate-icon-item disable-hover router-link-to="/" li-extra-classes="p-2 mb-2" icon-class="bi-house"></navigate-icon-item>
+                <navigate-icon-item disable-hover router-link-to="/inventory" @click="" li-extra-classes="p-2 mb-2" icon-class="bi-box-seam"><!--fa-solid fa-boxes-stacked--></navigate-icon-item>
+                <navigate-icon-item disable-hover router-link-to="/stats" li-extra-classes="p-2 mb-2" icon-class="bi-clipboard2-data" v-if="authUserIsAdmin"></navigate-icon-item>
               </div>
             </div>
           </div>
         </div>
-
         <div class="col centerNavTallOption">
           <button id="scanButton" type="button" class="link-secondary primaryNavMovePage btn btn-primary w-100 p-3 rounded-0 rounded-top-5 h-100"
                   @click="()=>{
