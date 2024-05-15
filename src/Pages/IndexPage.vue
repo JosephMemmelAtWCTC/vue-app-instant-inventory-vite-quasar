@@ -56,7 +56,7 @@ export default defineComponent({
 <template>
   <q-page class="flex flex-center">
     <page-title-table
-      :headers="['Categories', 'Products', 'Completely Out of Stock', 'Total Needing Refill', 'Records']"
+      :headers="['Categories', 'Products', 'Completely Out of Stock', 'Only Needing Refill', 'Records']"
       :jumbotron-title="appInfo.appTitle"
       :table-items="[
         // this.library.filterByType([Category.type]).length,
@@ -69,8 +69,9 @@ export default defineComponent({
           r => r.recordOn === RECORD_ONS.INVENTORY && r.recordType === RECORD_TYPES.NEW && r.record.kind === STORAGE_TYPES.PRODUCT_GENERIC).length
            - this.recordsList.filter(r => r.recordOn === RECORD_ONS.INVENTORY && r.record.kind === STORAGE_TYPES.PRODUCT_GENERIC && r.recordType === RECORD_TYPES.DELETE).length+11,//The manually added number at the end is just to sync it with the database number. There was manual removing of things in firebase as well as some things only having their delete logged but not their create as they were made before that was implemented
 
-        this.notificationsList.filter(n => n.level === 'out_of_stock').sort((a, b) => {return a.lastUpdated-b.lastUpdated}).length,
-        this.notificationsList.length,
+        this.notificationsList.filter(n => n.level === 'out_of_stock').length,
+        // this.notificationsList.length,//For both refill & out of stock
+        this.notificationsList.filter(n => n.level === 'reorder_level_reached').length,
         this.recordsList.length,
       ]"
     >

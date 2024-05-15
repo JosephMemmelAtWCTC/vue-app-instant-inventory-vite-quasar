@@ -2,7 +2,7 @@
 import {defineComponent, ref} from "vue";
 import {STORAGE_TYPES} from "src/models/InventoryItem";
 import StatsSubpage from "components/StatsSubpage.vue";
-import {RECORD_TYPES} from "src/models/Record";
+import {RECORD_ONS, RECORD_TYPES} from "src/models/Record";
 
 export default defineComponent({
   name: 'Stats',
@@ -23,6 +23,9 @@ export default defineComponent({
     },
   },
   computed: {
+    RECORD_ONS() {
+      return RECORD_ONS
+    },
     RECORD_TYPES() {
       return RECORD_TYPES
     },
@@ -43,9 +46,8 @@ export default defineComponent({
       class="bg-primary text-white shadow-2 pt-3"
     >
 
-<!--      <q-tab name="by_type" icon="bi-code-square" label="Type">-->
-<!--      </q-tab>-->
       <q-tab name="records" icon="bi-list-columns" label="Records"></q-tab>
+      <q-tab name="by_type" icon="bi-code-square" label="Type"></q-tab>
       <q-tab name="notifications" icon="bi-exclamation-square" label="Warning Level"></q-tab>
     </q-tabs>
     <q-tab-panels v-model="tab" animated>
@@ -59,8 +61,13 @@ export default defineComponent({
                             {
                               label: 'Item Count',
                               data: [
-                                // this.library.filterByType([STORAGE_TYPES.CATEGORY.toLowerCase()]).length,
-                                // this.library.filterByType(['product']).length,
+                                //The manually added number at the end is just to sync it with the database number. There was manual removing of things in firebase as well as some things only having their delete logged but not their create as they were made before that was implemented
+                                this.recordsList.filter(
+                                  r => r.recordOn === RECORD_ONS.INVENTORY && r.recordType === RECORD_TYPES.NEW && r.record.kind === STORAGE_TYPES.CATEGORY).length
+                                   - this.recordsList.filter(r => r.recordOn === RECORD_ONS.INVENTORY && r.record.kind === STORAGE_TYPES.CATEGORY && r.recordType === RECORD_TYPES.DELETE).length+4,
+                                this.recordsList.filter(
+                                  r => r.recordOn === RECORD_ONS.INVENTORY && r.recordType === RECORD_TYPES.NEW && r.record.kind === STORAGE_TYPES.PRODUCT_GENERIC).length
+                                   - this.recordsList.filter(r => r.recordOn === RECORD_ONS.INVENTORY && r.record.kind === STORAGE_TYPES.PRODUCT_GENERIC && r.recordType === RECORD_TYPES.DELETE).length+11,
                               ],
                             }
                           ]"
