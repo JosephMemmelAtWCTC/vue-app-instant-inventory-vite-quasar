@@ -50,7 +50,7 @@ export default defineComponent({
       <q-tab name="by_type" icon="bi-code-square" label="Type"></q-tab>
       <q-tab name="notifications" icon="bi-exclamation-square" label="Warning Level"></q-tab>
     </q-tabs>
-    <q-tab-panels v-model="tab" animated>
+    <q-tab-panels v-model="tab" animated class="keep-whole-in-view mx-auto">
 
       <q-tab-panel name="by_type">
         <stats-subpage class="bg-white"
@@ -122,6 +122,10 @@ export default defineComponent({
   }
   .row > * {
     width: auto;
+  }
+  .keep-whole-in-view{
+    max-width: 125vh;
+    margin-bottom: 20px;
   }
 
   /*body div.noflex{
