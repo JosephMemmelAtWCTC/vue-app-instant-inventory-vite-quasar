@@ -88,7 +88,7 @@ export default defineComponent({
           }
         }
       }
-      filteredRecordsList.sort((a, b) => {console.log("a.loggedOn - b.loggedOn",a.loggedOn - b.loggedOn);return b.loggedOn - a.loggedOn});
+      filteredRecordsList.sort((a, b) => {console.log("a.loggedOn - b.loggedOn",a.loggedOn - b.loggedOn);return a.loggedOn - b.loggedOn});
       return filteredRecordsListAnd;
 
     },
@@ -159,7 +159,7 @@ export default defineComponent({
                 <q-badge color="primary" v-if="record.record.added" floating>+ {{ record.record.added }}</q-badge>
                 <q-badge color="primary" v-if="record.record.setRole" floating>{{ record.record.setRole }}</q-badge>
               </q-icon>
-              <q-item-label caption lines="2">New item</q-item-label>
+              <q-item-label caption lines="2">New {{record.recordOn===RECORD_ONS.PROFILE? 'account':'item'}}</q-item-label>
             </div>
 <!--            fa-arrow-left-to-bracket is pro in fontawesome but not the right-->
 
