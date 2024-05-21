@@ -146,6 +146,8 @@ export default defineComponent({
                      class="full-width"
                      @change="this.$emit('update-kiosk-name', this.locationKioskNameLocal)"
             ></q-input>
+<!--            https://fir-demo-621bc.web.app-->
+
 
             <q-file filled v-model="newAuthImage" label="New Account Avatar" class="full-width file-input">
     <!--          <template v-slot:prepend>-->
