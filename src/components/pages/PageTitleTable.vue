@@ -41,7 +41,6 @@ import {defineComponent} from "vue";
         <h1 class="display-6 d-none d-md-block p-3 text-secondary fw-bold w-100 px-4">{{jumbotronTitle}}</h1>
         <br>
           <div class="bg-secondary-subtle p-0 m-0">
-<!--            <slot name="jumbotronsubtext">-->
             <slot>
             </slot>
           </div>

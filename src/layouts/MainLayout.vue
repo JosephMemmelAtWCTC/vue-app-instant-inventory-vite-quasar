@@ -11,10 +11,15 @@ import StoreItem from "src/models/StoreItem";
 import Product from "src/models/Product";
 import * as bootstrap from "bootstrap";
 import {StreamBarcodeReader} from "vue-barcode-reader";
+import PageTitleTable from "components/pages/PageTitleTable.vue";
+import MainContentPage from "components/pages/MainContentPage.vue";
+import PageMainContentTitle from "components/pages/PageMainContentTitle.vue";
 
 export default defineComponent({
   name: 'MainLayout',
-  components: {StreamBarcodeReader, EditModal, OptionsFAB, NavigateIconItem},
+  components: {
+    PageMainContentTitle,
+    MainContentPage, PageTitleTable, StreamBarcodeReader, EditModal, OptionsFAB, NavigateIconItem},
   data(){
     return {
       leftDrawerOpen: false,
@@ -158,13 +163,13 @@ export default defineComponent({
                 </div>
               </div>
             </Router-Link>
-            <Router-Link to="login" v-else>
+            <Router-Link :to="this.$route.path === '/login'? '/' : 'login'" v-else>
               <div class="full-height q-py-sm">
                 <div class="row">
                   <div class="col-auto">
                     <div class="column full-height justify-center">
                       <div class="col">
-                        Log In
+                        {{ this.$route.path === '/login'? 'Home' : 'Sign In' }}
                       </div>
                     </div>
                   </div>
@@ -221,6 +226,9 @@ export default defineComponent({
         :left-drawer-open="leftDrawerOpen"
         @update-kiosk-name="this.$emit('update-kiosk-name',$event)"
       />
+      <page-main-content-title v-else :jumbotron-title="['You\'re not signed in',':/']" :mobile-display="leftDrawerOpen">
+        <router-link to="/login">Go to sign in</router-link>
+      </page-main-content-title>
 
     </q-page-container>
     <q-footer class="fixed-bottom transparent navigation-footer container-fluid m-0 p-0" v-if="!leftDrawerOpen && authUser.uid.length!==0">

@@ -115,6 +115,7 @@ export default defineComponent({
         console.log('Not signed in.');
 
         this.authUser = new FullUserDetails();
+        // this.$router.push({ path: '/login' });
 
       }
 
