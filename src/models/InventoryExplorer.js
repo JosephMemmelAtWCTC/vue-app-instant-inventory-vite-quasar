@@ -5,12 +5,15 @@ import {
   storage,
   db,
   SUBMISSION_INVENTORY_DOC_KEY,
-  notifications, accounts, records
+  notifications, records, searches_titles, searches_productIds
 } from 'src/models/Firebase.js'
 import Category from "src/models/Category";
 import Product from "src/models/Product";
 import InventoryCollectionProper from "src/models/InventoryCollectionProper";
 import {Record, RECORD_TYPES, RECORD_ONS} from "src/models/Record";
+import StringSearch from "src/models/StringSearch";
+import {collection, query, where, getDocs} from "firebase/firestore";
+import {generateNGrams, sanitize} from "src/models/NGramController";
 
 function InventoryExplorer() {
 
@@ -29,6 +32,7 @@ function InventoryExplorer() {
     },
     setUser: setUser,
     logRecord: logRecord,
+    searchTest: searchTest,
   }
 
 
@@ -41,6 +45,51 @@ function InventoryExplorer() {
       const record = new Record(recordType, recordOn, forID, forName, fullUserDetails.email, fullUserDetails.uid, changes)
       return records.add(record.getAsData());
     }
+
+    async function searchTest(substring) {
+      substring = sanitize(substring);
+      if(substring.length > 0){
+        // let possibleNgrams = generateNGrams(substring, STORAGE_TYPES.PRODUCT_GENERIC);
+        // console.log("substring", substring, possibleNgrams)
+
+        const query = searches_titles.where("searchTerms", "array-contains", substring);
+        query.get().then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            console.log(doc.id, "=>", doc.data());
+          });
+        })
+          .catch((error) => {
+            console.log("Error getting documents: ", error);
+          });
+      }
+
+      // return results;
+    }
+
+
+
+    function updateSearch(data, doc){
+      console.log("function updateSearch(data)", data);
+
+        let newSearchItem = new StringSearch(doc.id,{
+          searchTerms: [],
+          itemType: STORAGE_TYPES.PRODUCT_GENERIC,
+          parentLocation: doc.ref.parent.path,
+          parentCategoryName: 'notyetimplemented',
+        });
+
+        //Add to search lists
+        // Title
+        newSearchItem.searchTerms = generateNGrams(data.title, STORAGE_TYPES.PRODUCT_GENERIC);
+        searches_titles.add(newSearchItem);
+        // Product Id
+        newSearchItem.searchTerms = generateNGrams(data.productId, STORAGE_TYPES.PRODUCT_GENERIC);
+        searches_productIds.add(newSearchItem);
+
+
+
+    }
+
 
 
     function navigateTo(docId){
@@ -255,6 +304,7 @@ function InventoryExplorer() {
                         added: updatedData.numInStock,
                         kind: imgFile === null? STORAGE_TYPES.CATEGORY : STORAGE_TYPES.PRODUCT_GENERIC,
                       });
+                      updateSearch(updatedData, updatedDoc);
                       return "";
                   }))
                 })})
@@ -267,7 +317,6 @@ function InventoryExplorer() {
           console.error("Error", error);
           return "Error: "+error;
         });
-
     }
       //   TODO: Notify if failed, etc
   }

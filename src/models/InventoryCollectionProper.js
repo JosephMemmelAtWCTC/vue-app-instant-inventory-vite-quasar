@@ -57,7 +57,7 @@ export default function InventoryCollectionProper(arr = []) {
 
     arr.filterByType = function(types){
       const filteredArray = this.filter(i => types.includes(i.constructor.type.toLowerCase()));
-      console.log("types = ", types);
+      // console.log("types = ", types);
       return filteredArray;
     }
 

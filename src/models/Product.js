@@ -18,7 +18,6 @@ export default class Product {
       reorderLevel = title.reorderLevel;
       // REMEMBER, ALWAYS NEEDS TO BE LAST
       title       = title.title;
-      console.log("title.numInStock",title);
     }
 
     this.title        = title;

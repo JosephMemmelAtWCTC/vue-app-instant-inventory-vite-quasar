@@ -87,11 +87,14 @@ export default defineComponent({
                    label="Username"
                    class="full-width"
                    lazy-rules
+                   autofocus
+                   type="email"
           ></q-input>
           <q-input filled v-model="this.loginAccount.password"
                    label="Password"
                    :type="this.isPwd ? 'password' : 'text'"
                    class="full-width mt-2"
+                   type="password"
                    >
           </q-input>
 

@@ -15,6 +15,9 @@ import InventoryCollectionProper from "src/models/InventoryCollectionProper";
 import QrcodeScanner from "components/QRCodeScanner.vue";
 import { StreamBarcodeReader } from "vue-barcode-reader";
 import ImageCard from "components/cards/ImageCard.vue";
+import {db, searches_titles} from "src/models/Firebase";
+import StringSearch from "src/models/StringSearch";
+import {collection, query, where} from "firebase/firestore";
 
 
 export default defineComponent({
@@ -76,6 +79,9 @@ export default defineComponent({
   },
   emits: ["call-filter-settings-refresh"],
   methods: {
+    searchTest(){
+      this.inventoryExplorer.searchTest(this.filterSettings.searchString);
+    },
     saveItem(item){//TODO: Rename to saveIt
       // this.library.updateOrAddValue(item);
       this.inventoryExplorer.currentlyIn.addNew(item)
@@ -83,15 +89,14 @@ export default defineComponent({
           console.log("addNewaddNewaddNewaddNewaddNewaddNew ",message);
 
           this.trigger++;
-          // this.$emit("resize")
-        });
+          return message;
+        })
     },
     removeItem(removeItem) {
       this.inventoryExplorer.currentlyIn.remove(removeItem)
         .then((message)=>{
           console.log("removed ",message);
           this.trigger++;
-          // this.$emit("resize")
         });
     },
     sendUpdateCardOpenCategory(docId){
@@ -195,16 +200,19 @@ export default defineComponent({
 <!--        <p>TESTP{{inventoryExplorer.test}}</p>-->
         <header class="bg-body-tertiary rounded-3">
           <div class="row align-items-center p-2">
-<!--            <div class="col-auto d-flex text-center align-items-center">-->
-<!--              <p class="ms-4">{{searchLabel}}</p>-->
-<!--            </div>-->
+            <div class="col-auto d-flex text-center align-items-center">
+              <p class="ms-4">{{searchLabel}}</p>
+            </div>
 
-<!--            <div class="col end-0">-->
-<!--              <div class="input-group mb-3">-->
-<!--                <span class="input-group-text" id="searchTextDescribe"><i class="bi ms-1 bi-search"></i></span>-->
-<!--                <input type="text" v-model="filterSettings.searchString" class="form-control focus-ring-primary" placeholder="" aria-label="Search" aria-describedby="searchTextDescribe">-->
-<!--              </div>-->
-<!--            </div>-->
+            <div class="col end-0">
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="searchTextDescribe"><i class="bi ms-1 bi-search"></i></span>
+                <input type="text" v-model="filterSettings.searchString" class="form-control focus-ring-primary" placeholder="" aria-label="Search" aria-describedby="searchTextDescribe">
+                <button @click="searchTest()">
+                  search testing
+                </button>
+              </div>
+            </div>
 
             <toggles-array :options="filterSettings.toggles">
             </toggles-array>
