@@ -79,8 +79,8 @@ export default defineComponent({
   },
   emits: ["call-filter-settings-refresh"],
   methods: {
-    searchTest(){
-      this.inventoryExplorer.searchTest(this.filterSettings.searchString);
+    searchTest(searchQuery){
+      this.inventoryExplorer.searchTest(searchQuery);
     },
     saveItem(item){//TODO: Rename to saveIt
       // this.library.updateOrAddValue(item);
@@ -205,13 +205,28 @@ export default defineComponent({
             </div>
 
             <div class="col end-0">
-              <div class="input-group mb-3">
-                <span class="input-group-text" id="searchTextDescribe"><i class="bi ms-1 bi-search"></i></span>
-                <input type="text" v-model="filterSettings.searchString" class="form-control focus-ring-primary" placeholder="" aria-label="Search" aria-describedby="searchTextDescribe">
-                <button @click="searchTest()">
-                  search testing
-                </button>
-              </div>
+<!--              <div class="input-group mb-3">-->
+<!--&lt;!&ndash;                <span class="input-group-text" id="searchTextDescribe"><i class="bi ms-1 bi-search"></i></span>&ndash;&gt;-->
+<!--&lt;!&ndash;                <input type="text" v-model="filterSettings.searchString" class="form-control focus-ring-primary" placeholder="" aria-label="Search" aria-describedby="searchTextDescribe">&ndash;&gt;-->
+<!--                <q-input @change="searchTest(this.filterSettings.searchString)" square outlined v-model="this.filterSettings.searchString" class=""/>-->
+<!--&lt;!&ndash;                <button @click="searchTest()">&ndash;&gt;-->
+<!--&lt;!&ndash;                  search testing&ndash;&gt;-->
+<!--&lt;!&ndash;                </button>&ndash;&gt;-->
+<!--              </div>-->
+
+              <q-input square outlined bottom-slots @keydown="searchTest(this.filterSettings.searchString)" v-model="this.filterSettings.searchString" label="Search" class="fix-quasar-input">
+                <template v-slot:prepend>
+                  <q-icon name="bi-search" />
+                </template>
+                <template v-slot:append>
+                  <q-icon name="close" @click="this.filterSettings.searchString = ''" class="cursor-pointer" />
+                </template>
+
+<!--                <template v-slot:hint>-->
+<!--                  Field hint-->
+<!--                </template>-->
+              </q-input>
+
             </div>
 
             <toggles-array :options="filterSettings.toggles">
@@ -490,7 +505,19 @@ export default defineComponent({
 */
 </style>
 <style>
-  .q-field__append.q-field__marginal.row.no-wrap{
+  .fix-quasar-input .q-field__prepend.q-field__marginal.row.no-wrap.items-center{
     width: auto;
   }
+  .fix-quasar-input .q-icon.notranslate.material-icons{
+    flex-shrink: 20;
+  }
+  .q-field__append.q-field__marginal.row.no-wrap.items-center{
+    width: auto !important;
+  }
+
+
 </style>
+<!--//.q-icon.notranslate.material-icons{-->
+<!--//  background-color: red;-->
+<!--//  width: auto !important;-->
+<!--//}-->

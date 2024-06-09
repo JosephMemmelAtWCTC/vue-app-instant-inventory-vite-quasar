@@ -5,7 +5,7 @@ import {
   storage,
   db,
   SUBMISSION_INVENTORY_DOC_KEY,
-  notifications, records, searches_titles, searches_productIds
+  notifications, records, searches_titles, searches_productIds, storageInventoryPictures
 } from 'src/models/Firebase.js'
 import Category from "src/models/Category";
 import Product from "src/models/Product";
@@ -13,7 +13,7 @@ import InventoryCollectionProper from "src/models/InventoryCollectionProper";
 import {Record, RECORD_TYPES, RECORD_ONS} from "src/models/Record";
 import StringSearch from "src/models/StringSearch";
 import {collection, query, where, getDocs} from "firebase/firestore";
-import {generateNGrams, sanitize} from "src/models/NGramController";
+import {/*generateNGrams,*/ generateSaveSubstrings, sanitize} from "src/models/NGramController";
 
 function InventoryExplorer() {
 
@@ -48,11 +48,16 @@ function InventoryExplorer() {
 
     async function searchTest(substring) {
       substring = sanitize(substring);
+
+      console.log(generateSaveSubstrings(substring, STORAGE_TYPES.PRODUCT_GENERIC));
+
+
       if(substring.length > 0){
         // let possibleNgrams = generateNGrams(substring, STORAGE_TYPES.PRODUCT_GENERIC);
         // console.log("substring", substring, possibleNgrams)
-
-        const query = searches_titles.where("searchTerms", "array-contains", substring);
+        let searchForSubstrings = [];
+        searchForSubstrings = generateSaveSubstrings(substring, STORAGE_TYPES.PRODUCT_GENERIC)
+        const query = searches_titles.where("searchTerms", "array-contains-any", searchForSubstrings);
         query.get().then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
             console.log(doc.id, "=>", doc.data());
@@ -80,11 +85,11 @@ function InventoryExplorer() {
 
         //Add to search lists
         // Title
-        newSearchItem.searchTerms = generateNGrams(data.title, STORAGE_TYPES.PRODUCT_GENERIC);
+        newSearchItem.searchTerms = generateSaveSubstrings(data.title, STORAGE_TYPES.PRODUCT_GENERIC);
         searches_titles.add(newSearchItem);
-        // Product Id
-        newSearchItem.searchTerms = generateNGrams(data.productId, STORAGE_TYPES.PRODUCT_GENERIC);
-        searches_productIds.add(newSearchItem);
+        // // Product Id
+        // newSearchItem.searchTerms = generateNGrams(data.productId, STORAGE_TYPES.PRODUCT_GENERIC);
+        // searches_productIds.add(newSearchItem);
 
 
 
@@ -202,8 +207,16 @@ function InventoryExplorer() {
       return "Document successfully deleted!"
     }).catch((error) => {
       console.error("Error removing document: ", error);
-        return "Error removing document: " + error;
+      return "Error removing document: " + error;
+    })
+    .then(() => {
+    //   Remove image document
+      storageInventoryPictures.child(item.docId).delete().then(() => {
+        // File deleted successfully
+      }).catch((error) => {
+        // Uh-oh, an error occurred!
       });
+    });
   }
 
   function addNew(oldNew){
@@ -285,7 +298,7 @@ function InventoryExplorer() {
             return "Not storing img in storage";
           }
           console.log("doc.data());", doc.data());
-          return storage.child('inventoryItems').child(doc.id)
+          return storageInventoryPictures.child(doc.id)
 
             .put(imgFile)
             .then(snapshot => {

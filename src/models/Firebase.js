@@ -19,6 +19,9 @@ const db = firebase.firestore();
 const auth = firebase.auth();
 const storage = firebase.storage().ref();
 
+// Storages
+const storageInventoryPictures = storage.child('inventoryItems');
+
 
 // Collections (for importing just the needed ones instead of using db)
 const accounts = db.collection('accounts');
@@ -40,10 +43,11 @@ const inventory = db.collection('inventory').doc(SUBMISSION_INVENTORY_DOC_KEY);
 
 
 // firebase
-export {db, auth, storage,
-  accounts, inventory, notifications, records,
+export {
+  db, auth, storage, accounts, inventory, notifications, records,
   SUBMISSION_INVENTORY_DOC_KEY,
   searches_titles,
   searches_productIds,
-  searches
+  searches,
+  storageInventoryPictures
 }
