@@ -2,10 +2,11 @@
 import {defineComponent} from "vue";
 import EditCategoryCard from "components/cards/EditCategoryCard.vue";
 import EditItemCard from "components/cards/EditItemCard.vue";
+import GotoItemCard from "components/cards/GotoItemCard.vue";
 
 export default defineComponent({
   name: "CardsList",
-  components: {EditCategoryCard, EditItemCard},
+  components: {EditCategoryCard, EditItemCard, GotoItemCard},
   props: {
     items: {
       type: Array,
@@ -31,7 +32,7 @@ export default defineComponent({
 
 <template>
   <component v-for="(item, i) in items" :key="i"
-             :is="item.constructor.cardDetailsComponent"
+             :is="item.constructor.cardDetailsComponent? item.constructor.cardDetailsComponent : item.cardDetailsComponent"
              :item="item"
              :edit-item="item"
              @save-it="saveItem"

@@ -1,6 +1,7 @@
 export const STORAGE_TYPES = {
   PRODUCT_GENERIC: "generic_product",
-  CATEGORY: "category"
+  CATEGORY: "category",
+  SEARCH_PRODUCT_GENERIC: "search_product_generic",
 };
 export function InventoryItem(item){
 

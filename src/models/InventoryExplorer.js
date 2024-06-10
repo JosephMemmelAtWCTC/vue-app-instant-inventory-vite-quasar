@@ -47,6 +47,7 @@ function InventoryExplorer() {
     }
 
     async function searchTest(substring) {
+      const results = [];
       substring = sanitize(substring);
 
       console.log(generateSaveSubstrings(substring, STORAGE_TYPES.PRODUCT_GENERIC));
@@ -58,17 +59,21 @@ function InventoryExplorer() {
         let searchForSubstrings = [];
         searchForSubstrings = generateSaveSubstrings(substring, STORAGE_TYPES.PRODUCT_GENERIC)
         const query = searches_titles.where("searchTerms", "array-contains-any", searchForSubstrings);
-        query.get().then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-            console.log(doc.id, "=>", doc.data());
-          });
+        // return await query.get().then((querySnapshot) => {
+        const querySnapshot = await query.get();
+        querySnapshot.forEach((doc) => {
+          console.log(doc.id, "=>", doc.data());
+          results.push(new StringSearch(doc.id, doc.data()));
         })
-          .catch((error) => {
-            console.log("Error getting documents: ", error);
-          });
+        console.log("results", results.length, results);
+        return results;
+        // .catch((error) => {
+        //   console.log("Error getting documents: ", error);
+        // });
+      }else{
+        return [];
       }
 
-      // return results;
     }
 
 
@@ -77,16 +82,20 @@ function InventoryExplorer() {
       console.log("function updateSearch(data)", data);
 
         let newSearchItem = new StringSearch(doc.id,{
+          title: data.title,
           searchTerms: [],
           itemType: STORAGE_TYPES.PRODUCT_GENERIC,
           parentLocation: doc.ref.parent.path,
           parentCategoryName: 'notyetimplemented',
+          imageURL: data.imageURL,
         });
 
         //Add to search lists
         // Title
         newSearchItem.searchTerms = generateSaveSubstrings(data.title, STORAGE_TYPES.PRODUCT_GENERIC);
-        searches_titles.add(newSearchItem);
+        // console.log("!!3333!!",newSearchItem.getAsData());
+        searches_titles.add(newSearchItem.getAsData());
+
         // // Product Id
         // newSearchItem.searchTerms = generateNGrams(data.productId, STORAGE_TYPES.PRODUCT_GENERIC);
         // searches_productIds.add(newSearchItem);

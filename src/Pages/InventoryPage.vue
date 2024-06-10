@@ -42,6 +42,7 @@ export default defineComponent({
       enableBarcodeScanner: false,
       scannerIsLoaded: false,
       cardsNotYetLoaded: true,
+      stringSearchResults: [],
 
       filterSettings: {
         toggles: [
@@ -80,7 +81,9 @@ export default defineComponent({
   emits: ["call-filter-settings-refresh"],
   methods: {
     searchTest(searchQuery){
-      this.inventoryExplorer.searchTest(searchQuery);
+      this.inventoryExplorer.searchTest(searchQuery).then((results) => {
+        this.stringSearchResults = results;
+      });
     },
     saveItem(item){//TODO: Rename to saveIt
       // this.library.updateOrAddValue(item);
@@ -135,28 +138,35 @@ export default defineComponent({
     },
     filteredLibrary() {
       this.trigger;
-      let filteredResults = [];
 
       const filterByConstructors = [];
-      const filterByThreshold = [];
 
       if(this.filterSettings.toggles[0].state){
         filterByConstructors.push(Category.type);
       }
       if(this.filterSettings.toggles[1].state){
-        // filterByConstructors.push(StoreItem.type);
-        // if(StoreItem.type){
-        //   filterByConstructors.push(STORAGE_TYPES.PRODUCT_GENERIC);
         filterByConstructors.push(Product.type);
-        // }
       }
 
-      let filteredDownTo = this.inventoryExplorer.currentlyIn.libraryCollection.filterByType(filterByConstructors);
-      if(this.filterSettings.searchString.length > 0 ){
-        // filteredDownTo.filterByString();
+      filterByConstructors.push(StringSearch.type);
+
+      // No search string
+      let filteredDownTo = [];
+      if(this.filterSettings.searchString === ""){
+        filteredDownTo = this.inventoryExplorer.currentlyIn.libraryCollection.filterByType(filterByConstructors);
+      }else{
+
       }
+
+      // if(this.filterSettings.searchString.length > 0 ){
+      // }
 
       return filteredDownTo;
+    },
+    filteredLibrarySearch(){
+      this.trigger;
+      let searchResultsInventoryCollection = new InventoryCollectionProper(this.stringSearchResults);
+      return searchResultsInventoryCollection;
     }
   },
   created: function(){
@@ -290,23 +300,36 @@ export default defineComponent({
               </q-card>
             </div>
           </div>
-          <cards-list :items="filteredLibrary.sort((a, b) => {
-                        if(a.productId === null && b.productId === null){//BOth categories
-                            return a.title > b.title;
-                        }else if(a.productId === null && b.productId !== null){//One of each, a is category
-                            return -1;
-                        }else if(a.productId !== null && b.productId === null){//One of each, b is category
-                            return +1;
-                        }else{//Both products
-                            return a.title > b.title;
-                        }
-                      })"
-                      @save-it="saveItem"
-                      @remove-it="removeItem"
-                      @card-navigate="sendUpdateCardOpenCategory"
-                      :key="trigger"
+          <!--            :items="filteredLibrary.sort((a, b) => {-->
+          <!--                        if(a.productId === null && b.productId === null){//Both categories-->
+          <!--                            return a.title > b.title;-->
+          <!--                        }else if(a.productId === null && b.productId !== null){//One of each, a is category-->
+          <!--                            return -1;-->
+          <!--                        }else if(a.productId !== null && b.productId === null){//One of each, b is category-->
+          <!--                            return +1;-->
+          <!--                        }else{//Both products-->
+          <!--                            return a.title > b.title;-->
+          <!--                        }-->
+          <!--                      })"-->
+
+<!--          v-if="this.filterSettings.searchString.length === 0"-->
+          <cards-list
+            :items="filteredLibrary"
+            @save-it="saveItem"
+            @remove-it="removeItem"
+            @card-navigate="sendUpdateCardOpenCategory"
+            :key="trigger"
           >
 <!--            @card-navigate="onUpdateCardOpenCategory"-->
+            <!--                      @card-navigate="removeItem"-->
+          </cards-list>
+          <!--            v-else-->
+          <cards-list
+            :items="filteredLibrarySearch"
+            @card-navigate="sendUpdateCardOpenCategory"
+            :key="trigger"
+          >
+            <!--            @card-navigate="onUpdateCardOpenCategory"-->
             <!--                      @card-navigate="removeItem"-->
           </cards-list>
         </div>
