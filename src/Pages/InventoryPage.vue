@@ -105,7 +105,7 @@ export default defineComponent({
     sendUpdateCardOpenCategory(docId){
       // this.$emit('card-navigate', docId);
       console.log('navigateTo before in send up');
-      this.inventoryExplorer.navigateTo(docId, "relative")
+      this.inventoryExplorer.navigateTo(docId)
         .then((message)=>{
           console.log("this.triggerthis.triggerthis.triggerthis.trigger: ", message);
 
@@ -122,7 +122,7 @@ export default defineComponent({
       // this.imageUrl = URL.createObjectURL(this.newItemImage);
     },
     goToRoot(){
-      this.inventoryExplorer.navigateTo('root','direct').then(message => {this.trigger++;});
+      this.inventoryExplorer.navigateTo('root').then(message => {this.trigger++;});
     },
 
   },
@@ -170,7 +170,7 @@ export default defineComponent({
     }
   },
   created: function(){
-    this.inventoryExplorer.navigateTo("root")
+    this.inventoryExplorer.navigateTo({navType: "absolute", docId: "root"})
       .then((message)=>{
         this.trigger++;
         // this.$emit("resize")
@@ -224,7 +224,7 @@ export default defineComponent({
 <!--&lt;!&ndash;                </button>&ndash;&gt;-->
 <!--              </div>-->
 
-              <q-input square outlined bottom-slots @keydown="searchTest(this.filterSettings.searchString)" v-model="this.filterSettings.searchString" label="Search" class="fix-quasar-input">
+              <q-input square outlined bottom-slots @keyup="searchTest(this.filterSettings.searchString)" v-model="this.filterSettings.searchString" label="Search" class="fix-quasar-input">
                 <template v-slot:prepend>
                   <q-icon name="bi-search" />
                 </template>
@@ -266,9 +266,17 @@ export default defineComponent({
           </div>
         </header>
         <results-possibly-empty
+          v-if="this.filterSettings.searchString.length < 3"
           :display-is-empty="filteredLibrary.length === 0"
           empty-title="Nothing here..."
           empty-text="It looks like there is nothing in this category or nothing matches your filter criteria, try loosing your requirements or adding more items."
+        >
+        </results-possibly-empty>
+        <results-possibly-empty
+          v-else
+          :display-is-empty="filteredLibrarySearch.length === 0"
+          empty-title="Nothing here..."
+          empty-text="It looks like your search didn't find anything."
         >
         </results-possibly-empty>
 
@@ -312,8 +320,8 @@ export default defineComponent({
           <!--                        }-->
           <!--                      })"-->
 
-<!--          v-if="this.filterSettings.searchString.length === 0"-->
           <cards-list
+            v-if="this.filterSettings.searchString.length < 3"
             :items="filteredLibrary"
             @save-it="saveItem"
             @remove-it="removeItem"
@@ -323,8 +331,8 @@ export default defineComponent({
 <!--            @card-navigate="onUpdateCardOpenCategory"-->
             <!--                      @card-navigate="removeItem"-->
           </cards-list>
-          <!--            v-else-->
           <cards-list
+            v-else
             :items="filteredLibrarySearch"
             @card-navigate="sendUpdateCardOpenCategory"
             :key="trigger"

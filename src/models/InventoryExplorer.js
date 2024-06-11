@@ -94,7 +94,8 @@ function InventoryExplorer() {
         // Title
         newSearchItem.searchTerms = generateSaveSubstrings(data.title, STORAGE_TYPES.PRODUCT_GENERIC);
         // console.log("!!3333!!",newSearchItem.getAsData());
-        searches_titles.add(newSearchItem.getAsData());
+        const saveAsData = newSearchItem.getAsData();
+        searches_titles.doc(saveAsData.id).set(saveAsData);
 
         // // Product Id
         // newSearchItem.searchTerms = generateNGrams(data.productId, STORAGE_TYPES.PRODUCT_GENERIC);
@@ -105,77 +106,89 @@ function InventoryExplorer() {
     }
 
 
-
     function navigateTo(docId){
-      console.log("navigateTo docId", docId);
+      console.log("lm;mlm",docId);
+      let navType;
+      let parentLocation;
+      if(docId.navType){
+        navType = docId.navType;
+        parentLocation = docId.parentLocation ?? "";
+        docId = docId.docId;
+      }else{
+        navType = "relative";
+      }
+
       console.log("navigateTo docId2_"+docId+"_");
-        // navigateTo
 
+      if(navType === "absolute"){
+        if(docId === "root"){
+          m.currentlyIn.currentDoc = inventory;
+          m.currentlyIn.breadcrumbs = [];
+        }else if(docId.length > 0){
+          m.currentlyIn.currentDoc = db.doc(parentLocation);
+        }
+      }else{//if(navType === "relative"
 
-      if(docId === "root"){
-        console.log('root call is working at least to get to here');
-        m.currentlyIn.currentDoc = inventory;
-        m.currentlyIn.breadcrumbs = [];
       }
       if(docId === m.currentlyIn.currentDocId){
         console.log("FAILING: Tried to duplicate category/id path");
         // return "FAILING: Tried to duplicate category/id path";
         return Promise.reject("FAILING: Tried to duplicate category/id path");
-      }else{
-        return m.currentlyIn.currentDoc.get().then(snapshot =>{
-          if(docId === "root"){
-            docId = SUBMISSION_INVENTORY_DOC_KEY;
-          }else{
-            m.currentlyIn.currentDoc = m.currentlyIn.currentDoc.collection("categories").doc(docId);
-            console.log("QQQQQQQQQQ", m.currentlyIn.currentDoc.path);
-          }
-          m.currentlyIn.currentDocId = docId;
-          return m.currentlyIn.currentDoc.get()
-            .then(doc => {
-              m.currentlyIn.breadcrumbs.push(doc.data().title);
-
-              // const dataPush = doc.data();
-              // dataPush.docId = doc.id;
-              console.log("doc snapshoesfiopsoijsljkht", doc.data());
-              if(doc.data() === undefined){
-                console.log("Undefined second copy, not continuing")
-                return Promise.reject("Undefined second copy, not continuing");
-
-                // Promise.reject(new Error("Undefined second copy, not continuing"));
-                // Promise.reject("Undefined second copy, not continuing");
-              }else{
-                const data = [];
-
-                return doc.ref.collection("categories")
-                  .get()
-                  .then(snapshot => {
-                    return takeCareOfCurrentSnapshot(snapshot);
-                  })
-                  .then(() => {
-                    return m.currentlyIn.currentDoc.collection("categories").onSnapshot(snapshot => {
-                      takeCareOfCurrentSnapshot(snapshot);
-                    });
-                  })
-
-                  .then(() => {
-                    return "Ready for trigger"
-                  })
-                return "doc";
-              }
-              return "kkkkkk";
-            })
-            .catch(error => {
-              console.error("Error at InventoryExplorer",error)
-              return "?JJJJJJJ";
-            })
-
-
-          // .then(() => {
-          //   return "Ready for trigger"
-          // })
-          return "ollll";
-        })
       }
+
+      return m.currentlyIn.currentDoc.get().then(snapshot =>{
+        if(docId === "root"){
+          docId = SUBMISSION_INVENTORY_DOC_KEY;
+        }else{
+          m.currentlyIn.currentDoc = m.currentlyIn.currentDoc.collection("categories").doc(docId);
+          console.log("QQQQQQQQQQ", m.currentlyIn.currentDoc.path);
+        }
+        m.currentlyIn.currentDocId = docId;
+        return m.currentlyIn.currentDoc.get()
+          .then(doc => {
+            m.currentlyIn.breadcrumbs.push(doc.data().title);
+
+            // const dataPush = doc.data();
+            // dataPush.docId = doc.id;
+            console.log("doc snapshoesfiopsoijsljkht", doc.data());
+            if(doc.data() === undefined){
+              console.log("Undefined second copy, not continuing")
+              return Promise.reject("Undefined second copy, not continuing");
+
+              // Promise.reject(new Error("Undefined second copy, not continuing"));
+              // Promise.reject("Undefined second copy, not continuing");
+            }else{
+              const data = [];
+
+              return doc.ref.collection("categories")
+                .get()
+                .then(snapshot => {
+                  return takeCareOfCurrentSnapshot(snapshot);
+                })
+                .then(() => {
+                  return m.currentlyIn.currentDoc.collection("categories").onSnapshot(snapshot => {
+                    takeCareOfCurrentSnapshot(snapshot);
+                  });
+                })
+
+                .then(() => {
+                  return "Ready for trigger"
+                })
+              return "doc";
+            }
+            return "kkkkkk";
+          })
+          .catch(error => {
+            console.error("Error at InventoryExplorer",error)
+            return "?JJJJJJJ";
+          })
+
+
+        // .then(() => {
+        //   return "Ready for trigger"
+        // })
+        return "ollll";
+      });
     }
 
     function takeCareOfCurrentSnapshot(snapshot){

@@ -72,11 +72,13 @@ export default defineComponent({
         </div>
       </slot>
       <img :src="imageSrc" class="displayImage p-0 m-0 rounded-0 border-bottom w-auto" alt="Loading..."><!--TODO:-->
-      <div class="card-body overflow-y-scroll">
-        <slot name="description">
-          <p class="card-text">{{ descriptionText }}</p>
-        </slot>
-      </div>
+      <slot name="body">
+        <div class="card-body overflow-y-scroll">
+          <slot name="description">
+            <p class="card-text">{{ descriptionText }}</p>
+          </slot>
+        </div>
+      </slot>
       <div class="card-footer">
         <slot :item="item">
           {{ footerText }} <!-- Display the footerText directly -->
