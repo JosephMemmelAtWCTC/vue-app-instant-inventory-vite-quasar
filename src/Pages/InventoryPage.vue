@@ -105,6 +105,7 @@ export default defineComponent({
     sendUpdateCardOpenCategory(docId){
       // this.$emit('card-navigate', docId);
       console.log('navigateTo before in send up');
+      this.filterSettings.searchString = "";
       this.inventoryExplorer.navigateTo(docId)
         .then((message)=>{
           console.log("this.triggerthis.triggerthis.triggerthis.trigger: ", message);

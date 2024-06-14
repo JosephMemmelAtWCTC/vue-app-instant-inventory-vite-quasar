@@ -86,7 +86,7 @@ function InventoryExplorer() {
           searchTerms: [],
           itemType: STORAGE_TYPES.PRODUCT_GENERIC,
           parentLocation: doc.ref.parent.path,
-          parentCategoryName: 'notyetimplemented',
+          parentCategoryName: doc.ref.parent.id,
           imageURL: data.imageURL,
         });
 
@@ -118,32 +118,32 @@ function InventoryExplorer() {
         navType = "relative";
       }
 
-      console.log("navigateTo docId2_"+docId+"_");
-
-      if(navType === "absolute"){
-        if(docId === "root"){
-          m.currentlyIn.currentDoc = inventory;
-          m.currentlyIn.breadcrumbs = [];
-        }else if(docId.length > 0){
-          m.currentlyIn.currentDoc = db.doc(parentLocation);
-        }
-      }else{//if(navType === "relative"
-
-      }
-      if(docId === m.currentlyIn.currentDocId){
+      console.log("navigateTo docId2_ "+docId+" _");
+      if(docId === m.currentlyIn.currentDocId) {
         console.log("FAILING: Tried to duplicate category/id path");
         // return "FAILING: Tried to duplicate category/id path";
         return Promise.reject("FAILING: Tried to duplicate category/id path");
       }
 
-      return m.currentlyIn.currentDoc.get().then(snapshot =>{
+      if(navType === "absolute"){
         if(docId === "root"){
+          m.currentlyIn.currentDoc = inventory;
+          m.currentlyIn.breadcrumbs = [];
           docId = SUBMISSION_INVENTORY_DOC_KEY;
-        }else{
-          m.currentlyIn.currentDoc = m.currentlyIn.currentDoc.collection("categories").doc(docId);
-          console.log("QQQQQQQQQQ", m.currentlyIn.currentDoc.path);
+        }else if(docId.length > 0){
+          console.log("parentLocation! ",parentLocation);
+          m.currentlyIn.currentDoc = db.doc(parentLocation);
         }
-        m.currentlyIn.currentDocId = docId;
+
+      }else if(navType === "relative"){
+        m.currentlyIn.currentDoc = m.currentlyIn.currentDoc.collection("categories").doc(docId);
+      }
+
+      m.currentlyIn.currentDocId = docId;
+
+
+      return m.currentlyIn.currentDoc.get().then(snapshot =>{
+        console.log("QQQQQQQQQQ", m.currentlyIn.currentDoc.path);
         return m.currentlyIn.currentDoc.get()
           .then(doc => {
             m.currentlyIn.breadcrumbs.push(doc.data().title);

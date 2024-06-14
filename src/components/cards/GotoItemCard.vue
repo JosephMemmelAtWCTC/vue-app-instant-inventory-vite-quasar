@@ -41,7 +41,7 @@ export default defineComponent({
       parentLocation: item.parentLocation.substring(0, item.parentLocation.length-11), // '/categories'.length
       docId: item.id,
       test: item,
-    })"
+    });"
     :imageSrc="item.imageURL"
     :item="item"
     :headerText="item.title"
