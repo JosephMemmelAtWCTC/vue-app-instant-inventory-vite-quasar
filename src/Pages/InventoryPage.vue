@@ -15,7 +15,7 @@ import InventoryCollectionProper from "src/models/InventoryCollectionProper";
 import QrcodeScanner from "components/QRCodeScanner.vue";
 import { StreamBarcodeReader } from "vue-barcode-reader";
 import ImageCard from "components/cards/ImageCard.vue";
-import {db, searches_titles} from "src/models/Firebase";
+import {db, searches_titles, SUBMISSION_INVENTORY_DOC_KEY} from "src/models/Firebase";
 import StringSearch from "src/models/StringSearch";
 import {collection, query, where} from "firebase/firestore";
 
@@ -123,7 +123,7 @@ export default defineComponent({
       // this.imageUrl = URL.createObjectURL(this.newItemImage);
     },
     goToRoot(){
-      this.inventoryExplorer.navigateTo('root').then(message => {this.trigger++;});
+      this.inventoryExplorer.navigateTo({navType: "absolute", docId: SUBMISSION_INVENTORY_DOC_KEY}).then(message => {this.trigger++;});
     },
 
   },
@@ -171,7 +171,7 @@ export default defineComponent({
     }
   },
   created: function(){
-    this.inventoryExplorer.navigateTo({navType: "absolute", docId: "root"})
+    this.inventoryExplorer.navigateTo({navType: "absolute", docId: SUBMISSION_INVENTORY_DOC_KEY})
       .then((message)=>{
         this.trigger++;
         // this.$emit("resize")

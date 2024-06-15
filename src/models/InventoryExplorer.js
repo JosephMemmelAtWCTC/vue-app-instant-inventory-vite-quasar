@@ -126,7 +126,7 @@ function InventoryExplorer() {
       }
 
       if(navType === "absolute"){
-        if(docId === "root"){
+        if(docId === SUBMISSION_INVENTORY_DOC_KEY){
           m.currentlyIn.currentDoc = inventory;
           m.currentlyIn.breadcrumbs = [];
           docId = SUBMISSION_INVENTORY_DOC_KEY;
