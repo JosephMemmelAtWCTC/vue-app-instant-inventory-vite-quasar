@@ -129,8 +129,11 @@ export default defineComponent({
     goToRoot(){
       this.inventoryExplorer.navigateTo({navType: "absolute", docId: INVENTORY_DOC_KEY}).then(message => {this.trigger++;});
     },
+    refresh(){
+      this.inventoryExplorer.refresh();
+    },
     goToNavigateAbsolute(absolutePath, docId){
-      this.inventoryExplorer.navigateTo({navType: "absolute", parentLocation: absolutePath, docId: docId}).then(message => {this.trigger++;});
+      this.inventoryExplorer.navigateTo({navType: "absolute", parentLocation: absolutePath, docId: docId, breadcrumbs: this.inventoryExplorer.currentlyIn.breadcrumbs}).then(message => {this.trigger++;});
     }
   },
   computed: {
@@ -257,6 +260,9 @@ export default defineComponent({
                     if(i1 === 0){
                       goToRoot();
                       // breadcrumbPathCreationHelperString = '';
+                    }else if(i1 === inventoryExplorer.currentlyIn.breadcrumbs.length - 1){
+                    //   Just refresh
+                      refresh();
                     }else{
                       // breadcrumbPathCreationHelperString += breadcrumb;
                       // console.log('breadcrumbPathCreationHelperString = ',breadcrumbPathCreationHelperString);
