@@ -4,7 +4,7 @@ import {
   auth,
   storage,
   db,
-  SUBMISSION_INVENTORY_DOC_KEY,
+  INVENTORY_DOC_KEY,
   notifications, records, searches_titles, searches_productIds, storageInventoryPictures
 } from 'src/models/Firebase.js'
 import Category from "src/models/Category";
@@ -78,14 +78,15 @@ function InventoryExplorer() {
 
 
 
-    function updateSearch(data, doc){
-      console.log("function updateSearch(data)", data);
+    function updateSearch(data, doc, breadcrumbs){
+      console.log("function updateSearch(data)", data, breadcrumbs);
 
-        let newSearchItem = new StringSearch(doc.id,{
+      let newSearchItem = new StringSearch(doc.id,{
           title: data.title,
           searchTerms: [],
           itemType: STORAGE_TYPES.PRODUCT_GENERIC,
           parentLocation: doc.ref.parent.path,
+          breadcrumbs: breadcrumbs,
           parentCategoryName: doc.ref.parent.id,
           imageURL: data.imageURL,
         });
@@ -107,32 +108,52 @@ function InventoryExplorer() {
 
 
     function navigateTo(docId){
-      console.log("lm;mlm",docId);
+      console.log("lm;mlm", docId);
       let navType;
       let parentLocation;
+      console.log("navType", docId.navType);
       if(docId.navType){
         navType = docId.navType;
-        parentLocation = docId.parentLocation ?? "";
+        parentLocation = docId.parentLocation ?? INVENTORY_DOC_KEY;
         docId = docId.docId;
       }else{
         navType = "relative";
       }
 
-      console.log("navigateTo docId2_ "+docId+" _");
+      console.log("navigateTo docId2_ ", docId);
       if(docId === m.currentlyIn.currentDocId) {
         console.log("FAILING: Tried to duplicate category/id path");
         // return "FAILING: Tried to duplicate category/id path";
         return Promise.reject("FAILING: Tried to duplicate category/id path");
       }
 
+
       if(navType === "absolute"){
-        if(docId === SUBMISSION_INVENTORY_DOC_KEY){
+        if(docId === INVENTORY_DOC_KEY){
           m.currentlyIn.currentDoc = inventory;
-          m.currentlyIn.breadcrumbs = [];
-          docId = SUBMISSION_INVENTORY_DOC_KEY;
-        }else if(docId.length > 0){
-          console.log("parentLocation! ",parentLocation);
-          m.currentlyIn.currentDoc = db.doc(parentLocation);
+          docId = INVENTORY_DOC_KEY;
+        }else{// if(docId.length > 0){
+          console.log("parentLocation! ", parentLocation);
+          let tmpUseStr = parentLocation+'/categories/'+docId.docId;
+          console.log("tmpUseStr: ",tmpUseStr);
+          tmpUseStr = tmpUseStr.replaceAll("//","/");
+          tmpUseStr = tmpUseStr.replaceAll("categories/categories","categories");
+          tmpUseStr = tmpUseStr.replaceAll("4GpErCnogbGLrHeZu26K4GpErCnogbGLrHeZu26K","4GpErCnogbGLrHeZu26K");
+
+          console.log("tmpUseStr: ",tmpUseStr);
+          m.currentlyIn.currentDoc = db.doc(tmpUseStr);
+        }
+
+        if(docId.breadcrumbs){
+          m.currentlyIn.breadcrumbs = docId.breadcrumbs;
+
+        }else{
+          // Generate breadcrumbs
+          const generatedBreadcrumbs = parentLocation.replaceAll("/categories","").split("/");
+          generatedBreadcrumbs.shift(); // Remove first ()
+          generatedBreadcrumbs[generatedBreadcrumbs.length - 1] += "/";
+
+          m.currentlyIn.breadcrumbs = generatedBreadcrumbs;
         }
 
       }else if(navType === "relative"){
@@ -146,7 +167,7 @@ function InventoryExplorer() {
         console.log("QQQQQQQQQQ", m.currentlyIn.currentDoc.path);
         return m.currentlyIn.currentDoc.get()
           .then(doc => {
-            m.currentlyIn.breadcrumbs.push(doc.data().title);
+            m.currentlyIn.breadcrumbs.push({title: doc.data().title, docId: doc.id});
 
             // const dataPush = doc.data();
             // dataPush.docId = doc.id;
@@ -339,7 +360,7 @@ function InventoryExplorer() {
                         added: updatedData.numInStock,
                         kind: imgFile === null? STORAGE_TYPES.CATEGORY : STORAGE_TYPES.PRODUCT_GENERIC,
                       });
-                      updateSearch(updatedData, updatedDoc);
+                      updateSearch(updatedData, updatedDoc, m.currentlyIn.breadcrumbs);
                       return "";
                   }))
                 })})

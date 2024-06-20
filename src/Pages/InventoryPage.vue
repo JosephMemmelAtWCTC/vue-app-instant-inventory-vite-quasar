@@ -15,7 +15,7 @@ import InventoryCollectionProper from "src/models/InventoryCollectionProper";
 import QrcodeScanner from "components/QRCodeScanner.vue";
 import { StreamBarcodeReader } from "vue-barcode-reader";
 import ImageCard from "components/cards/ImageCard.vue";
-import {db, searches_titles, SUBMISSION_INVENTORY_DOC_KEY} from "src/models/Firebase";
+import {db, searches_titles, INVENTORY_DOC_KEY, inventory} from "src/models/Firebase";
 import StringSearch from "src/models/StringSearch";
 import {collection, query, where} from "firebase/firestore";
 
@@ -58,6 +58,7 @@ export default defineComponent({
         searchString: "",
       },
       trigger: 0,
+      // breadcrumbPathCreationHelperString: '',
     };
   },
   props: {
@@ -80,6 +81,9 @@ export default defineComponent({
   },
   emits: ["call-filter-settings-refresh"],
   methods: {
+    inventory(){
+      return inventory;
+    },
     searchTest(searchQuery){
       this.inventoryExplorer.searchTest(searchQuery).then((results) => {
         this.stringSearchResults = results;
@@ -123,9 +127,11 @@ export default defineComponent({
       // this.imageUrl = URL.createObjectURL(this.newItemImage);
     },
     goToRoot(){
-      this.inventoryExplorer.navigateTo({navType: "absolute", docId: SUBMISSION_INVENTORY_DOC_KEY}).then(message => {this.trigger++;});
+      this.inventoryExplorer.navigateTo({navType: "absolute", docId: INVENTORY_DOC_KEY}).then(message => {this.trigger++;});
     },
-
+    goToNavigateAbsolute(absolutePath, docId){
+      this.inventoryExplorer.navigateTo({navType: "absolute", parentLocation: absolutePath, docId: docId}).then(message => {this.trigger++;});
+    }
   },
   computed: {
     Product() {
@@ -171,7 +177,7 @@ export default defineComponent({
     }
   },
   created: function(){
-    this.inventoryExplorer.navigateTo({navType: "absolute", docId: SUBMISSION_INVENTORY_DOC_KEY})
+    this.inventoryExplorer.navigateTo({navType: "absolute", docId: INVENTORY_DOC_KEY})
       .then((message)=>{
         this.trigger++;
         // this.$emit("resize")
@@ -246,19 +252,28 @@ export default defineComponent({
             <div class="col-12 ps-3 mb-0 pb-0">
               <nav aria-label="Inventory Explorer Breadcrumbs">
                 <ol class="breadcrumb m-2">
-<!--                  @click="//this.inventoryExplorer.navigateTo('root');"-->
                   <li><q-icon name="bi-house-fill" color="primary" class="cursor-pointer me-1 rounded-2 pe-2 py-1 me-0" @click="goToRoot()"></q-icon></li>
-                  <li class="breadcrumb-item" :class="i1 === 0? 'cursor-pointer ms-0 bg-secondary rounded-2 pe-2':''" v-for="(breadcrumb, i1) in inventoryExplorer.currentlyIn.breadcrumbs" :key="i1" @click="()=>{
+                  <li class="breadcrumb-item cursor-pointer ms-0 bg-secondary rounded-2 pe-2" v-for="(breadcrumb, i1) in inventoryExplorer.currentlyIn.breadcrumbs" :key="i1" @click="()=>{
                     if(i1 === 0){
                       goToRoot();
+                      // breadcrumbPathCreationHelperString = '';
+                    }else{
+                      // breadcrumbPathCreationHelperString += breadcrumb;
+                      // console.log('breadcrumbPathCreationHelperString = ',breadcrumbPathCreationHelperString);
+                      let breadcrumbPathCreationHelperString = '/inventory/';
+                      for(let j = 0; j < i1; j++) {
+                        breadcrumbPathCreationHelperString += inventoryExplorer.currentlyIn.breadcrumbs[j].docId+'/categories/';
+                      }
+                      console.log('breadcrumbPathCreationHelperString', breadcrumbPathCreationHelperString);
+                      goToNavigateAbsolute(breadcrumbPathCreationHelperString, inventoryExplorer.currentlyIn.breadcrumbs[i1]);
                     }
-                  }">{{ breadcrumb }}</li>
-<!--                  <li class="breadcrumb-item active" aria-current="page">{{'test'}}</li>-->
+                  }">{{ breadcrumb.title }}</li>
                   <li class="ms-1">/</li>
                 </ol>
+                <br>
 <!--                <q-breadcrumbs gutter="xs">-->
-<!--                  <q-breadcrumbs-el v-for="(breadcrumb, i) in inventoryExplorer.currentlyIn.breadcrumbs" :key="i" :label="breadcrumb">-->
-<!--&lt;!&ndash;                    {{ breadcrumb }}&ndash;&gt;-->
+<!--                  <q-breadcrumbs-el v-for="(breadcrumb, i) in inventoryExplorer.currentlyIn.breadcrumbs" :key="i" :label="breadcrumb.title">-->
+<!--                    {{ breadcrumb.title }}-->
 <!--                  </q-breadcrumbs-el>-->
 <!--                </q-breadcrumbs>-->
 

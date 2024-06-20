@@ -12,6 +12,9 @@ export default class StringSearch{
     this.parentLocation = data.parentLocation ?? '';
     this.parentCategoryName = data.parentCategoryName ?? '';
     this.imageURL = data.imageURL;
+    this.breadcrumbs = data.breadcrumbs;
+
+
     this.title = data.title ?? '';
     this.cardDetailsComponent = "GotoItemCard";
     this.constructorSaved = this.constructor;
@@ -28,6 +31,8 @@ export default class StringSearch{
         parentLocation: this.parentLocation,
         parentCategoryName: this.parentCategoryName,
         imageURL: this.imageURL,
+        breadcrumbs: this.breadcrumbs,
+
         title: this.title,
         cardDetailsComponent: this.cardDetailsComponent,
         // constructorSaved: this.constructorSaved,
