@@ -1,6 +1,7 @@
 <script>
   import {defineComponent} from "vue";
   import ImageCard from "components/cards/ImageCard.vue";
+  import {INVENTORY_DOC_KEY} from "src/models/Firebase";
 
   export default defineComponent({
     name: "CategoryCard",
@@ -34,7 +35,12 @@
       },
       sendUpdateCardOpenCategory(docId){
         console.log("sendUpdateCardOpenCategory", docId);
-        this.$emit('card-navigate', docId);
+        this.$emit('card-navigate',
+          {
+            navType: "relative",
+            docId: docId
+          }
+        );
       }
     },
     computed:{

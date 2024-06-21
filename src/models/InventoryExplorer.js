@@ -198,7 +198,7 @@ function InventoryExplorer() {
         return m.currentlyIn.currentDoc.get()
           .then(doc => {
             console.log("doc.data()",doc.data())
-            if(navType === "relative" && !navToParams.breadCrumbIndex && doc.data()){
+            if(doc.data() && ((navType === "relative" && !navToParams.breadCrumbIndex) || docId === INVENTORY_DOC_KEY)){
               m.currentlyIn.breadcrumbs.push({title: doc.data().title, docId: doc.id});
             }else{
               console.log("DOC!!!!!!!!!!!!!!!!!!!!!!!!", doc);
