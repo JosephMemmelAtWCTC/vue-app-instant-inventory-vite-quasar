@@ -26,7 +26,7 @@ export default defineComponent({
   emits: ['card-clicked', 'card-navigate'],
   methods: {
     sendUpdateCardOpenCategory(docId){
-      console.log("sendUpdateCardOpenCategory", docId);
+      console.log("sendUpdateCardOpenCategory~", docId);
       this.$emit('card-navigate', docId);
     }
   },
@@ -39,8 +39,9 @@ export default defineComponent({
     @click="this.sendUpdateCardOpenCategory({
       navType: 'absolute',
       parentLocation: item.parentLocation.substring(0, item.parentLocation.length-11), // '/categories'.length
-      docId: item.id,
-      test: item,
+      // docId: item.id,
+      docId: '',
+      breadcrumbs: item.breadcrumbs,
     });"
     :imageSrc="item.imageURL"
     :item="item"

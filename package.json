@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "A Quasar Project",
   "productName": "Instant Inventory",
-  "author": "42null <averyparanoiduser@gmail.com>",
+  "author": "42null <josephmemmel42null@gmail.com>",
   "private": true,
   "scripts": {
     "dev": "quasar dev",

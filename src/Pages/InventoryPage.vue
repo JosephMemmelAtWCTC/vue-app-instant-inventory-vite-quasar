@@ -255,26 +255,29 @@ export default defineComponent({
             <div class="col-12 ps-3 mb-0 pb-0">
               <nav aria-label="Inventory Explorer Breadcrumbs">
                 <ol class="breadcrumb m-2">
-                  <li><q-icon name="bi-house-fill" color="primary" class="cursor-pointer me-1 rounded-2 pe-2 py-1 me-0" @click="goToRoot()"></q-icon></li>
-                  <li class="breadcrumb-item cursor-pointer ms-0 bg-secondary rounded-2 pe-2" v-for="(breadcrumb, i1) in inventoryExplorer.currentlyIn.breadcrumbs" :key="i1" @click="()=>{
-                    if(i1 === 0){
-                      goToRoot();
-                      // breadcrumbPathCreationHelperString = '';
-                    }else if(i1 === inventoryExplorer.currentlyIn.breadcrumbs.length - 1){
-                    //   Just refresh
-                      refresh();
-                    }else{
-                      // breadcrumbPathCreationHelperString += breadcrumb;
-                      // console.log('breadcrumbPathCreationHelperString = ',breadcrumbPathCreationHelperString);
-                      let breadcrumbPathCreationHelperString = '/inventory/';
-                      for(let j = 0; j < i1; j++) {
-                        breadcrumbPathCreationHelperString += inventoryExplorer.currentlyIn.breadcrumbs[j].docId+'/categories/';
+                  <li class="me-2"><q-icon name="bi-house-fill" color="primary" class="cursor-pointer py-1" @click="goToRoot()"></q-icon></li>
+                  <li class="breadcrumb-item" v-if="filterSettings.searchString.length === 0" v-for="(breadcrumb, i1) in inventoryExplorer.currentlyIn.breadcrumbs" :key="i1"
+                    @click="()=>{
+                      if(i1 === 0){
+                        goToRoot();
+                        // breadcrumbPathCreationHelperString = '';
+                      }else if(i1 === inventoryExplorer.currentlyIn.breadcrumbs.length - 1){
+                      //   Just refresh
+                        refresh();
+                      }else{
+                        // breadcrumbPathCreationHelperString += breadcrumb;
+                        // console.log('breadcrumbPathCreationHelperString = ',breadcrumbPathCreationHelperString);
+                        let breadcrumbPathCreationHelperString = '/inventory/';
+                        for(let j = 0; j < i1; j++) {
+                          breadcrumbPathCreationHelperString += inventoryExplorer.currentlyIn.breadcrumbs[j].docId+'/categories/';
+                        }
+                        console.log('breadcrumbPathCreationHelperString', breadcrumbPathCreationHelperString);
+                        goToNavigateAbsolute(breadcrumbPathCreationHelperString, inventoryExplorer.currentlyIn.breadcrumbs[i1]);
                       }
-                      console.log('breadcrumbPathCreationHelperString', breadcrumbPathCreationHelperString);
-                      goToNavigateAbsolute(breadcrumbPathCreationHelperString, inventoryExplorer.currentlyIn.breadcrumbs[i1]);
-                    }
-                  }">{{ breadcrumb.title }}</li>
-                  <li class="ms-1">/</li>
+                    }">
+                    <span class="cursor-pointer ms-0 bg-secondary rounded-2 me-1 py-1 px-2">{{ breadcrumb.title }}</span>
+                  </li>
+                  <li class="ms-1" v-if="filterSettings.searchString.length === 0">/</li>
                 </ol>
                 <br>
 <!--                <q-breadcrumbs gutter="xs">-->

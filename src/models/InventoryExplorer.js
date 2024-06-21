@@ -135,7 +135,18 @@ function InventoryExplorer() {
 
           m.currentlyIn.breadcrumbs = generatedBreadcrumbs;
         }
-        docId = docId.docId;
+        if(docId.docId){
+          docId = docId.docId;
+        }else{
+        }
+        console.log("docId!!!!#", docId);
+        if(!docId){
+          console.log("AAAAA",m.currentlyIn.breadcrumbs)
+          docId = m.currentlyIn.breadcrumbs[m.currentlyIn.breadcrumbs.length-1];
+          // m.currentlyIn.breadcrumbs = m.currentlyIn.breadcrumbs.pop();
+          console.log("BBBBB",m.currentlyIn.breadcrumbs)
+
+        }
       }else{
         navType = "relative";
       }
@@ -151,12 +162,19 @@ function InventoryExplorer() {
       if(navType === "absolute"){
 
         if(docId === INVENTORY_DOC_KEY){
-          m.currentlyIn.currentDoc = inventory;
           docId = INVENTORY_DOC_KEY;
-        }else{// if(docId.length > 0){
+          m.currentlyIn.currentDoc = inventory;
+        }else{
           console.log("parentLocation! ", parentLocation);
-          let tmpUseStr = parentLocation+'/categories/'+docId.docId;
+          console.log("parentLocation!docId ", docId);
+          let tmpUseStr = parentLocation;
+          if(docId.length > 0){
+            tmpUseStr += '/categories/'+docId;
+          }
           console.log("tmpUseStr: ",tmpUseStr);
+          if(tmpUseStr.endsWith('categories/')){
+            tmpUseStr = tmpUseStr.substring(0,tmpUseStr.lastIndexOf('categories/'));
+          }
           tmpUseStr = tmpUseStr.replaceAll("//","/");
           tmpUseStr = tmpUseStr.replaceAll("categories/categories","categories");
           tmpUseStr = tmpUseStr.replaceAll("4GpErCnogbGLrHeZu26K4GpErCnogbGLrHeZu26K","4GpErCnogbGLrHeZu26K");
@@ -165,14 +183,10 @@ function InventoryExplorer() {
           m.currentlyIn.currentDoc = db.doc(tmpUseStr);
         }
 
-        /*
-        /inventory/4GpErCnogbGLrHeZu26K/categories/vuCiyEAlXMuKDxnkH520/categories/
-        becomes
-        ["inventory","4GpErCnogbGLrHeZu26K","vuCiyEAlXMuKDxnkH520","/",{"title":"Layer 2 cat test","docId":"LBkD9siN0wrnLBCpZt1i"}]
-        */
-
       }else if(navType === "relative"){
         m.currentlyIn.currentDoc = m.currentlyIn.currentDoc.collection("categories").doc(docId);
+      }else{
+        console.log();
       }
 
       m.currentlyIn.currentDocId = docId;
@@ -182,7 +196,12 @@ function InventoryExplorer() {
         console.log("QQQQQQQQQQ", m.currentlyIn.currentDoc.path);
         return m.currentlyIn.currentDoc.get()
           .then(doc => {
-            m.currentlyIn.breadcrumbs.push({title: doc.data().title, docId: doc.id});
+            console.log("doc.data()",doc.data())
+            if(doc.data()){
+              m.currentlyIn.breadcrumbs.push({title: doc.data().title, docId: doc.id});
+            }else{
+              console.log("DOC!!!!!!!!!!!!!!!!!!!!!!!!", doc);
+            }
 
             // const dataPush = doc.data();
             // dataPush.docId = doc.id;
