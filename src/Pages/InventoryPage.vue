@@ -127,14 +127,20 @@ export default defineComponent({
       // this.imageUrl = URL.createObjectURL(this.newItemImage);
     },
     goToRoot(){
-      this.inventoryExplorer.navigateTo({navType: "absolute", docId: INVENTORY_DOC_KEY}).then(message => {this.trigger++;});
+      this.inventoryExplorer.navigateTo(
+        {navType: "absolute",
+          docId: INVENTORY_DOC_KEY})
+        .then(message => {this.trigger++;});
     },
     refresh(){
       this.inventoryExplorer.refresh();
     },
-    goToNavigateAbsolute(absolutePath, docId){
-      this.inventoryExplorer.navigateTo({navType: "absolute", parentLocation: absolutePath, docId: docId, breadcrumbs: this.inventoryExplorer.currentlyIn.breadcrumbs}).then(message => {this.trigger++;});
-    }
+    // goToNavigateAbsolute(absolutePath, docId){
+    //   this.inventoryExplorer.navigateTo({navType: "absolute", parentLocation: absolutePath, docId: docId, breadcrumbs: this.inventoryExplorer.currentlyIn.breadcrumbs}).then(message => {this.trigger++;});
+    // },
+    goToNavigateRelativeBreadcrumb(breadCrumbIndex){
+      this.inventoryExplorer.navigateTo({navType: 'relative', breadCrumbIndex: breadCrumbIndex}).then(message => {this.trigger++;});
+    },
   },
   computed: {
     Product() {
@@ -180,33 +186,9 @@ export default defineComponent({
     }
   },
   created: function(){
-    this.inventoryExplorer.navigateTo({navType: "absolute", docId: INVENTORY_DOC_KEY})
-      .then((message)=>{
-        this.trigger++;
-        // this.$emit("resize")
-      });
+    this.goToRoot();
   },
   watch: {
-    // library: {
-    //   handler() {
-    //     // this.$emit('example', '');
-    //     console.log("~~~~~~~~A");
-    //   },
-    //   deep: true,
-    // },
-    // newItemImage: {//.product.imageSrc
-    //   handler() {
-    //     console.log("this.newItem.product.imageSrc",this.newItemImage);
-    //     const reader  = new FileReader();
-    //     // it's onload event and you forgot (parameters)
-    //     reader.onload = function(e)  {
-    //       newItem.product.imageSrc = e.target.result;
-    //     }
-    //     // you have to declare the file loading
-    //     reader.readAsDataURL(this.newItemImage);
-    //   },
-    //   deep: true,
-    // },
   },
 });
 </script>
@@ -265,14 +247,7 @@ export default defineComponent({
                       //   Just refresh
                         refresh();
                       }else{
-                        // breadcrumbPathCreationHelperString += breadcrumb;
-                        // console.log('breadcrumbPathCreationHelperString = ',breadcrumbPathCreationHelperString);
-                        let breadcrumbPathCreationHelperString = '/inventory/';
-                        for(let j = 0; j < i1; j++) {
-                          breadcrumbPathCreationHelperString += inventoryExplorer.currentlyIn.breadcrumbs[j].docId+'/categories/';
-                        }
-                        console.log('breadcrumbPathCreationHelperString', breadcrumbPathCreationHelperString);
-                        goToNavigateAbsolute(breadcrumbPathCreationHelperString, inventoryExplorer.currentlyIn.breadcrumbs[i1]);
+                        goToNavigateRelativeBreadcrumb(i1);
                       }
                     }">
                     <span class="cursor-pointer ms-0 bg-secondary rounded-2 me-1 py-1 px-2">{{ breadcrumb.title }}</span>

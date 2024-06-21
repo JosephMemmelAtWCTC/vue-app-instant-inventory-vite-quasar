@@ -111,100 +111,101 @@ function InventoryExplorer() {
     //   TODO: Implement
     }
 
-    function navigateTo(docId){
-      console.log("lm;mlm", docId);
-      let navType;
-      let parentLocation;
-      console.log("navType", docId.navType);
-
-      if(docId.navType){
-        navType = docId.navType;
-        parentLocation = docId.parentLocation ?? INVENTORY_DOC_KEY;
-
-        if(docId.breadcrumbs){
-          console.log("parentLocation A");
-          m.currentlyIn.breadcrumbs = docId.breadcrumbs.splice(0,parentLocation.match((/\//g)).length - 3 ); //https://stackoverflow.com/a/881111
-
-        }else{
-          console.log("parentLocation B");
-          // Generate breadcrumbs
-          console.log("parentLocation breadcrumbs",parentLocation);
-          const generatedBreadcrumbs = parentLocation.replaceAll("/categories","").split("/");
-          generatedBreadcrumbs.shift(); // Remove first ()
-          generatedBreadcrumbs[generatedBreadcrumbs.length - 1] += "/";
-
-          m.currentlyIn.breadcrumbs = generatedBreadcrumbs;
-        }
-        if(docId.docId){
-          docId = docId.docId;
-        }else{
-        }
-        console.log("docId!!!!#", docId);
-        if(!docId){
-          console.log("AAAAA",m.currentlyIn.breadcrumbs)
-          docId = m.currentlyIn.breadcrumbs[m.currentlyIn.breadcrumbs.length-1];
-          // m.currentlyIn.breadcrumbs = m.currentlyIn.breadcrumbs.pop();
-          console.log("BBBBB",m.currentlyIn.breadcrumbs)
-
-        }
-      }else{
-        navType = "relative";
-      }
-
-      console.log("navigateTo docId2_ ", docId);
-      if(docId === m.currentlyIn.currentDocId) {
-        console.log("FAILING: Tried to duplicate category/id path");
-        // return "FAILING: Tried to duplicate category/id path";
-        return Promise.reject("FAILING: Tried to duplicate category/id path");
-      }
-
+    function navigateTo(navToParams){
+      console.log("navigateTo (inventoryExplorer): navToParams:", navToParams);
+      let navType = navToParams.navType;
+      let docId = navToParams.docId;
+      let breadcrumbs;
+      let generatedFullPath = "/inventory";
 
       if(navType === "absolute"){
-
-        if(docId === INVENTORY_DOC_KEY){
-          docId = INVENTORY_DOC_KEY;
-          m.currentlyIn.currentDoc = inventory;
+        if(navToParams.breadcrumbs){
+          breadcrumbs = navToParams.breadcrumbs
         }else{
-          console.log("parentLocation! ", parentLocation);
-          console.log("parentLocation!docId ", docId);
-          let tmpUseStr = parentLocation;
-          if(docId.length > 0){
-            tmpUseStr += '/categories/'+docId;
-          }
-          console.log("tmpUseStr: ",tmpUseStr);
-          if(tmpUseStr.endsWith('categories/')){
-            tmpUseStr = tmpUseStr.substring(0,tmpUseStr.lastIndexOf('categories/'));
-          }
-          tmpUseStr = tmpUseStr.replaceAll("//","/");
-          tmpUseStr = tmpUseStr.replaceAll("categories/categories","categories");
-          tmpUseStr = tmpUseStr.replaceAll("4GpErCnogbGLrHeZu26K4GpErCnogbGLrHeZu26K","4GpErCnogbGLrHeZu26K");
-
-          console.log("tmpUseStr: ",tmpUseStr);
-          m.currentlyIn.currentDoc = db.doc(tmpUseStr);
+          breadcrumbs = [];
         }
 
+        // Generate path from breadcrumbs
+        // TODO: Split up to avoid checking each time if first or switching up "inventory" & "category"
+        for (let i = 0; i < breadcrumbs.length; i++) {
+          generatedFullPath += `${i===0?'':'/categories'}/`+breadcrumbs[i].docId;
+        }
+        if(breadcrumbs.length === 0 && docId.length > 0){
+          generatedFullPath += `/${docId}`;
+        }
+        m.currentlyIn.breadcrumbs = breadcrumbs;
+        m.currentlyIn.currentDoc = db.doc(generatedFullPath);
+
+
       }else if(navType === "relative"){
-        m.currentlyIn.currentDoc = m.currentlyIn.currentDoc.collection("categories").doc(docId);
+        if(navToParams.breadCrumbIndex){ // Going into the breadcrumbs based on index
+          m.currentlyIn.breadcrumbs = m.currentlyIn.breadcrumbs.slice(0, navToParams.breadCrumbIndex+1)
+
+          let pathStr = m.currentlyIn.currentDoc.path;
+          // find the nth instance
+          // let m.currentlyIn.currentDoc.path.match((/\//g)).length; //https://stackoverflow.com/a/881111
+          let nthIndex = 0;
+          for(let i = 0; i < navToParams.breadCrumbIndex*2; i++){
+            nthIndex = pathStr.indexOf('/', nthIndex+1);
+          }
+
+          pathStr = pathStr.substring(0, nthIndex);
+          m.currentlyIn.currentDoc = db.doc(pathStr);
+          console.log("}{}{}{}{}{}{}",pathStr);
+
+        }else{ // Going into child
+          m.currentlyIn.currentDoc = m.currentlyIn.currentDoc.collection("categories").doc(docId);
+        }
       }else{
-        console.log();
+        console.error('navType was else! ', navType);
       }
 
-      m.currentlyIn.currentDocId = docId;
+      // m.currentlyIn.breadcrumbs = navToParams.breadcrumbs.splice(0,parentLocation.match((/\//g)).length - 3 ); //https://stackoverflow.com/a/881111
+        //
+        // }else{
+        //   console.log("parentLocation B");
+        //   // Generate breadcrumbs
+        //   console.log("parentLocation breadcrumbs",parentLocation);
+        //   const generatedBreadcrumbs = parentLocation.replaceAll("/categories","").split("/");
+        //   generatedBreadcrumbs.shift(); // Remove first ()
+        //   generatedBreadcrumbs[generatedBreadcrumbs.length - 1] += "/";
+        //
+        //   m.currentlyIn.breadcrumbs = generatedBreadcrumbs;
+        // }
+        // if(navToParams.docId){
+        //   navToParams = navToParams.docId;
+        // }else{
+        // }
+        // console.log("navigateTo (inventoryExplorer): navToParams:", navToParams);
+        // if(!navToParams){
+        //   console.log("AAAAA",m.currentlyIn.breadcrumbs)
+        //   navToParams = m.currentlyIn.breadcrumbs[m.currentlyIn.breadcrumbs.length-1];
+        //   // m.currentlyIn.breadcrumbs = m.currentlyIn.breadcrumbs.pop();
+        //   console.log("BBBBB",m.currentlyIn.breadcrumbs)
+        //
+        // }
+
+      // console.log("navigateTo (inventoryExplorer): navToParams:", navToParams);
+      // if(navToParams === m.currentlyIn.currentDocId) {
+      //   console.log("FAILING: Tried to duplicate category/id path");
+      //   // return "FAILING: Tried to duplicate category/id path";
+      //   return Promise.reject("FAILING: Tried to duplicate category/id path");
+      // }
 
 
       return m.currentlyIn.currentDoc.get().then(snapshot =>{
-        console.log("QQQQQQQQQQ", m.currentlyIn.currentDoc.path);
+        console.log("navigateTo (inventoryExplorer): m.currentlyIn.currentDoc.path:", m.currentlyIn.currentDoc.path);
         return m.currentlyIn.currentDoc.get()
           .then(doc => {
             console.log("doc.data()",doc.data())
-            if(doc.data()){
+            if(navType === "relative" && !navToParams.breadCrumbIndex && doc.data()){
               m.currentlyIn.breadcrumbs.push({title: doc.data().title, docId: doc.id});
             }else{
               console.log("DOC!!!!!!!!!!!!!!!!!!!!!!!!", doc);
             }
 
             // const dataPush = doc.data();
-            // dataPush.docId = doc.id;
+            // dataPush.navToParams = doc.id;
             console.log("doc snapshoesfiopsoijsljkht", doc.data());
             if(doc.data() === undefined){
               console.log("Undefined second copy, not continuing")

@@ -38,7 +38,7 @@ export default defineComponent({
   <image-card
     @click="this.sendUpdateCardOpenCategory({
       navType: 'absolute',
-      parentLocation: item.parentLocation.substring(0, item.parentLocation.length-11), // '/categories'.length
+      // parentLocation: item.parentLocation.substring(0, item.parentLocation.length-11), // '/categories'.length
       // docId: item.id,
       docId: '',
       breadcrumbs: item.breadcrumbs,
